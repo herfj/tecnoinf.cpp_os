@@ -4,7 +4,7 @@
 using namespace std;
 
 ///Hernán Fbrica & Tomas Baute
-///Version 0.0.0.1
+///Version 0.0.0.2
 
 #include "def.h"
 #include "funciones.cpp"
