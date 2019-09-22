@@ -1,10 +1,12 @@
 #ifndef DEF_H_INCLUDED
 #define DEF_H_INCLUDED
 
+#define TAMANIO_ENT 40
 #define TAMANIO_ARCH 19
 #define TEXTO_MAX 50
+
 using namespace std;
-//v.0.0.0.3
+
 
 ///Enum
 
@@ -16,8 +18,23 @@ typedef enum _TipoRet{
     OK,ERROR,NO_IMPLEMENTADO
 }TipoRet;
 
+typedef struct
+{
+    char cadena[TAMANIO_ENT];
+    int cant;
+}Cad_Ent;
 
-///Listas & Lineas (NODO)
+typedef struct
+{
+    char cadena[TAMANIO_ARCH];
+    int cant;
+}Cad_Arch;
+
+typedef struct
+{
+    Cad_Arch param;
+    Cad_Ent cmd;
+}Cmd_Param;
 
 //Lineas texto de los archivos
 struct _nodo{
@@ -33,7 +50,7 @@ typedef _nodo *Lineas;
 typedef struct
 {
     //nodo cabezal
-    string nom_ext;
+    Cad_Arch nom_ext;
     int cant_nom_ext;
     Lineas cabezal_linea;
     int cant;
@@ -51,11 +68,13 @@ typedef  _nodo2 *Lista_archivos;
 ///Funciones
 Lista_archivos crear();
 bool es_vacia(Lista_archivos c);
+Cmd_Param entrada();
 
 ///TipoRet
 TipoRet ret_dir(Lista_archivos c);
 
 ///Mostrar
 void mostrar_dir(Lista_archivos c);
+
 
 #endif // DEF_H_INCLUDED
