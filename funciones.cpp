@@ -4,11 +4,51 @@ using namespace std;
 
 
 ///Funciones de Entrada, Errores , emtre otros
-string entrada()
+Cmd_Param entrada()
 {
-    string ent;
-    cout<<"> ";
-    cin>>ent;
+    int i; i=0;
+    int i2; i2=0;
+    char c; c='a';
+    bool cambia; cambia=false;
+    Cmd_Param ent;
+
+    cout << "> ";
+    if ((i==0)&&(c==10))
+    {
+            getchar();
+    }
+    while (c!=10)
+    {
+        //Repite este proceso mientras no de enter
+        c=getchar();
+        if (c!=10)
+        {
+            if (i<TAMANIO_ENT)
+            {
+                if ((c!=' ')&&(cambia==false))
+                {
+                    ent.cmd.cadena[i]=c;
+                    i++;
+                    ent.cmd.cant=i;
+                    cambia=false;
+                }
+                else
+                {
+                    cambia=true;
+                    if (c!=' ')
+                    {
+                        if(c!='/')
+                        {
+                            ent.param.cadena[i2]=c;
+                            i2++;
+                            i++;
+                            ent.param.cant=i2;
+                        }
+                    }
+                }
+            }
+        }
+    }
     return ent;
 }
 
@@ -61,4 +101,5 @@ void mostrar_dir(Lista_archivos c)
         }
     }
 }
+
 
