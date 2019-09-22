@@ -1,10 +1,11 @@
 #include <iostream>
 #include <string.h>
+#include <stdio.h>
 
 using namespace std;
 
 ///Hernán Fbrica & Tomas Baute
-///Version 0.0.0.2
+///Version 0.0.0.1
 
 #include "def.h"
 #include "funciones.cpp"
@@ -19,16 +20,18 @@ int main()
     TipoRet retorna;
     Comandos op_selecionada;
 
+    int i; i=0;
+
     Lista_archivos raiz;
     raiz=crear();
-    string ent;
+    Cmd_Param ent;
 
-    do
+    while (rep)
     {
         var=false;
         ent=entrada();
 
-        if (ent=="DIR")
+        if ((strcmp(ent.cmd.cadena, "DIR"))==0)
         {
             op_selecionada=DIR;
             var=true;
@@ -74,7 +77,6 @@ int main()
 
 
     }
-    while (rep);
 
     return 0;
 }
