@@ -4,62 +4,89 @@ using namespace std;
 
 
 ///Funciones de Entrada, Errores , emtre otros
-Cmd_Param entrada()
+Parametros entrada()
 {
-    int i; i=0;
-    int i2; i2=0;
-    char c; c='a';
-    bool cambia; cambia=false;
-    Cmd_Param ent;
+    Parametros ent;
+    char text_sin_cmd[T_ENT];
+    bool var; var=true;
+    int i=0;
+    int j;
+    int u=0;
+    int ubc=0; //Guarda la ultima ubicacion de: /
 
-    cout << "> ";
-    if ((i==0)&&(c==10))
+    cin.getline(ent.cmd, T_ENT, ' ');
+    cin.clear();
+    cin.getline(text_sin_cmd, T_ENT, '.');
+    cin.clear();
+    cin.getline(ent.ext, T_ENT, ' ');
+
+
+    cout<<text_sin_cmd<<endl;
+    /*
+    if(text_sin_cmd[0]=='/')
     {
-            getchar();
-    }
-    while (c!=10)
-    {
-        //Repite este proceso mientras no de enter
-        c=getchar();
-        if (c!=10)
+        for(i=0; i<60; i++)
         {
-            if (i<TAMANIO_ENT)
+
+            if(text_sin_cmd[i]=='"')
             {
-                if ((c!=' ')&&(cambia==false))
-                {
-                    ent.cmd.cadena[i]=c;
-                    i++;
-                    ent.cmd.cant=i;
-                    cambia=false;
-                }
-                else
-                {
-                    cambia=true;
-                    if (c!=' ')
-                    {
-                        if(c!='/')
-                        {
-                            ent.param.cadena[i2]=c;
-                            i2++;
-                            i++;
-                            ent.param.cant=i2;
-                        }
-                    }
-                }
+                var=false;
+            }
+            if ((text_sin_cmd[i]=='/')&&(var==true))
+            {
+                ubc=i;
             }
         }
+        for(i=0; i<=ubc;i++)
+        {
+            ent.ubic[i]=text_sin_cmd[i];
+        }
     }
+
+    i=ubc+1;
+    for(j=0;j<T_ARC;j++)
+    {
+        ent.a_name[j]=0;
+    }
+    while (text_sin_cmd[i]!='.')
+    {
+        ent.a_name[u]=text_sin_cmd[i];
+        i++;
+        u++;
+    }
+
+    i++;
+    u=0;
+    var=true;
+
+    for(j=0;j<T_EXT;j++)
+    {
+        ent.ext[j]=0;
+        if((text_sin_cmd[i]!=32)||(text_sin_cmd[i]!='\n')||(text_sin_cmd!=34))
+        {
+            var=false;
+        }
+        if((u<T_EXT)&&(var==true))
+        {
+            ent.ext[u]=text_sin_cmd[i];
+            i++;
+            u++;
+        }
+    }
+*/
+
+
     return ent;
 }
 
-Lista_archivos crear()
+Sistema crear()
 {
-    Lista_archivos aux;
+    Sistema aux;
     aux=NULL;
     return aux;
 }
 
-bool es_vacia(Lista_archivos c)
+bool es_vacia(Sistema c)
 {
     if(c==NULL)
     {
@@ -74,7 +101,7 @@ bool es_vacia(Lista_archivos c)
 
 ///Funiones TipoRet
 
-TipoRet ret_dir(Lista_archivos c)
+TipoRet ret_dir(Sistema c)
 {
     mostrar_dir(c);
     return NO_IMPLEMENTADO;
@@ -82,7 +109,7 @@ TipoRet ret_dir(Lista_archivos c)
 
 ///Funciones
 
-void mostrar_dir(Lista_archivos c)
+void mostrar_dir(Sistema c)
 {
     if (es_vacia(c))
     {

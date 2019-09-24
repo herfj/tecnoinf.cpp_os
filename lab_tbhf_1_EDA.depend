@@ -12,3 +12,16 @@
 
 1568850766 /home/ceibal/Escritorio/CB_PP/lab_tbhf_1_EDA/funciones.cpp
 	"def.h"
+
+1569338140 source:/home/tecnologo/Escritorio/EDA-1-LAB-master/main.cpp
+	<iostream>
+	<string.h>
+	<stdio.h>
+	"def.h"
+	"funciones.cpp"
+
+1569338561 /home/tecnologo/Escritorio/EDA-1-LAB-master/def.h
+
+1569339879 /home/tecnologo/Escritorio/EDA-1-LAB-master/funciones.cpp
+	"def.h"
+

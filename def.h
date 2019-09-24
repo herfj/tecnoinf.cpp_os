@@ -1,8 +1,9 @@
 #ifndef DEF_H_INCLUDED
 #define DEF_H_INCLUDED
 
-#define TAMANIO_ENT 40
-#define TAMANIO_ARCH 19
+#define T_ENT 100
+#define T_ARC 15
+#define T_EXT 3
 #define TEXTO_MAX 50
 
 using namespace std;
@@ -18,23 +19,17 @@ typedef enum _TipoRet{
     OK,ERROR,NO_IMPLEMENTADO
 }TipoRet;
 
-typedef struct
-{
-    char cadena[TAMANIO_ENT];
-    int cant;
-}Cad_Ent;
 
 typedef struct
 {
-    char cadena[TAMANIO_ARCH];
-    int cant;
-}Cad_Arch;
+    char cmd[T_ENT];
+    char ubic[T_ENT];
+    char param2[T_ENT];
+    char a_name[T_ARC];
+    char ext[T_EXT];
+    char text[TEXTO_MAX];
+}Parametros;
 
-typedef struct
-{
-    Cad_Arch param;
-    Cad_Ent cmd;
-}Cmd_Param;
 
 //Lineas texto de los archivos
 struct _nodo{
@@ -49,9 +44,8 @@ typedef _nodo *Lineas;
 
 typedef struct
 {
-    //nodo cabezal
-    Cad_Arch nom_ext;
-    int cant_nom_ext;
+    char nombre[T_ARC];
+    char ext[T_EXT];
     Lineas cabezal_linea;
     int cant;
 }Archivos;
@@ -62,19 +56,19 @@ struct _nodo2{
     Archivos c_archivo;
     _nodo2 *sig;
 };
-typedef  _nodo2 *Lista_archivos;
+typedef  _nodo2 *Sistema;
 
 
 ///Funciones
-Lista_archivos crear();
-bool es_vacia(Lista_archivos c);
-Cmd_Param entrada();
+Sistema crear();
+bool es_vacia(Sistema c);
+Parametros entrada();
 
 ///TipoRet
-TipoRet ret_dir(Lista_archivos c);
+TipoRet ret_dir(Sistema c);
 
 ///Mostrar
-void mostrar_dir(Lista_archivos c);
+void mostrar_dir(Sistema c);
 
 
 #endif // DEF_H_INCLUDED

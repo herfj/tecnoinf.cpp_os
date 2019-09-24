@@ -1,11 +1,11 @@
+///Hernán Fbrica & Tomas Baute
+
+
 #include <iostream>
 #include <string.h>
 #include <stdio.h>
 
 using namespace std;
-
-///Hernán Fbrica & Tomas Baute
-///Version 0.0.0.1
 
 #include "def.h"
 #include "funciones.cpp"
@@ -19,19 +19,29 @@ int main()
     rep=true;
     TipoRet retorna;
     Comandos op_selecionada;
+    Parametros ent;
 
     int i; i=0;
 
-    Lista_archivos raiz;
+    Sistema raiz;
     raiz=crear();
-    Cmd_Param ent;
+
 
     while (rep)
     {
         var=false;
         ent=entrada();
+        cout<<"el cmd es"<<endl;
+        cout<<ent.cmd<<endl;
+        cout<<"el nombre es"<<endl;
+        cout<<ent.a_name<<endl;
 
-        if ((strcmp(ent.cmd.cadena, "DIR"))==0)
+        cout<<"la ubic es"<<endl;
+        cout<<ent.ubic<<endl;
+
+        cout<<"La extension es"<<endl;
+        cout<<ent.ext<<endl;
+       /* if ((strcmp(ent.cmd, "DIR"))==0)
         {
             op_selecionada=DIR;
             var=true;
@@ -75,8 +85,7 @@ int main()
             }
         }
 
-
+    */
     }
-
     return 0;
 }
