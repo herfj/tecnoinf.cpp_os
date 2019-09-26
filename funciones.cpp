@@ -13,6 +13,12 @@ Parametros entrada()
     int j;
     int u=0;
     int ubc=0; //Guarda la ultima ubicacion de: /
+        /*
+    cin.getline(txt_completo, T_ENT, '\n');
+    cin.clear();
+    ent.cmd=strtok(txt_completo," ");
+    ent.cmd=strtok(NULL," ");
+    */
 
     cin.getline(ent.cmd, T_ENT, ' ');
     cin.clear();
