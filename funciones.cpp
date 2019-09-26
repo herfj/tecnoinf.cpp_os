@@ -7,7 +7,7 @@ using namespace std;
 Parametros entrada()
 {
     Parametros ent;
-    char  * cmd[T_CORT];
+    char cmd[T_CORT];
     char text_bruto[T_ENT];
     char txt_completo[T_ENT];
     bool var; var=true;
@@ -19,19 +19,18 @@ Parametros entrada()
 
     ent.cmd_correcto=false;
     cout<<"> ";
-
-    cin.getline(txt_completo, T_ENT, '\n');
-    cin.clear();
+/*
+    cin>>txt_completo;
     cmd=strtok(txt_completo," ");
     cmd=strtok(NULL," ");
+*/
 
-
-    /*
-
+/*
     cin.getline(cmd, T_CORT, ' ');
     cin.clear();
     cin.getline(text_bruto, T_ENT, '\n');
-    */
+*/
+
     cout<<cmd<<endl;
 
     if ((strcmp(cmd, "DIR"))==0)
@@ -107,15 +106,14 @@ Parametros entrada()
     {
 
     }
-
-
+    return ent;
+}
 
     /*
     if(text_sin_cmd[0]=='/')
     {
         for(i=0; i<60; i++)
         {
-
             if(text_sin_cmd[i]=='"')
             {
                 var=false;
@@ -130,7 +128,6 @@ Parametros entrada()
             ent.ubic[i]=text_sin_cmd[i];
         }
     }
-
     i=ubc+1;
     for(j=0;j<T_ARC;j++)
     {
@@ -142,11 +139,9 @@ Parametros entrada()
         i++;
         u++;
     }
-
     i++;
     u=0;
     var=true;
-
     for(j=0;j<T_EXT;j++)
     {
         ent.ext[j]=0;
@@ -164,8 +159,7 @@ Parametros entrada()
 */
 
 
-    return ent;
-}
+
 
 Sistema crear()
 {
@@ -216,5 +210,3 @@ void mostrar_dir(Sistema c)
         }
     }
 }
-
-

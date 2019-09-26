@@ -1,6 +1,5 @@
 ///Hernán Fbrica & Tomas Baute
 
-
 #include <iostream>
 #include <string.h>
 
@@ -35,7 +34,7 @@ int main()
         {
             switch(op_selecionada)
             {
-            case DIR:
+                case DIR:
                 cout<<"fsdahgdshsgfahf";
                 retorna=ret_dir(raiz);
                 break;
@@ -71,3 +70,4 @@ int main()
     }
     return 0;
 }
+
