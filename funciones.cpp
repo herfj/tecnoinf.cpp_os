@@ -7,7 +7,7 @@ using namespace std;
 Parametros entrada()
 {
     Parametros ent;
-    char cmd[T_CORT];
+    char  * cmd[T_CORT];
     char text_bruto[T_ENT];
     char txt_completo[T_ENT];
     bool var; var=true;
