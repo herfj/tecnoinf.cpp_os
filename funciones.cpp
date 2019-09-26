@@ -7,27 +7,109 @@ using namespace std;
 Parametros entrada()
 {
     Parametros ent;
-    char text_sin_cmd[T_ENT];
+    char cmd[T_CORT];
+    char text_bruto[T_ENT];
+    char txt_completo[T_ENT];
     bool var; var=true;
+
     int i=0;
     int j;
     int u=0;
     int ubc=0; //Guarda la ultima ubicacion de: /
-        /*
+
+    ent.cmd_correcto=false;
+    cout<<"> ";
+
     cin.getline(txt_completo, T_ENT, '\n');
     cin.clear();
-    ent.cmd=strtok(txt_completo," ");
-    ent.cmd=strtok(NULL," ");
+    cmd=strtok(txt_completo," ");
+    cmd=strtok(NULL," ");
+
+
+    /*
+
+    cin.getline(cmd, T_CORT, ' ');
+    cin.clear();
+    cin.getline(text_bruto, T_ENT, '\n');
     */
+    cout<<cmd<<endl;
 
-    cin.getline(ent.cmd, T_ENT, ' ');
-    cin.clear();
-    cin.getline(text_sin_cmd, T_ENT, '.');
-    cin.clear();
-    cin.getline(ent.ext, T_ENT, ' ');
+    if ((strcmp(cmd, "DIR"))==0)
+    {
+            ent.cmd=DIR;
+            ent.cmd_correcto=true;
+            cout<<"comando DIR"<<endl;
+            ///return param_dir();
+    }
+    if ((strcmp(cmd, "CREATE"))==0)
+    {
+            ent.cmd=CREATE;
+            ent.cmd_correcto=true;
+            ///return param_create();
+    }
+    if ((strcmp(cmd, "DELETE"))==0)
+    {
+            ent.cmd=DELETE;
+            ent.cmd_correcto=true;
+            ///return param_delete();
+    }
+    if ((strcmp(cmd, "UNDELETE"))==0)
+    {
+            ent.cmd=UNDELETE;
+            ent.cmd_correcto=true;
+            ///return param_undelete();
+    }
+    if ((strcmp(cmd, "IC"))==0)
+    {
+            ent.cmd=IC;
+            ent.cmd_correcto=true;
+            ///return param_ic();
+    }
+    if ((strcmp(cmd, "IC"))==0)
+    {
+            ent.cmd=IC;
+            ent.cmd_correcto=true;
+            ///return param_ic();
+    }
+    if ((strcmp(cmd, "TYPE"))==0)
+    {
+            ent.cmd=TYPE;
+            ent.cmd_correcto=true;
+            ///return param_type();
+    }
+    if ((strcmp(cmd, "IF"))==0)
+    {
+            ent.cmd=IF;
+            ent.cmd_correcto=true;
+            ///return param_if();
+    }
+    if ((strcmp(cmd, "BC"))==0)
+    {
+            ent.cmd=BC;
+            ent.cmd_correcto=true;
+            ///return param_bc();
+    }
+    if ((strcmp(cmd, "BF"))==0)
+    {
+            ent.cmd=BF;
+            ent.cmd_correcto=true;
+            ///return param_bf();
+    }
+    if ((strcmp(cmd, "CAT"))==0)
+    {
+            ent.cmd=CAT;
+            ent.cmd_correcto=true;
+            ///return param_cat();
+    }
 
 
-    cout<<text_sin_cmd<<endl;
+    if(ent.cmd_correcto==true)
+    {
+
+    }
+
+
+
     /*
     if(text_sin_cmd[0]=='/')
     {

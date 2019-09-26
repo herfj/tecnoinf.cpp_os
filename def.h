@@ -2,6 +2,7 @@
 #define DEF_H_INCLUDED
 
 #define T_ENT 100
+#define T_CORT 20
 #define T_ARC 15
 #define T_EXT 3
 #define TEXTO_MAX 50
@@ -22,12 +23,13 @@ typedef enum _TipoRet{
 
 typedef struct
 {
-    char cmd[T_ENT];
+    Comandos cmd;
     char ubic[T_ENT];
     char param2[T_ENT];
     char a_name[T_ARC];
     char ext[T_EXT];
     char text[TEXTO_MAX];
+    bool cmd_correcto;
 }Parametros;
 
 

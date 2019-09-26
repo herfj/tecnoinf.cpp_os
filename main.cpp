@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <string.h>
-#include <stdio.h>
+
 
 using namespace std;
 
@@ -15,7 +15,7 @@ using namespace std;
 int main()
 {
     bool rep;
-    bool var;
+
     rep=true;
     TipoRet retorna;
     Comandos op_selecionada;
@@ -29,30 +29,14 @@ int main()
 
     while (rep)
     {
-        var=false;
         ent=entrada();
-        cout<<"el cmd es"<<endl;
-        cout<<ent.cmd<<endl;
-        cout<<"el nombre es"<<endl;
-        cout<<ent.a_name<<endl;
 
-        cout<<"la ubic es"<<endl;
-        cout<<ent.ubic<<endl;
-
-        cout<<"La extension es"<<endl;
-        cout<<ent.ext<<endl;
-       /* if ((strcmp(ent.cmd, "DIR"))==0)
-        {
-            op_selecionada=DIR;
-            var=true;
-        }
-
-
-        if(var==true)
+        if(ent.cmd_correcto==true)
         {
             switch(op_selecionada)
             {
             case DIR:
+                cout<<"fsdahgdshsgfahf";
                 retorna=ret_dir(raiz);
                 break;
             case CREATE:
@@ -84,8 +68,6 @@ int main()
                 break;
             }
         }
-
-    */
     }
     return 0;
 }
