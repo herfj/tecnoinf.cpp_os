@@ -17,7 +17,6 @@ int main()
 
     rep=true;
     TipoRet retorna;
-    Comandos op_selecionada;
     Parametros ent;
 
     int i; i=0;
@@ -32,10 +31,9 @@ int main()
 
         if(ent.cmd_correcto==true)
         {
-            switch(op_selecionada)
+            switch(ent.cmd)
             {
                 case DIR:
-                cout<<"fsdahgdshsgfahf";
                 retorna=ret_dir(raiz);
                 break;
             case CREATE:

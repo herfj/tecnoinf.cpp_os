@@ -8,10 +8,11 @@ Parametros entrada()
 {
     Parametros ent;
     char cmd[T_CORT];
-    char text_bruto[T_ENT];
+    char txt_bruto[T_ENT];
     char txt_completo[T_ENT];
-    bool var; var=true;
+    bool var; var=false;
 
+    int t_cor_valor=20;
     int i=0;
     int j;
     int u=0;
@@ -19,19 +20,43 @@ Parametros entrada()
 
     ent.cmd_correcto=false;
     cout<<"> ";
-/*
-    cin>>txt_completo;
-    cmd=strtok(txt_completo," ");
-    cmd=strtok(NULL," ");
-*/
 
-/*
-    cin.getline(cmd, T_CORT, ' ');
-    cin.clear();
-    cin.getline(text_bruto, T_ENT, '\n');
-*/
+//    cin>>txt_completo;
+//    cmd=strtok(txt_completo," ");
+//    cmd=strtok(NULL," ");
 
-    cout<<cmd<<endl;
+//    cin.getline(cmd, T_CORT, ' '||'\n');
+//    cin.clear();
+    cin.getline(txt_completo, T_ENT, '\n');
+
+
+    while (((txt_completo[i]!=' ')&&(txt_completo[i]!='\n'))&&(i<20))
+    {
+        cmd[i]=txt_completo[i];
+        i++;
+        cout<<"i es :"<<i<<endl;
+        cout<<cmd<<"-"<<txt_completo<<endl;
+    }
+    cout<<"final de i es :"<<i<<endl;
+    if (txt_completo[i]==' ')
+    {
+        while (txt_completo[i]==' ')
+        {
+            i++;
+            cout<<"encontre un espacio"<<endl;
+        }
+        var=true;
+    }
+
+    while ((txt_completo[i]!='\n')&&(var))
+    {
+        txt_bruto[u]=txt_completo[i];
+        u++;
+        i++;
+    }
+
+    cout<<cmd<< "-------el comando fue divchp"<<endl;
+    cout<<txt_bruto<<endl;
 
     if ((strcmp(cmd, "DIR"))==0)
     {
