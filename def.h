@@ -42,13 +42,21 @@ struct _nodo{
 
 typedef _nodo *Lineas;
 
+//Struct de cabezal de lineas
+struct _cabezalineas
+{
+    Lineas pri;
+    Lineas ult;
+}
+typedef _cabezalineas CabezalLineas;
+
 ///Struct Archivo
 
 typedef struct
 {
     char nombre[T_ARC];
     char ext[T_EXT];
-    Lineas cabezal_linea;
+    CabezalLineas cabezal_linea;
     int cant;
 }Archivos;
 
