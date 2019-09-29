@@ -8,8 +8,9 @@ Parametros entrada()
 {
     Parametros ent;
     char cmd[T_CORT];
+    char txt_param[T_ENT];
     char txt_bruto[T_ENT];
-    char txt_completo[T_ENT];
+
     bool var; var=false;
 
     int t_cor_valor=20;
@@ -19,50 +20,55 @@ Parametros entrada()
     int ubc=0; //Guarda la ultima ubicacion de: /
 
     ent.cmd_correcto=false;
+    for(j=0;j<T_ENT;j++)
+    {
+        txt_bruto[i]=00;
+    }
+
     cout<<"> ";
 
-//    cin>>txt_completo;
-//    cmd=strtok(txt_completo," ");
-//    cmd=strtok(NULL," ");
+    //    cin>>txt_completo;
+    //    cmd=strtok(txt_completo," ");
+    //    cmd=strtok(NULL," ");
 
-//    cin.getline(cmd, T_CORT, ' '||'\n');
-//    cin.clear();
-    cin.getline(txt_completo, T_ENT, '\n');
+    //    cin.getline(cmd, T_CORT, ' '||'\n');
+
+    cin>>cmd;
+    cin.clear();
+    cin.getline(txt_bruto, T_ENT, '\n');
 
 
-    while (((txt_completo[i]!=' ')&&(txt_completo[i]!='\n'))&&(i<20))
+    //    while (((txt_completo[i]!=' ')&&(txt_completo[i]!='\n'))&&(i<20))
+    //    {
+    //        cmd[i]=txt_completo[i];
+    //        i++;
+    //        cout<<"i es :"<<i<<endl;
+    //        cout<<cmd<<"-"<<txt_completo<<endl;
+    //    }
+    //    cout<<"final de i es :"<<i<<endl;
+
+    if (txt_bruto[i]==' ')
     {
-        cmd[i]=txt_completo[i];
-        i++;
-        cout<<"i es :"<<i<<endl;
-        cout<<cmd<<"-"<<txt_completo<<endl;
-    }
-    cout<<"final de i es :"<<i<<endl;
-    if (txt_completo[i]==' ')
-    {
-        while (txt_completo[i]==' ')
+        while (txt_bruto[i]==' ')
         {
             i++;
-            cout<<"encontre un espacio"<<endl;
         }
         var=true;
     }
 
-    while ((txt_completo[i]!='\n')&&(var))
+
+    while ((txt_param[i]!='\n')&&(var)&&(i<T_ENT))
     {
-        txt_bruto[u]=txt_completo[i];
+        txt_param[u]=txt_bruto[i];
         u++;
         i++;
     }
 
-    cout<<cmd<< "-------el comando fue divchp"<<endl;
-    cout<<txt_bruto<<endl;
 
     if ((strcmp(cmd, "DIR"))==0)
     {
             ent.cmd=DIR;
             ent.cmd_correcto=true;
-            cout<<"comando DIR"<<endl;
             ///return param_dir();
     }
     if ((strcmp(cmd, "CREATE"))==0)
@@ -127,14 +133,14 @@ Parametros entrada()
     }
 
 
-    if(ent.cmd_correcto==true)
+    if(ent.cmd_correcto==false)
     {
-
+        cout<<"Comando incorrecto"<<endl;
     }
     return ent;
 }
 
-    /*
+/*
     if(text_sin_cmd[0]=='/')
     {
         for(i=0; i<60; i++)
@@ -189,13 +195,13 @@ Parametros entrada()
 Sistema crear()
 {
     Sistema aux;
-    aux=NULL;
+    aux.cabezal_archivos=NULL;
     return aux;
 }
 
 bool es_vacia(Sistema c)
 {
-    if(c==NULL)
+    if (c.cabezal_archivos==NULL)
     {
         return true;
     }
@@ -211,6 +217,11 @@ bool es_vacia(Sistema c)
 TipoRet ret_dir(Sistema c)
 {
     mostrar_dir(c);
+    return OK;
+}
+
+TipoRet ret_create(Sistema *s, Parametros ent)
+{
     return NO_IMPLEMENTADO;
 }
 
@@ -218,6 +229,7 @@ TipoRet ret_dir(Sistema c)
 
 void mostrar_dir(Sistema c)
 {
+
     if (es_vacia(c))
     {
         cout<<"La direccion '/' se encuentra vacia."<<endl;
@@ -226,12 +238,14 @@ void mostrar_dir(Sistema c)
     {
         while (!es_vacia(c))
         {
-            cout << c;
-            if (c->sig!=NULL)
+            cout << c.cabezal_archivos->nombre_ext <<"   Archivo    " << c.cabezal_archivos->cant << endl;
+            if (c.cabezal_archivos->sig!=NULL)
             {
-                cout << " - ";
+                cout << " --- ";
             }
-            c=c->sig;
+            c.cabezal_archivos=c.cabezal_archivos->sig;
         }
     }
 }
+
+void create

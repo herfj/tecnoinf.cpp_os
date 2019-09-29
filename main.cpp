@@ -13,31 +13,31 @@ using namespace std;
 
 int main()
 {
-    bool rep;
+    bool rep; rep=true;
 
-    rep=true;
     TipoRet retorna;
     Parametros ent;
 
     int i; i=0;
 
-    Sistema raiz;
-    raiz=crear();
+    Sistema s;
+    s=crear();
 
 
     while (rep)
     {
         ent=entrada();
 
+
         if(ent.cmd_correcto==true)
         {
             switch(ent.cmd)
             {
                 case DIR:
-                retorna=ret_dir(raiz);
+                retorna=ret_dir(s);
                 break;
             case CREATE:
-
+                retorna=ret_create(&s, ent);
                 break;
             case DELETE:
 

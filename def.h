@@ -5,6 +5,7 @@
 #define T_CORT 20
 #define T_ARC 15
 #define T_EXT 3
+#define T_ARC_Y_EXT 19
 #define TEXTO_MAX 50
 
 using namespace std;
@@ -26,8 +27,7 @@ typedef struct
     Comandos cmd;
     char ubic[T_ENT];
     char param2[T_ENT];
-    char a_name[T_ARC];
-    char ext[T_EXT];
+    char a_name_ext[T_ARC_Y_EXT];
     char text[TEXTO_MAX];
     bool cmd_correcto;
 }Parametros;
@@ -47,26 +47,24 @@ struct _cabezalineas
 {
     Lineas pri;
     Lineas ult;
-}
-typedef _cabezalineas CabezalLineas;
+};
+typedef struct _cabezalineas CabezalLineas;
 
-///Struct Archivo
-
-typedef struct
-{
-    char nombre[T_ARC];
-    char ext[T_EXT];
-    CabezalLineas cabezal_linea;
-    int cant;
-}Archivos;
 
 //Nodo de archivo
 struct _nodo2{
-    _nodo2 *ant;
-    Archivos c_archivo;
+    char nombre_ext[T_ARC_Y_EXT];
+    CabezalLineas cabezal_linea;
+    int cant;
     _nodo2 *sig;
 };
-typedef  _nodo2 *Sistema;
+typedef  _nodo2 *Archivos;
+
+
+typedef struct
+{
+    Archivos cabezal_archivos;
+}Sistema;
 
 
 ///Funciones
