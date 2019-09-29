@@ -4,9 +4,9 @@ using namespace std;
 
 
 ///Funciones de Entrada, Errores , emtre otros
-Parametros entrada()
+CMD_PARAM entrada()
 {
-    Parametros ent;
+    CMD_PARAM ent;
     char cmd[T_CORT];
     char txt_param[T_ENT];
     char txt_bruto[T_ENT];
@@ -26,12 +26,6 @@ Parametros entrada()
     }
 
     cout<<"> ";
-
-    //    cin>>txt_completo;
-    //    cmd=strtok(txt_completo," ");
-    //    cmd=strtok(NULL," ");
-
-    //    cin.getline(cmd, T_CORT, ' '||'\n');
 
     cin>>cmd;
     cin.clear();
@@ -57,9 +51,9 @@ Parametros entrada()
     }
 
 
-    while ((txt_param[i]!='\n')&&(var)&&(i<T_ENT))
+    while ((txt_bruto[i]!='\n')&&(var)&&(i<T_ENT))
     {
-        txt_param[u]=txt_bruto[i];
+        ent.parametros[u]=txt_bruto[i];
         u++;
         i++;
     }
@@ -69,67 +63,56 @@ Parametros entrada()
     {
             ent.cmd=DIR;
             ent.cmd_correcto=true;
-            ///return param_dir();
     }
     if ((strcmp(cmd, "CREATE"))==0)
     {
             ent.cmd=CREATE;
             ent.cmd_correcto=true;
-            ///return param_create();
     }
     if ((strcmp(cmd, "DELETE"))==0)
     {
             ent.cmd=DELETE;
             ent.cmd_correcto=true;
-            ///return param_delete();
     }
     if ((strcmp(cmd, "UNDELETE"))==0)
     {
             ent.cmd=UNDELETE;
             ent.cmd_correcto=true;
-            ///return param_undelete();
     }
     if ((strcmp(cmd, "IC"))==0)
     {
             ent.cmd=IC;
             ent.cmd_correcto=true;
-            ///return param_ic();
     }
     if ((strcmp(cmd, "IC"))==0)
     {
             ent.cmd=IC;
             ent.cmd_correcto=true;
-            ///return param_ic();
     }
     if ((strcmp(cmd, "TYPE"))==0)
     {
             ent.cmd=TYPE;
             ent.cmd_correcto=true;
-            ///return param_type();
     }
     if ((strcmp(cmd, "IF"))==0)
     {
             ent.cmd=IF;
             ent.cmd_correcto=true;
-            ///return param_if();
     }
     if ((strcmp(cmd, "BC"))==0)
     {
             ent.cmd=BC;
             ent.cmd_correcto=true;
-            ///return param_bc();
     }
     if ((strcmp(cmd, "BF"))==0)
     {
             ent.cmd=BF;
             ent.cmd_correcto=true;
-            ///return param_bf();
     }
     if ((strcmp(cmd, "CAT"))==0)
     {
             ent.cmd=CAT;
             ent.cmd_correcto=true;
-            ///return param_cat();
     }
 
 
@@ -140,58 +123,6 @@ Parametros entrada()
     return ent;
 }
 
-/*
-    if(text_sin_cmd[0]=='/')
-    {
-        for(i=0; i<60; i++)
-        {
-            if(text_sin_cmd[i]=='"')
-            {
-                var=false;
-            }
-            if ((text_sin_cmd[i]=='/')&&(var==true))
-            {
-                ubc=i;
-            }
-        }
-        for(i=0; i<=ubc;i++)
-        {
-            ent.ubic[i]=text_sin_cmd[i];
-        }
-    }
-    i=ubc+1;
-    for(j=0;j<T_ARC;j++)
-    {
-        ent.a_name[j]=0;
-    }
-    while (text_sin_cmd[i]!='.')
-    {
-        ent.a_name[u]=text_sin_cmd[i];
-        i++;
-        u++;
-    }
-    i++;
-    u=0;
-    var=true;
-    for(j=0;j<T_EXT;j++)
-    {
-        ent.ext[j]=0;
-        if((text_sin_cmd[i]!=32)||(text_sin_cmd[i]!='\n')||(text_sin_cmd!=34))
-        {
-            var=false;
-        }
-        if((u<T_EXT)&&(var==true))
-        {
-            ent.ext[u]=text_sin_cmd[i];
-            i++;
-            u++;
-        }
-    }
-*/
-
-
-
-
 Sistema crear()
 {
     Sistema aux;
@@ -199,9 +130,9 @@ Sistema crear()
     return aux;
 }
 
-bool es_vacia(Sistema c)
+bool es_vacia(Sistema s)
 {
-    if (c.cabezal_archivos==NULL)
+    if (s.cabezal_archivos==NULL)
     {
         return true;
     }
@@ -220,32 +151,183 @@ TipoRet ret_dir(Sistema c)
     return OK;
 }
 
-TipoRet ret_create(Sistema *s, Parametros ent)
+TipoRet ret_create(Sistema *s, char parametros[])
 {
+    create_arc( &*s, parametros);
     return NO_IMPLEMENTADO;
 }
 
 ///Funciones
 
-void mostrar_dir(Sistema c)
+///Inserciones
+void insert_p_a(Sistema *s, char nombre_ext[], int cant_ayext)
+{
+    Archivos nuevo_nodo=new _nodo2;
+
+    int i=0;
+
+    for(i=0;i<T_ARC_Y_EXT;i++)
+    {
+        nuevo_nodo->nombre_ext[i]=00;
+    }
+    for(i=0;i<cant_ayext;i++)
+    {
+        nuevo_nodo->nombre_ext[i]=nombre_ext[i];
+    }
+    nuevo_nodo->cant=0;
+    nuevo_nodo->sig=(*s).cabezal_archivos;
+    (*s).cabezal_archivos=nuevo_nodo;
+}
+
+void mostrar_dir(Sistema s)
 {
 
-    if (es_vacia(c))
+    if (es_vacia(s))
     {
         cout<<"La direccion '/' se encuentra vacia."<<endl;
     }
     else
     {
-        while (!es_vacia(c))
+        while (!es_vacia(s))
         {
-            cout << c.cabezal_archivos->nombre_ext <<"   Archivo    " << c.cabezal_archivos->cant << endl;
-            if (c.cabezal_archivos->sig!=NULL)
+            cout << s.cabezal_archivos->nombre_ext <<"   Archivo    " << s.cabezal_archivos->cant << endl;
+            if (s.cabezal_archivos->sig!=NULL)
             {
                 cout << " --- ";
             }
-            c.cabezal_archivos=c.cabezal_archivos->sig;
+            s.cabezal_archivos=s.cabezal_archivos->sig;
         }
     }
 }
 
-void create
+void create_arc(Sistema *s, char parametros[])
+{
+
+    Archivos nuevo_nodo=new _nodo2;
+    Archivos aux;
+    Archivos ant;
+    ant=(*s).cabezal_archivos;
+    aux=(*s).cabezal_archivos;
+
+    int ubc=0;
+    int i=0;
+    int u=0;
+    int j=0;
+    int cant_a=0;
+    int cant_ext=0;
+    int cant_ayext=0;
+
+    char ubic[T_ENT];
+    char nombre[T_ARC];
+    char ext[T_EXT];
+    char nombre_ext[T_ARC_Y_EXT];
+
+    bool var=true;
+
+    if(parametros[0]=='/')
+    {
+        for(i=0; i<60; i++)
+        {
+            if(parametros[i]=='"')
+            {
+                var=false;
+            }
+            if ((parametros[i]=='/')&&(var==true))
+            {
+                ubc=i;
+            }
+        }
+        for(i=0; i<=ubc;i++)
+        {
+            ubic[i]=parametros[i];
+        }
+    }
+
+    i=ubc+1;
+
+    for(j=0;j<T_ARC;j++)
+    {
+        nombre[j]=0;
+    }
+
+    for(j=0;j<T_EXT;j++)
+    {
+        ext[j]=0;
+    }
+    for(j=0;j<T_ARC_Y_EXT;j++)
+    {
+        nombre_ext[i]=0;
+    }
+
+    while (parametros[i]!='.')
+    {
+        nombre[u]=parametros[i];
+        i++;
+        u++;
+        cant_a++;
+    }
+
+    i++;
+    u=0;
+    var=true;
+
+    for(j=0;j<T_EXT;j++)
+    {
+        if (((parametros[i]==' ')||(parametros[i]=='\n'))&&(i<T_ENT))
+        {
+            var=false;
+        }
+        if(var==true)
+        {
+            ext[j]=parametros[i];
+            i++;
+            cant_ext++;
+        }
+    }
+
+    cant_ayext=cant_a+cant_ext+1;
+    for(u=0;u<cant_a;u++)
+    {
+        nombre_ext[u]=nombre[u];
+    }
+
+    nombre_ext[u]='.';
+    u++;
+    j=0;
+
+    for(u=u;u<cant_ayext;u++)
+    {
+        nombre_ext[u]=ext[j];
+        j++;
+    }
+    cout<<""<<endl;
+    cout<<nombre<<endl;
+    cout<<ext<<endl;
+    cout<<nombre_ext<<endl;
+    cout<<""<<endl;
+    if(es_vacia(*s)) //|(Aca va strcomper)*/
+    {
+        cout<<"entre"<<endl;
+        insert_p_a(&(*s), nombre_ext, cant_ayext);
+    }
+//    else
+//    {
+//        if(valor>c.cfin->dato)
+//        {
+//            return insert_f(c, valor);
+//        }
+//        else
+//        {
+//            while (aux->dato<valor)
+//            {
+//                aux=aux->sig;
+//                ant=aux->ant;
+//            }
+//            nuevo_nodo->sig=aux;
+//            aux->ant=nuevo_nodo;
+//            nuevo_nodo->ant=ant;
+//            ant->sig=nuevo_nodo;
+//        }
+//    }
+
+}

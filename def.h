@@ -25,12 +25,9 @@ typedef enum _TipoRet{
 typedef struct
 {
     Comandos cmd;
-    char ubic[T_ENT];
-    char param2[T_ENT];
-    char a_name_ext[T_ARC_Y_EXT];
-    char text[TEXTO_MAX];
+    char parametros[T_ENT];
     bool cmd_correcto;
-}Parametros;
+}CMD_PARAM;
 
 
 //Lineas texto de los archivos
@@ -70,13 +67,17 @@ typedef struct
 ///Funciones
 Sistema crear();
 bool es_vacia(Sistema c);
-Parametros entrada();
+CMD_PARAM entrada();
 
 ///TipoRet
 TipoRet ret_dir(Sistema c);
+TipoRet ret_create(Sistema *s, char parametros[T_ENT]);
+
 
 ///Mostrar
 void mostrar_dir(Sistema c);
-
+///Crear Archivos
+void insert_p_a(Sistema *s, char nombre_ext[], int cant_ayext);
+void create_arc(Sistema *s, char parametros[]);
 
 #endif // DEF_H_INCLUDED

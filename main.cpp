@@ -16,7 +16,7 @@ int main()
     bool rep; rep=true;
 
     TipoRet retorna;
-    Parametros ent;
+    CMD_PARAM ent;
 
     int i; i=0;
 
@@ -37,7 +37,7 @@ int main()
                 retorna=ret_dir(s);
                 break;
             case CREATE:
-                retorna=ret_create(&s, ent);
+                retorna=ret_create(&s, ent.parametros);
                 break;
             case DELETE:
 
