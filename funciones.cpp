@@ -344,8 +344,8 @@ void insertar_f_a(Sistema *s, char nombre_ext[], int cant_ayext)
 {
     Archivos nuevo_nodo=new _nodo2;
     nuevo_nodo->sig=NULL;
-    Sistema aux;
-    aux=(*s);
+    Archivos aux;
+    aux=(*s).cabezal_archivos;
     int i=0;
 
     for(i=0;i<T_ARC_Y_EXT;i++)
@@ -368,7 +368,7 @@ void insertar_f_a(Sistema *s, char nombre_ext[], int cant_ayext)
             aux=aux->sig;
         }
 
-        nuevo_nodo->dato=valor;
+        nuevo_nodo->cant=cant_ayext;
         aux->sig=nuevo_nodo;
 
 
