@@ -34,10 +34,14 @@ int main()
             switch(ent.cmd)
             {
                 case DIR:
+                cout<<""<<endl;
                 retorna=ret_dir(s);
+                cout<<""<<endl;
                 break;
             case CREATE:
+                cout<<""<<endl;
                 retorna=ret_create(&s, ent.parametros);
+                cout<<""<<endl;
                 break;
             case DELETE:
 

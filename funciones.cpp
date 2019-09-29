@@ -160,13 +160,9 @@ void mostrar_dir(Sistema s)
     }
     else
     {
-        while (!es_vacia(s))
+        while (!(es_vacia(s)))
         {
             cout << s.cabezal_archivos->nombre_ext <<"   Archivo    " << s.cabezal_archivos->cant << endl;
-            if (s.cabezal_archivos->sig!=NULL)
-            {
-                cout << " --- ";
-            }
             s.cabezal_archivos=s.cabezal_archivos->sig;
         }
     }
@@ -179,25 +175,6 @@ TipoRet ret_create(Sistema *s, char parametros[])
 {
     create_arc( &*s, parametros);
     return NO_IMPLEMENTADO;
-}
-
-void insert_p_a(Sistema *s, char nombre_ext[], int cant_ayext)
-{
-    Archivos nuevo_nodo=new _nodo2;
-
-    int i=0;
-
-    for(i=0;i<T_ARC_Y_EXT;i++)
-    {
-        nuevo_nodo->nombre_ext[i]=00;
-    }
-    for(i=0;i<cant_ayext;i++)
-    {
-        nuevo_nodo->nombre_ext[i]=nombre_ext[i];
-    }
-    nuevo_nodo->cant=0;
-    nuevo_nodo->sig=(*s).cabezal_archivos;
-    (*s).cabezal_archivos=nuevo_nodo;
 }
 
 Descom_param_create descompone_param_de_create(char parametros[])
@@ -299,52 +276,31 @@ Descom_param_create descompone_param_de_create(char parametros[])
     return param;
 }
 
-void create_arc(Sistema *s, char parametros[])
+void insert_p_a(Sistema *s, char nombre_ext[], int cant_ayext)
 {
-
     Archivos nuevo_nodo=new _nodo2;
-    Archivos aux;
-    Archivos ant;
-    ant=(*s).cabezal_archivos;
-    aux=(*s).cabezal_archivos;
 
-    Descom_param_create param;
-    param=descompone_param_de_create(parametros);
+    int i=0;
 
-
-    cout<<param.nombre_ext<<endl;
-    cout<<""<<endl;
-    if(es_vacia(*s)) //|(Aca va strcomper)*/
+    for(i=0;i<T_ARC_Y_EXT;i++)
     {
-        cout<<"entre"<<endl;
-        insert_p_a(&(*s), param.nombre_ext, param.cant_ayext);
+        nuevo_nodo->nombre_ext[i]=00;
     }
-//    else
-//    {
-//        if(valor>c.cfin->dato)
-//        {
-//            return insert_f(c, valor);
-//        }
-//        else
-//        {
-//            while (aux->dato<valor)
-//            {
-//                aux=aux->sig;
-//                ant=aux->ant;
-//            }
-//            nuevo_nodo->sig=aux;
-//            aux->ant=nuevo_nodo;
-//            nuevo_nodo->ant=ant;
-//            ant->sig=nuevo_nodo;
-//        }
-//    }
-
+    for(i=0;i<cant_ayext;i++)
+    {
+        nuevo_nodo->nombre_ext[i]=nombre_ext[i];
+    }
+    nuevo_nodo->cant=0;
+    nuevo_nodo->sig=(*s).cabezal_archivos;
+    (*s).cabezal_archivos=nuevo_nodo;
 }
-void insertar_f_a(Sistema *s, char nombre_ext[], int cant_ayext)
+
+void insert_f_a(Sistema *s, char nombre_ext[], int cant_ayext)
 {
     Archivos nuevo_nodo=new _nodo2;
     nuevo_nodo->sig=NULL;
     Archivos aux;
+
     aux=(*s).cabezal_archivos;
     int i=0;
 
@@ -356,21 +312,59 @@ void insertar_f_a(Sistema *s, char nombre_ext[], int cant_ayext)
     {
         nuevo_nodo->nombre_ext[i]=nombre_ext[i];
     }
-    /*if(es_vacia(c))
+
+    while (aux->sig!=NULL)
     {
-        return insert_p_a(&s, nombre_ext, cant_ayext);
+            aux=aux->sig;
+    }
+    nuevo_nodo->cant=0;
+    aux->sig=nuevo_nodo;
+}
+
+void create_arc(Sistema *s, char parametros[])
+{
+    int i=0;
+
+    Archivos nuevo_nodo=new _nodo2;
+    Archivos aux;
+    Archivos ant;
+    Archivos ult;
+    ant=(*s).cabezal_archivos;
+    aux=(*s).cabezal_archivos;
+    ult=(*s).cabezal_archivos;
+
+    Descom_param_create param;
+    param=descompone_param_de_create(parametros);
+
+    if ((es_vacia(*s))||((strcmp(param.nombre_ext,(*s).cabezal_archivos->nombre_ext))<0))
+    {
+
+        insert_p_a(&(*s), param.nombre_ext, param.cant_ayext);
     }
     else
     {
-    }*/
-        while (aux->sig!=NULL)
+        while(ult->sig!=NULL)
         {
-            aux=aux->sig;
+                ult=ult->sig;
         }
-
-        nuevo_nodo->cant=cant_ayext;
-        aux->sig=nuevo_nodo;
-
-
-   
+        if ((strcmp(param.nombre_ext, ult->nombre_ext))>0)
+        {
+             insert_f_a(&(*s), param.nombre_ext, param.cant_ayext);
+        }
+        else
+        {
+            while ((strcmp(param.nombre_ext, aux->nombre_ext))>0)
+            {
+                ant=aux;
+                aux=aux->sig;
+            }
+            nuevo_nodo->sig=aux;
+            ant->sig=nuevo_nodo;
+            for(i=0;i<param.cant_ayext;i++)
+            {
+                nuevo_nodo->nombre_ext[i]=param.nombre_ext[i];
+            }
+            nuevo_nodo->cant=0;
+        }
+    }
 }

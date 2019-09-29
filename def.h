@@ -75,17 +75,18 @@ typedef struct
 Sistema crear();
 bool es_vacia(Sistema c);
 CMD_PARAM entrada();
-Descom_param_create descompone_param_de_create(char parametros[]);
 
-///TipoRet
+
+///DIR
+
 TipoRet ret_dir(Sistema c);
-TipoRet ret_create(Sistema *s, char parametros[T_ENT]);
-
-
-///Mostrar
 void mostrar_dir(Sistema c);
-///Crear Archivos
+
+///CREATE
+TipoRet ret_create(Sistema *s, char parametros[T_ENT]);
+Descom_param_create descompone_param_de_create(char parametros[]);
 void insert_p_a(Sistema *s, char nombre_ext[], int cant_ayext);
+void insert_f_a(Sistema *s, char nombre_ext[], int cant_ayext);
 void create_arc(Sistema *s, char parametros[]);
 
 #endif // DEF_H_INCLUDED
