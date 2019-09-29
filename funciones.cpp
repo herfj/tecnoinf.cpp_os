@@ -340,3 +340,37 @@ void create_arc(Sistema *s, char parametros[])
 //    }
 
 }
+void insertar_f_a(Sistema *s, char nombre_ext[], int cant_ayext)
+{
+    Archivos nuevo_nodo=new _nodo2;
+    nuevo_nodo->sig=NULL;
+    Sistema aux;
+    aux=(*s);
+    int i=0;
+
+    for(i=0;i<T_ARC_Y_EXT;i++)
+    {
+        nuevo_nodo->nombre_ext[i]=00;
+    }
+    for(i=0;i<cant_ayext;i++)
+    {
+        nuevo_nodo->nombre_ext[i]=nombre_ext[i];
+    }
+    /*if(es_vacia(c))
+    {
+        return insert_p_a(&s, nombre_ext, cant_ayext);
+    }
+    else
+    {
+    }*/
+        while (aux->sig!=NULL)
+        {
+            aux=aux->sig;
+        }
+
+        nuevo_nodo->dato=valor;
+        aux->sig=nuevo_nodo;
+
+
+   
+}
