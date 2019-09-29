@@ -29,6 +29,13 @@ typedef struct
     bool cmd_correcto;
 }CMD_PARAM;
 
+typedef struct
+{
+    int cant_ayext=0;
+    char ubic[T_ENT];
+    char nombre_ext[T_ARC_Y_EXT];
+}Descom_param_create;
+
 
 //Lineas texto de los archivos
 struct _nodo{

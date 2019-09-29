@@ -200,29 +200,21 @@ void mostrar_dir(Sistema s)
     }
 }
 
-void create_arc(Sistema *s, char parametros[])
+Descom_param_create descompone_param_de_create(char parametros[])
 {
-
-    Archivos nuevo_nodo=new _nodo2;
-    Archivos aux;
-    Archivos ant;
-    ant=(*s).cabezal_archivos;
-    aux=(*s).cabezal_archivos;
-
     int ubc=0;
     int i=0;
     int u=0;
     int j=0;
     int cant_a=0;
     int cant_ext=0;
-    int cant_ayext=0;
 
-    char ubic[T_ENT];
     char nombre[T_ARC];
     char ext[T_EXT];
-    char nombre_ext[T_ARC_Y_EXT];
 
     bool var=true;
+
+    Descom_param_create param;
 
     if(parametros[0]=='/')
     {
@@ -239,11 +231,12 @@ void create_arc(Sistema *s, char parametros[])
         }
         for(i=0; i<=ubc;i++)
         {
-            ubic[i]=parametros[i];
+            param.ubic[i]=parametros[i];
         }
+        i=ubc+1;
     }
 
-    i=ubc+1;
+
 
     for(j=0;j<T_ARC;j++)
     {
@@ -256,7 +249,7 @@ void create_arc(Sistema *s, char parametros[])
     }
     for(j=0;j<T_ARC_Y_EXT;j++)
     {
-        nombre_ext[i]=0;
+        param.nombre_ext[i]=0;
     }
 
     while (parametros[i]!='.')
@@ -285,30 +278,46 @@ void create_arc(Sistema *s, char parametros[])
         }
     }
 
-    cant_ayext=cant_a+cant_ext+1;
+    param.cant_ayext=cant_a+cant_ext+1;
     for(u=0;u<cant_a;u++)
     {
-        nombre_ext[u]=nombre[u];
+        param.nombre_ext[u]=nombre[u];
     }
 
-    nombre_ext[u]='.';
+    param.nombre_ext[u]='.';
     u++;
     j=0;
 
-    for(u=u;u<cant_ayext;u++)
+    for(u=u;u<param.cant_ayext;u++)
     {
-        nombre_ext[u]=ext[j];
+        param.nombre_ext[u]=ext[j];
         j++;
     }
     cout<<""<<endl;
     cout<<nombre<<endl;
     cout<<ext<<endl;
-    cout<<nombre_ext<<endl;
+    return param;
+}
+
+void create_arc(Sistema *s, char parametros[])
+{
+
+    Archivos nuevo_nodo=new _nodo2;
+    Archivos aux;
+    Archivos ant;
+    ant=(*s).cabezal_archivos;
+    aux=(*s).cabezal_archivos;
+
+    Descom_param_create param;
+    param=descompone_param_de_create(parametros);
+
+
+    cout<<param.nombre_ext<<endl;
     cout<<""<<endl;
     if(es_vacia(*s)) //|(Aca va strcomper)*/
     {
         cout<<"entre"<<endl;
-        insert_p_a(&(*s), nombre_ext, cant_ayext);
+        insert_p_a(&(*s), param.nombre_ext, param.cant_ayext);
     }
 //    else
 //    {
