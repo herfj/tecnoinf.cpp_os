@@ -75,6 +75,7 @@ typedef struct
 Sistema crear();
 bool es_vacia(Sistema c);
 CMD_PARAM entrada();
+Descom_param_create descompone_param_de_create(char parametros[]);
 
 ///TipoRet
 TipoRet ret_dir(Sistema c);

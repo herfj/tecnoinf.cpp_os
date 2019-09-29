@@ -143,40 +143,12 @@ bool es_vacia(Sistema s)
 }
 
 
-///Funiones TipoRet
+///DIR
 
 TipoRet ret_dir(Sistema c)
 {
     mostrar_dir(c);
     return OK;
-}
-
-TipoRet ret_create(Sistema *s, char parametros[])
-{
-    create_arc( &*s, parametros);
-    return NO_IMPLEMENTADO;
-}
-
-///Funciones
-
-///Inserciones
-void insert_p_a(Sistema *s, char nombre_ext[], int cant_ayext)
-{
-    Archivos nuevo_nodo=new _nodo2;
-
-    int i=0;
-
-    for(i=0;i<T_ARC_Y_EXT;i++)
-    {
-        nuevo_nodo->nombre_ext[i]=00;
-    }
-    for(i=0;i<cant_ayext;i++)
-    {
-        nuevo_nodo->nombre_ext[i]=nombre_ext[i];
-    }
-    nuevo_nodo->cant=0;
-    nuevo_nodo->sig=(*s).cabezal_archivos;
-    (*s).cabezal_archivos=nuevo_nodo;
 }
 
 void mostrar_dir(Sistema s)
@@ -198,6 +170,34 @@ void mostrar_dir(Sistema s)
             s.cabezal_archivos=s.cabezal_archivos->sig;
         }
     }
+}
+
+
+///CREATE, Funciones insercion entre otras
+
+TipoRet ret_create(Sistema *s, char parametros[])
+{
+    create_arc( &*s, parametros);
+    return NO_IMPLEMENTADO;
+}
+
+void insert_p_a(Sistema *s, char nombre_ext[], int cant_ayext)
+{
+    Archivos nuevo_nodo=new _nodo2;
+
+    int i=0;
+
+    for(i=0;i<T_ARC_Y_EXT;i++)
+    {
+        nuevo_nodo->nombre_ext[i]=00;
+    }
+    for(i=0;i<cant_ayext;i++)
+    {
+        nuevo_nodo->nombre_ext[i]=nombre_ext[i];
+    }
+    nuevo_nodo->cant=0;
+    nuevo_nodo->sig=(*s).cabezal_archivos;
+    (*s).cabezal_archivos=nuevo_nodo;
 }
 
 Descom_param_create descompone_param_de_create(char parametros[])
