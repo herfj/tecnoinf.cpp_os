@@ -614,8 +614,7 @@ Descom_param_if descompone_param_de_if(char parametros[])
     cout<<"ext: "<<ext<<endl;
     cout<<"nombre con ext: "<<param.nombre_ext<<endl;
     cout<<"ubic:"<<param.ubic<<endl;
-    cout <<"letra a ver:-"<< parametros[i] << "-  - "<<i<<endl;
-    cout << parametros <<endl;
+    cout <<"letra a ver:"<<parametros[i]<< "  - "<<i<<endl;
 
     for(i=i; i<T_ENT; i++)
     {

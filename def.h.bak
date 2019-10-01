@@ -41,7 +41,7 @@ typedef struct
     int cant_ayext=0;
     char ubic[T_ENT];
     char nombre_ext[T_ARC_Y_EXT];
-    char linea[TEXTO_MAX];
+    char liena[TEXTO_MAX];
 }Descom_param_if;
 
 //Lineas texto de los archivos
@@ -105,9 +105,5 @@ int cmd_create(Sistema *s, char parametros[]);
 TipoRet ret_if(Sistema *s, char parametros[T_ENT]);
 Descom_param_if descompone_param_de_if(char parametros[]);
 int cmd_if(Sistema *s, char parametros[]);
-
-///TYPE
-TipoRet ret_type(Sistema *s, char parametros[]);
-int cmd_type(Sistema *s, char parametros[]);
 
 #endif // DEF_H_INCLUDED
