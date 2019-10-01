@@ -174,23 +174,31 @@ void errores_mensajes (Comandos cmd, int error, int cod)
     {
         switch(cmd)
         {
-            case CREATE:
-                switch(cod)
-                {
-                    case 1:
-                        cout << "Error: Ya existe un archivo con ese nombre completo - E" << cod << "x" << cod << cod << cod << endl;
-                        break;
-                        default:
-                        cout << "Error Desconocido - E" << cod << "x" << cmd << cod << cod << endl;
-                }
-                break;
-                default:
-                    cout << "Error Desconocido - E" << cod << "x" << cmd << cod << cod << endl;
+        case CREATE:
+            cout << "Error: Ya existe un archivo con ese nombre completo - E" << cod << "x" << cod << cod << cod << endl;
+            break;
+        case IF:
+            if(cod==1)
+            {
+                cout << "Error: NO existe ese nombre completo en este directorio - E" << cod << "x" << cod << cod << cod << endl;
+            }
+            break;
+        case TYPE:
+            cout << "Error: NO existe ese nombre completo en este directorio - E" << cod << "x" << cod << cod << cod << endl;
+            break;
+        default:
+            cout << "Error Desconocido - E" << cod << "x" << cmd << cod << cod << endl;
         }
     }
     else //es un mensaje
     {
+        switch(cmd)
+        {
 
+        case TYPE:
+            cout << "Mensaje: EL Archivo esta vacio - M" << cod << "x" << cod << cod << cod << endl;
+            break;
+        }
     }
 
 }
@@ -228,7 +236,7 @@ void cmd_dir(Sistema s)
     {
         while (!(es_vacia(s)))
         {
-            cout << s.cabezal_archivos->nombre_ext <<"   Archivo    " << s.cabezal_archivos->cant << endl;
+            cout << s.cabezal_archivos->nombre_ext <<"     Archivo     " << s.cabezal_archivos->cant << endl;
             s.cabezal_archivos=s.cabezal_archivos->sig;
         }
     }
@@ -611,24 +619,21 @@ Descom_param_if descompone_param_de_if(char parametros[])
     j=0;
     i++;
 
-    char aaa='"';
-
     for(int w=i; w<T_ENT; w++)
     {
-        if((parametros[w]==aaa)&&(var3==false))
+        if((parametros[w]=='"')&&(var3==false))
         {
             var3=true;
 
         }
         else
         {
-            if ((parametros[w]!=aaa)&&(var3=true))
+            if ((parametros[w]!='"')&&(var3=true)&&(j<TEXTO_MAX))
             {
-                cout <<"la letra es: "<< parametros[i]<<endl;
                 param.linea[j]=parametros[w];
                 j++;
             }
-            else if((parametros[w]==aaa)&&(var3==true))
+            else if((parametros[w]=='"')&&(var3==true))
             {
                 var3=false ;
 
@@ -643,6 +648,8 @@ int cmd_if(Sistema *s, char parametros[])
 {
     int i=0;
 
+    bool encontre=false;
+
     Archivos aux;
     Archivos aux2;
     aux=(*s).cabezal_archivos;
@@ -656,7 +663,6 @@ int cmd_if(Sistema *s, char parametros[])
     for(i=0;i<TEXTO_MAX; i++)
     {
         nuevo_linea->linea_texto[i]=param.linea[i];
-
     }
 
     while(aux!=NULL)
@@ -665,23 +671,35 @@ int cmd_if(Sistema *s, char parametros[])
         if ((iguales(param.nombre_ext, aux->nombre_ext)))
         {
             aux2=aux;
+            encontre=true;
         }
         aux=aux->sig;
     }
 
-    nuevo_linea->sig=NULL;
-    nuevo_linea->ant=aux2->cabezal_linea.ult;
-
-    if(lineas_es_vacia((aux2->cabezal_linea)))
+    if(encontre==true)
     {
-        aux2->cabezal_linea.pri=nuevo_linea;
+        nuevo_linea->sig=NULL;
+        nuevo_linea->ant=aux2->cabezal_linea.ult;
+
+        if(lineas_es_vacia(aux2->cabezal_linea))
+        {
+            aux2->cabezal_linea.pri=nuevo_linea;
+        }
+        else
+        {
+            aux2->cabezal_linea.ult->sig=nuevo_linea;
+        }
+        aux2->cabezal_linea.ult=nuevo_linea;
+
+        return 0;
     }
     else
     {
-        aux2->cabezal_linea.ult->sig=nuevo_linea;
+        errores_mensajes(IF, 1, 1);
+        return 1;
     }
-    aux2->cabezal_linea.ult=nuevo_linea;
-    return 2;
+
+
 }
 
 
@@ -708,10 +726,15 @@ TipoRet ret_type(Sistema *s, char parametros[])
 
 int cmd_type(Sistema *s, char parametros[])
 {
+    int i; i=0;
+
+    bool var=false;
+    bool encontre=false;
+
+    Lineas linea_aux;
+
     Archivos aux;
     Archivos aux2;
-
-    bool var=true;
 
     aux=(*s).cabezal_archivos;
     aux2=(*s).cabezal_archivos;
@@ -719,32 +742,42 @@ int cmd_type(Sistema *s, char parametros[])
     Descom_param_create param;
     param=descompone_param_de_create(parametros);
 
-    while(aux!=NULL)
+    while((aux!=NULL)&&(var==false))
     {
-        if ((iguales(param.nombre_ext, aux->nombre_ext)))
-        {
-            aux2=aux;
-        }
-        aux=aux->sig;
-    }
-    while(aux!=NULL)
-    {
-        if ((iguales(param.nombre_ext, aux->nombre_ext))&&(var==true))
+        if ((iguales(param.nombre_ext, aux->nombre_ext))&&(var==false))
         {
             aux2=aux;
             var=true;
+            encontre=true;
         }
         aux=aux->sig;
     }
-    if (var==true)
-    {
+    linea_aux=aux2->cabezal_linea.pri;
 
-        while(aux2->cabezal_linea.pri!=NULL)
+    if(encontre==true)
+    {
+        if (linea_aux==NULL)
         {
-            cout<<aux2->cabezal_linea.pri->linea_texto<<endl;
-            aux2->cabezal_linea.pri=aux2->cabezal_linea.pri->sig;
+            errores_mensajes(TYPE,0,1);
         }
+        else
+        {
+            if (var==true)
+            {
+                while(linea_aux!=NULL)
+                {
+                    cout<<linea_aux->linea_texto<<endl;
+                    linea_aux=linea_aux->sig;
+                }
+            }
+        }
+
+        return 0;
+    }
+    else
+    {
+        errores_mensajes(IF,1,1);
+        return 1;
     }
 
-    return 2;
 }
