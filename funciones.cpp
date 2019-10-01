@@ -610,28 +610,25 @@ Descom_param_if descompone_param_de_if(char parametros[])
 
     j=0;
     i++;
-    cout<<"nombre: "<<nombre<<endl;
-    cout<<"ext: "<<ext<<endl;
-    cout<<"nombre con ext: "<<param.nombre_ext<<endl;
-    cout<<"ubic:"<<param.ubic<<endl;
-    cout <<"letra a ver:-"<< parametros[i] << "-  - "<<i<<endl;
-    cout << parametros <<endl;
 
-    for(i=i; i<T_ENT; i++)
+    char aaa='"';
+
+    for(int w=i; w<T_ENT; w++)
     {
-        if((parametros[i]=='"')&&(var3==false))
+        if((parametros[w]==aaa)&&(var3==false))
         {
             var3=true;
 
         }
         else
         {
-            if ((parametros[i]!='"')&&(var3=true))
+            if ((parametros[w]!=aaa)&&(var3=true))
             {
-                param.linea[j]=parametros[i];
+                cout <<"la letra es: "<< parametros[i]<<endl;
+                param.linea[j]=parametros[w];
                 j++;
             }
-            if((parametros[i]=='"')&&(var3==true))
+            else if((parametros[w]==aaa)&&(var3==true))
             {
                 var3=false ;
 
