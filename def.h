@@ -34,6 +34,7 @@ typedef struct
     int cant_ayext=0;
     char ubic[T_ENT];
     char nombre_ext[T_ARC_Y_EXT];
+    int acarrea_error;
 }Descom_param_create;
 
 
@@ -75,6 +76,8 @@ typedef struct
 Sistema crear();
 bool es_vacia(Sistema c);
 CMD_PARAM entrada();
+void errores_mensajes (Comandos cmd, int error, int cod);
+bool iguales (char char1[], char char2[]);
 
 
 ///DIR
@@ -87,6 +90,6 @@ TipoRet ret_create(Sistema *s, char parametros[T_ENT]);
 Descom_param_create descompone_param_de_create(char parametros[]);
 void insert_p_a(Sistema *s, char nombre_ext[], int cant_ayext);
 void insert_f_a(Sistema *s, char nombre_ext[], int cant_ayext);
-void create_arc(Sistema *s, char parametros[]);
+int create_arc(Sistema *s, char parametros[]);
 
 #endif // DEF_H_INCLUDED

@@ -4,6 +4,26 @@ using namespace std;
 
 
 ///Funciones de Entrada, Errores , emtre otros
+
+Sistema crear()
+{
+    Sistema aux;
+    aux.cabezal_archivos=NULL;
+    return aux;
+}
+
+bool es_vacia(Sistema s)
+{
+    if (s.cabezal_archivos==NULL)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
 CMD_PARAM entrada()
 {
     CMD_PARAM ent;
@@ -123,16 +143,36 @@ CMD_PARAM entrada()
     return ent;
 }
 
-Sistema crear()
+void errores_mensajes (Comandos cmd, int error, int cod)
 {
-    Sistema aux;
-    aux.cabezal_archivos=NULL;
-    return aux;
+    if (error==1) //Significa que es un error
+    {
+        switch(cmd)
+        {
+            case CREATE:
+                switch(cod)
+                {
+                    case 1:
+                        cout << "Error: Ya existe un archivo con ese nombre completo - E" << cod << "x" << cod << cod << cod << endl;
+                        break;
+                        default:
+                        cout << "Error Desconocido - E" << cod << "x" << cod << cod << cod << endl;
+                }
+                break;
+            default:
+                cout << "Error Desconocido - E" << cod << "x" << cod << cod << cod << endl;
+        }
+    }
+    else //es un mensaje
+    {
+
+    }
+
 }
 
-bool es_vacia(Sistema s)
+bool iguales (char char1[], char char2[])
 {
-    if (s.cabezal_archivos==NULL)
+    if ((strcmp(char1, char2)==0))
     {
         return true;
     }
@@ -141,7 +181,6 @@ bool es_vacia(Sistema s)
         return false;
     }
 }
-
 
 ///DIR
 
@@ -173,8 +212,21 @@ void mostrar_dir(Sistema s)
 
 TipoRet ret_create(Sistema *s, char parametros[])
 {
-    create_arc( &*s, parametros);
-    return NO_IMPLEMENTADO;
+    int r;
+    r=create_arc( &*s, parametros);
+    switch(r)
+    {
+        case 0:
+            return OK;
+            break;
+        case 1:
+            return ERROR;
+            break;
+        case 2:
+            return NO_IMPLEMENTADO;
+            break;
+    }
+
 }
 
 Descom_param_create descompone_param_de_create(char parametros[])
@@ -190,8 +242,10 @@ Descom_param_create descompone_param_de_create(char parametros[])
     char ext[T_EXT];
 
     bool var=true;
+    bool var2=true;
 
     Descom_param_create param;
+    param.acarrea_error=0;
 
     if(parametros[0]=='/')
     {
@@ -213,8 +267,6 @@ Descom_param_create descompone_param_de_create(char parametros[])
         i=ubc+1;
     }
 
-
-
     for(j=0;j<T_ARC;j++)
     {
         nombre[j]=0;
@@ -229,12 +281,23 @@ Descom_param_create descompone_param_de_create(char parametros[])
         param.nombre_ext[i]=0;
     }
 
-    while (parametros[i]!='.')
+    for (j=0;j<T_ENT;j++)
     {
-        nombre[u]=parametros[i];
-        i++;
-        u++;
-        cant_a++;
+        if((parametros[i]=='.')&&(var2==true))
+        {
+            var2=false;
+        }
+        if(var2==true)
+        {
+            nombre[u]=parametros[i];
+            i++;
+            u++;
+            cant_a++;
+        }
+        if ((parametros[i]==' ')||(parametros[i]=='\n'))
+        {
+            param.acarrea_error=1;
+        }
     }
 
     i++;
@@ -270,9 +333,9 @@ Descom_param_create descompone_param_de_create(char parametros[])
         param.nombre_ext[u]=ext[j];
         j++;
     }
-    cout<<""<<endl;
-    cout<<nombre<<endl;
-    cout<<ext<<endl;
+    cout << nombre<<endl;
+    cout << ext<<endl;
+    cout << param.nombre_ext<<endl;
     return param;
 }
 
@@ -321,50 +384,76 @@ void insert_f_a(Sistema *s, char nombre_ext[], int cant_ayext)
     aux->sig=nuevo_nodo;
 }
 
-void create_arc(Sistema *s, char parametros[])
+int create_arc(Sistema *s, char parametros[])
 {
     int i=0;
 
+    bool inserta; inserta=true;
+
     Archivos nuevo_nodo=new _nodo2;
     Archivos aux;
+    Archivos aux2;
     Archivos ant;
     Archivos ult;
     ant=(*s).cabezal_archivos;
     aux=(*s).cabezal_archivos;
+    aux2=(*s).cabezal_archivos;
     ult=(*s).cabezal_archivos;
 
     Descom_param_create param;
     param=descompone_param_de_create(parametros);
-
-    if ((es_vacia(*s))||((strcmp(param.nombre_ext,(*s).cabezal_archivos->nombre_ext))<0))
+    if(param.acarrea_error==1)
     {
-
-        insert_p_a(&(*s), param.nombre_ext, param.cant_ayext);
+        errores_mensajes(CREATE, 0, 0);
+        return 2;
     }
-    else
+
+    while(aux2!=NULL)
     {
-        while(ult->sig!=NULL)
+        if ((iguales(param.nombre_ext, aux2->nombre_ext))&&(inserta==true))
         {
-                ult=ult->sig;
+            inserta=false;
+            errores_mensajes(CREATE,1,1);
+            return 1;
         }
-        if ((strcmp(param.nombre_ext, ult->nombre_ext))>0)
+        aux2=aux2->sig;
+    }
+
+    if (inserta==true)
+    {
+        if ((es_vacia(*s))||((strcmp(param.nombre_ext,(*s).cabezal_archivos->nombre_ext))<0))
         {
-             insert_f_a(&(*s), param.nombre_ext, param.cant_ayext);
+
+            insert_p_a(&(*s), param.nombre_ext, param.cant_ayext);
+            return 0;
         }
         else
         {
-            while ((strcmp(param.nombre_ext, aux->nombre_ext))>0)
+            while(ult->sig!=NULL)
             {
-                ant=aux;
-                aux=aux->sig;
+                ult=ult->sig;
             }
-            nuevo_nodo->sig=aux;
-            ant->sig=nuevo_nodo;
-            for(i=0;i<param.cant_ayext;i++)
+            if ((strcmp(param.nombre_ext, ult->nombre_ext))>0)
             {
-                nuevo_nodo->nombre_ext[i]=param.nombre_ext[i];
+                insert_f_a(&(*s), param.nombre_ext, param.cant_ayext);
+                return 0;
             }
-            nuevo_nodo->cant=0;
+            else
+            {
+                while ((strcmp(param.nombre_ext, aux->nombre_ext))>0)
+                {
+                    ant=aux;
+                    aux=aux->sig;
+                }
+                nuevo_nodo->sig=aux;
+                ant->sig=nuevo_nodo;
+                for(i=0; i<param.cant_ayext; i++)
+                {
+                    nuevo_nodo->nombre_ext[i]=param.nombre_ext[i];
+                }
+                nuevo_nodo->cant=0;
+                return 0;
+            }
         }
     }
 }
