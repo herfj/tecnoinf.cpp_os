@@ -473,28 +473,9 @@ int cmd_create(Sistema *s, char parametros[])
 }
 
 
+///IF & IC
 
-///IF
-
-TipoRet ret_if(Sistema *s, char parametros[])
-{
-    int r;
-    r=cmd_if(&*s, parametros);
-    switch(r)
-    {
-        case 0:
-            return OK;
-            break;
-        case 1:
-            return ERROR;
-            break;
-        case 2:
-            return NO_IMPLEMENTADO;
-            break;
-    }
-}
-
-Descom_param_if descompone_param_de_if(char parametros[])
+Descom_param_if_ic descompone_param_de_if_ic(char parametros[])
 {
     int ubc=0;
     int i=0;
@@ -511,7 +492,7 @@ Descom_param_if descompone_param_de_if(char parametros[])
     bool var3=false;
     bool no_comillas=true;
 
-    Descom_param_if param;
+    Descom_param_if_ic param;
 
     for(j=0;j<60;j++)
     {
@@ -609,11 +590,15 @@ Descom_param_if descompone_param_de_if(char parametros[])
     j=0;
     i++;
 
-    for(int w=i; w<T_ENT; w++)
+    for(int f=i; f<T_ENT; f++)
     {
-        if(parametros[w]=='"')
+        if(parametros[f]=='"')
         {
             no_comillas=false;
+        }
+        else
+        {
+            param.error=true;
         }
     }
 
@@ -647,11 +632,32 @@ Descom_param_if descompone_param_de_if(char parametros[])
     }
     else
     {
-        errores_mensajes(IF, 1, 3);
         param.error==true;
     }
 
     return param;
+}
+
+
+
+///IF
+
+TipoRet ret_if(Sistema *s, char parametros[])
+{
+    int r;
+    r=cmd_if(&*s, parametros);
+    switch(r)
+    {
+        case 0:
+            return OK;
+            break;
+        case 1:
+            return ERROR;
+            break;
+        case 2:
+            return NO_IMPLEMENTADO;
+            break;
+    }
 }
 
 int cmd_if(Sistema *s, char parametros[])
@@ -665,14 +671,14 @@ int cmd_if(Sistema *s, char parametros[])
     aux=(*s).cabezal_archivos;
     aux2=(*s).cabezal_archivos;
 
-    Descom_param_if param;
-    param=descompone_param_de_if(parametros);
+    Descom_param_if_ic param;
+    param=descompone_param_de_if_ic(parametros);
 
     Lineas nuevo_linea=new _nodo;
 
     if(param.error==true)
     {
-        cout << "dfasasd"<<endl;
+        errores_mensajes(IF, 1, 3);
         return 1;
     }
 
@@ -728,7 +734,28 @@ int cmd_if(Sistema *s, char parametros[])
 
 ///IC
 
-///ACA ESTAS NOSDFSDF
+TipoRet ret_ic(Sistema *s, char parametros[])
+{
+    int r;
+    r=cmd_ic(&*s, parametros);
+    switch(r)
+    {
+        case 0:
+            return OK;
+            break;
+        case 1:
+            return ERROR;
+            break;
+        case 2:
+            return NO_IMPLEMENTADO;
+            break;
+    }
+}
+
+int cmd_ic(Sistema *s, char parametros[])
+{
+    return 2; ///NO implementado
+}
 
 ///TYPE
 

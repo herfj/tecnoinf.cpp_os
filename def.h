@@ -44,7 +44,7 @@ typedef struct
     char nombre_ext[T_ARC_Y_EXT];
     char linea[TEXTO_MAX];
     bool error=false;
-}Descom_param_if;
+}Descom_param_if_ic;
 
 //Lineas texto de los archivos
 struct _nodo{
@@ -102,11 +102,19 @@ void insert_p_a(Sistema *s, char nombre_ext[], int cant_ayext);
 void insert_f_a(Sistema *s, char nombre_ext[], int cant_ayext);
 int cmd_create(Sistema *s, char parametros[]);
 
+///IF & IC
+Descom_param_if_ic descompone_param_de_if_ic(char parametros[]);
+
 ///IF
 
 TipoRet ret_if(Sistema *s, char parametros[T_ENT]);
-Descom_param_if descompone_param_de_if(char parametros[]);
 int cmd_if(Sistema *s, char parametros[]);
+
+///IC
+
+TipoRet ret_ic(Sistema *s, char parametros[T_ENT]);
+int cmd_ic(Sistema *s, char parametros[]);
+
 
 ///TYPE
 TipoRet ret_type(Sistema *s, char parametros[]);
