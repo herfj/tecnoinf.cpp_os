@@ -36,19 +36,6 @@ bool lineas_es_vacia(CabezalLineas l)
     }
 }
 
-///Puede ser al pedo
-bool es_vacia_linea(Lineas c)
-{
-    if(c==NULL)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-}
-
 CMD_PARAM entrada()
 {
     CMD_PARAM ent;
@@ -62,6 +49,7 @@ CMD_PARAM entrada()
     int i=0;
     int j;
     int u=0;
+    int cont; cont=1;
     int ubc=0; //Guarda la ultima ubicacion de: /
 
     ent.cmd_correcto=false;
@@ -76,16 +64,6 @@ CMD_PARAM entrada()
     cin.clear();
     cin.getline(txt_bruto, T_ENT, '\n');
 
-
-    //    while (((txt_completo[i]!=' ')&&(txt_completo[i]!='\n'))&&(i<20))
-    //    {
-    //        cmd[i]=txt_completo[i];
-    //        i++;
-    //        cout<<"i es :"<<i<<endl;
-    //        cout<<cmd<<"-"<<txt_completo<<endl;
-    //    }
-    //    cout<<"final de i es :"<<i<<endl;
-
     if (txt_bruto[i]==' ')
     {
         while (txt_bruto[i]==' ')
@@ -94,7 +72,6 @@ CMD_PARAM entrada()
         }
         var=true;
     }
-
 
     while ((txt_bruto[i]!='\n')&&(var)&&(i<T_ENT))
     {
@@ -163,7 +140,9 @@ CMD_PARAM entrada()
 
     if(ent.cmd_correcto==false)
     {
+        cout<<""<<endl;
         cout<<"Error: Comando Incorrecto."<<endl;
+        cout<<""<<endl;
     }
     return ent;
 }
@@ -175,16 +154,24 @@ void errores_mensajes (Comandos cmd, int error, int cod)
         switch(cmd)
         {
         case CREATE:
-            cout << "Error: Ya existe un archivo con ese nombre completo - E" << cod << "x" << cod << cod << cod << endl;
+            cout << "Error: Ya existe un archivo con ese nombre completo. - E" << cmd << "x" << cod << cod << cod << endl;
             break;
         case IF:
             if(cod==1)
             {
-                cout << "Error: NO existe ese nombre completo en este directorio - E" << cod << "x" << cod << cod << cod << endl;
+                cout << "Error: NO existe ese nombre completo en este directorio. - E" << cmd << "x" << cod << cod << cod << endl;
+            }
+            if(cod==2)
+            {
+                cout << "Error: El tamaño del texto ingresado es superior al permitido. - E" << cmd << "x" << cod << cod << cod << endl;
+            }
+            if (cod==3)
+            {
+                cout << "Error: El texto a insertar en la linea debe estar entre comillas. - E" << cmd << "x" << cod << cod << cod << endl;
             }
             break;
         case TYPE:
-            cout << "Error: NO existe ese nombre completo en este directorio - E" << cod << "x" << cod << cod << cod << endl;
+            cout << "Error: NO existe ese nombre completo en este directorio. - E" << cmd << "x" << cod << cod << cod << endl;
             break;
         default:
             cout << "Error Desconocido - E" << cod << "x" << cmd << cod << cod << endl;
@@ -196,7 +183,10 @@ void errores_mensajes (Comandos cmd, int error, int cod)
         {
 
         case TYPE:
-            cout << "Mensaje: EL Archivo esta vacio - M" << cod << "x" << cod << cod << cod << endl;
+            cout << "Mensaje: EL Archivo esta vacio. - M" << cmd << "x" << cod << cod << cod << endl;
+            break;
+        case DIR:
+            cout<<"Mensaje: La direccion '/' se encuentra vacia. - M"<< cmd << "x" << cod << cod << cod << endl;
             break;
         }
     }
@@ -230,7 +220,7 @@ void cmd_dir(Sistema s)
 
     if (es_vacia(s))
     {
-        cout<<"La direccion '/' se encuentra vacia."<<endl;
+        errores_mensajes(DIR, 0,0);
     }
     else
     {
@@ -484,7 +474,6 @@ int cmd_create(Sistema *s, char parametros[])
 
 
 
-
 ///IF
 
 TipoRet ret_if(Sistema *s, char parametros[])
@@ -520,6 +509,7 @@ Descom_param_if descompone_param_de_if(char parametros[])
     bool var=true;
     bool var2=true;
     bool var3=false;
+    bool no_comillas=true;
 
     Descom_param_if param;
 
@@ -621,24 +611,44 @@ Descom_param_if descompone_param_de_if(char parametros[])
 
     for(int w=i; w<T_ENT; w++)
     {
-        if((parametros[w]=='"')&&(var3==false))
+        if(parametros[w]=='"')
         {
-            var3=true;
-
+            no_comillas=false;
         }
-        else
+    }
+
+    if (no_comillas==false)
+    {
+        for(int w=i; w<T_ENT; w++)
         {
-            if ((parametros[w]!='"')&&(var3=true)&&(j<TEXTO_MAX))
+            if((parametros[w]=='"')&&(var3==false))
             {
-                param.linea[j]=parametros[w];
-                j++;
-            }
-            else if((parametros[w]=='"')&&(var3==true))
-            {
-                var3=false ;
+                var3=true;
 
             }
+            else
+            {
+                if ((parametros[w]!='"')&&(var3=true)&&(j<TEXTO_MAX))
+                {
+                    param.linea[j]=parametros[w];
+                    j++;
+                }
+                else if((parametros[w]=='"')&&(var3==true))
+                {
+                    var3=false ;
+
+                }
+                if (var3==false)
+                {
+                    param.cant_letras=j;
+                }
+            }
         }
+    }
+    else
+    {
+        errores_mensajes(IF, 1, 3);
+        param.error==true;
     }
 
     return param;
@@ -660,6 +670,12 @@ int cmd_if(Sistema *s, char parametros[])
 
     Lineas nuevo_linea=new _nodo;
 
+    if(param.error==true)
+    {
+        cout << "dfasasd"<<endl;
+        return 1;
+    }
+
     for(i=0;i<TEXTO_MAX; i++)
     {
         nuevo_linea->linea_texto[i]=param.linea[i];
@@ -676,8 +692,14 @@ int cmd_if(Sistema *s, char parametros[])
         aux=aux->sig;
     }
 
+    if (param.cant_letras>TEXTO_MAX)
+    {
+        errores_mensajes(IF, 1, 2);
+        return 1;
+    }
     if(encontre==true)
     {
+        aux2->cant=aux2->cant+param.cant_letras;
         nuevo_linea->sig=NULL;
         nuevo_linea->ant=aux2->cabezal_linea.ult;
 
@@ -704,6 +726,10 @@ int cmd_if(Sistema *s, char parametros[])
 
 
 
+///IC
+
+///ACA ESTAS NOSDFSDF
+
 ///TYPE
 
 TipoRet ret_type(Sistema *s, char parametros[])
@@ -726,7 +752,8 @@ TipoRet ret_type(Sistema *s, char parametros[])
 
 int cmd_type(Sistema *s, char parametros[])
 {
-    int i; i=0;
+    int i;
+    i=0;
 
     bool var=false;
     bool encontre=false;
@@ -742,42 +769,51 @@ int cmd_type(Sistema *s, char parametros[])
     Descom_param_create param;
     param=descompone_param_de_create(parametros);
 
-    while((aux!=NULL)&&(var==false))
+    if (es_vacia((*s)))
     {
-        if ((iguales(param.nombre_ext, aux->nombre_ext))&&(var==false))
-        {
-            aux2=aux;
-            var=true;
-            encontre=true;
-        }
-        aux=aux->sig;
-    }
-    linea_aux=aux2->cabezal_linea.pri;
-
-    if(encontre==true)
-    {
-        if (linea_aux==NULL)
-        {
-            errores_mensajes(TYPE,0,1);
-        }
-        else
-        {
-            if (var==true)
-            {
-                while(linea_aux!=NULL)
-                {
-                    cout<<linea_aux->linea_texto<<endl;
-                    linea_aux=linea_aux->sig;
-                }
-            }
-        }
-
-        return 0;
+        errores_mensajes(TYPE,1,1);
+        return 1;
     }
     else
     {
-        errores_mensajes(IF,1,1);
-        return 1;
-    }
+        while((aux!=NULL)&&(var==false))
+        {
+            if ((iguales(param.nombre_ext, aux->nombre_ext))&&(var==false))
+            {
+                aux2=aux;
+                var=true;
+                encontre=true;
+            }
+            aux=aux->sig;
+        }
+        linea_aux=aux2->cabezal_linea.pri;
 
+        if(encontre==true)
+        {
+            if (linea_aux==NULL)
+            {
+                errores_mensajes(TYPE,0,1);
+            }
+            else
+            {
+                if (var==true)
+                {
+                    while(linea_aux!=NULL)
+                    {
+                        cout<<linea_aux->linea_texto<<endl;
+                        linea_aux=linea_aux->sig;
+                    }
+                }
+            }
+
+            return 0;
+        }
+        else
+        {
+            errores_mensajes(TYPE,1,1);
+            return 1;
+        }
+    }
 }
+
+

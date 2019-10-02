@@ -39,9 +39,11 @@ typedef struct
 typedef struct
 {
     int cant_ayext=0;
+    int cant_letras=0;
     char ubic[T_ENT];
     char nombre_ext[T_ARC_Y_EXT];
     char linea[TEXTO_MAX];
+    bool error=false;
 }Descom_param_if;
 
 //Lineas texto de los archivos
