@@ -77,6 +77,7 @@ typedef  _nodo2 *Archivos;
 typedef struct
 {
     Archivos cabezal_archivos;
+    Archivos cabezal_arch_D;
 }Sistema;
 
 

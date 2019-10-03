@@ -170,6 +170,9 @@ void errores_mensajes (Comandos cmd, int error, int cod)
                 cout << "Error: El texto a insertar en la linea debe estar entre comillas. - E" << cmd << "x" << cod << cod << cod << endl;
             }
             break;
+            case DELETE:
+            cout << "Error: NO existe un archivo con ese nombre  - E" << cmd << "x" << cod << cod << cod << endl;
+            break;
         case TYPE:
             cout << "Error: NO existe ese nombre completo en este directorio. - E" << cmd << "x" << cod << cod << cod << endl;
             break;
@@ -840,6 +843,31 @@ int cmd_type(Sistema *s, char parametros[])
             errores_mensajes(TYPE,1,1);
             return 1;
         }
+    }
+}
+
+TipoRet cmd_DELETE (Sistema *s, string name_archivo)
+{
+    bool existe=false;
+    Sistema aux;
+    aux = (*s);
+    while (aux.cabezal_archivos->sig!=NULL)
+    {
+        if(aux.cabezal_archivos->nombre_ext==name_archivo)
+        {
+            existe=true;
+        }
+        aux.cabezal_archivos=aux.cabezal_archivos->sig;
+    }
+    if(!existe)
+    {
+        errores_mensajes(DELETE,1,0);
+    }
+    else
+    {
+        (*s).cabezal_arch_D =(*s).cabezal_archivos;
+
+
     }
 }
 
