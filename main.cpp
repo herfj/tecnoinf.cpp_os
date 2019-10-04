@@ -23,11 +23,9 @@ int main()
     Sistema s;
     s=crear();
 
-
     while (rep)
     {
         ent=entrada();
-
 
         if(ent.cmd_correcto==true)
         {
@@ -52,7 +50,9 @@ int main()
 
                 break;
             case IC:
-
+                cout<<""<<endl;
+                retorna=ret_ic(&s, ent.parametros);
+                cout<<""<<endl;
                 break;
             case IF:
                 cout<<""<<endl;

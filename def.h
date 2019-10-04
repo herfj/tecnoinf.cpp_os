@@ -7,6 +7,7 @@
 #define T_EXT 3
 #define T_ARC_Y_EXT 19
 #define TEXTO_MAX 50
+#define LARGO_MAX 3
 
 using namespace std;
 
@@ -34,7 +35,7 @@ typedef struct
     int cant_ayext=0;
     char ubic[T_ENT];
     char nombre_ext[T_ARC_Y_EXT];
-}Descom_param_create;
+}Descom_param_name;
 
 typedef struct
 {
@@ -69,6 +70,7 @@ struct _nodo2{
     char nombre_ext[T_ARC_Y_EXT];
     CabezalLineas cabezal_linea;
     int cant;
+    int cant_lineas=0;
     _nodo2 *sig;
 };
 typedef  _nodo2 *Archivos;
@@ -89,6 +91,10 @@ CMD_PARAM entrada();
 void errores_mensajes (Comandos cmd, int error, int cod);
 bool iguales (char char1[], char char2[]);
 
+///Descomposicion parametro (arreglo)
+
+Descom_param_name param_solo_name(char parametros[]);
+Descom_param_if_ic descompone_param_de_if_ic(char parametros[]);
 
 ///DIR
 
@@ -98,14 +104,9 @@ void cmd_dir(Sistema c);
 ///CREATE
 
 TipoRet ret_create(Sistema *s, char parametros[T_ENT]);
-Descom_param_create descompone_param_de_create(char parametros[]);
 void insert_p_a(Sistema *s, char nombre_ext[], int cant_ayext);
 void insert_f_a(Sistema *s, char nombre_ext[], int cant_ayext);
 int cmd_create(Sistema *s, char parametros[]);
-
-///IF & IC
-
-Descom_param_if_ic descompone_param_de_if_ic(char parametros[]);
 
 ///IF
 
