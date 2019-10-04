@@ -44,7 +44,9 @@ int main()
                 cout<<""<<endl;
                 break;
             case DELETE:
-
+                cout<<""<<endl;
+                retorna=ret_delete(&s, ent.parametros);
+                cout<<""<<endl;
                 break;
             case UNDELETE:
 

@@ -104,6 +104,7 @@ void insert_f_a(Sistema *s, char nombre_ext[], int cant_ayext);
 int cmd_create(Sistema *s, char parametros[]);
 
 ///IF & IC
+
 Descom_param_if_ic descompone_param_de_if_ic(char parametros[]);
 
 ///IF
@@ -118,7 +119,13 @@ int cmd_ic(Sistema *s, char parametros[]);
 
 
 ///TYPE
+
 TipoRet ret_type(Sistema *s, char parametros[]);
 int cmd_type(Sistema *s, char parametros[]);
 
+
+///DELETE
+
+TipoRet ret_delete(Sistema *s, char parametros[]);
+int cmd_delete(Sistema *s, char parametros[]);
 #endif // DEF_H_INCLUDED

@@ -846,14 +846,36 @@ int cmd_type(Sistema *s, char parametros[])
     }
 }
 
-TipoRet cmd_DELETE (Sistema *s, string name_archivo)
+
+
+///DELETE
+
+TipoRet ret_delete(Sistema *s, char parametros[])
+{
+    int r;
+    r=cmd_delete(&*s, parametros);
+    switch(r)
+    {
+        case 0:
+            return OK;
+            break;
+        case 1:
+            return ERROR;
+            break;
+        case 2:
+            return NO_IMPLEMENTADO;
+            break;
+    }
+}
+
+int cmd_delete(Sistema *s, char parametros[])
 {
     bool existe=false;
     Sistema aux;
     aux = (*s);
     while (aux.cabezal_archivos->sig!=NULL)
     {
-        if(aux.cabezal_archivos->nombre_ext==name_archivo)
+        //if(aux.cabezal_archivos->nombre_ext==)
         {
             existe=true;
         }
@@ -867,8 +889,8 @@ TipoRet cmd_DELETE (Sistema *s, string name_archivo)
     {
         (*s).cabezal_arch_D =(*s).cabezal_archivos;
 
-
     }
+    return 2;
 }
 
 
