@@ -888,8 +888,15 @@ int cmd_delete(Sistema *s, char parametros[])
     else
     {
         (*s).cabezal_arch_D =(*s).cabezal_archivos;
-
+        while(aux.cabezal_archivos->nombre_ext!=name_archivo)
+            {
+            ant.cabezal_archivos=aux.cabezal_archivos;
+            aux.cabezal_archivos=aux.cabezal_archivos->sig;
+        }
+        ant.cabezal_archivos->sig=aux.cabezal_archivos->sig;
+        //delete aux;
     }
+    
     return 2;
 }
 
