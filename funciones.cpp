@@ -994,13 +994,18 @@ int cmd_delete(Sistema *s, char parametros[])
 
     bool existe=false;
 
+    Lineas nuevo_linea=new _nodo;
+
     Archivos aux;
     Archivos aux2;
     Archivos ant;
+    Archivos undelete;
 
     aux = (*s).cabezal_archivos;
     aux2 = (*s).cabezal_archivos;
     ant = (*s).cabezal_archivos;
+    undelete = (*s).cabezal_arch_D;
+    undelete->sig=NULL;
 
     Descom_param_name param;
     param=param_solo_name(parametros);
@@ -1011,7 +1016,7 @@ int cmd_delete(Sistema *s, char parametros[])
     }
     else
     {
-        while ((aux->sig!=NULL)&&(existe==false))
+        while ((aux!=NULL)&&(existe==false))
         {
             if((iguales(aux->nombre_ext,param.nombre_ext))==true)
             {
@@ -1027,12 +1032,12 @@ int cmd_delete(Sistema *s, char parametros[])
         }
         else
         {
-            (*s).cabezal_arch_D->cabezal_linea=aux->cabezal_linea;
-            (*s).cabezal_arch_D->cant=aux->cant;
-            (*s).cabezal_arch_D->cant_lineas=aux->cant_lineas;
+            ///INSERTAR LINEAS COMO NUEVOS NODOS
+            undelete->cant=aux2->cant;
+
             for(i=0; i<T_ARC_Y_EXT; i++)
             {
-                (*s).cabezal_arch_D->nombre_ext[i]=aux->nombre_ext[i];
+                undelete->nombre_ext[i]=aux->nombre_ext[i];
             }
             if((*s).cabezal_archivos==aux2)
             {
