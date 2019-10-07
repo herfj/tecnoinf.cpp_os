@@ -47,7 +47,9 @@ int main()
                 cout<<""<<endl;
                 break;
             case UNDELETE:
-
+                cout<<""<<endl;
+                retorna=ret_undelete(&s);
+                cout<<""<<endl;
                 break;
             case IC:
                 cout<<""<<endl;

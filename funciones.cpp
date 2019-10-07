@@ -43,17 +43,19 @@ CMD_PARAM entrada()
 
     char txt_bruto[T_ENT];
 
-    bool var; var=false;
+    bool var;
+    var=false;
 
     int t_cor_valor=20;
     int i=0;
     int j;
     int u=0;
-    int cont; cont=1;
+    int cont;
+    cont=1;
     int ubc=0; //Guarda la ultima ubicacion de: /
 
     ent.cmd_correcto=false;
-    for(j=0;j<T_ENT;j++)
+    for(j=0; j<T_ENT; j++)
     {
         txt_bruto[i]=00;
     }
@@ -83,58 +85,58 @@ CMD_PARAM entrada()
 
     if ((strcmp(cmd, "DIR"))==0)
     {
-            ent.cmd=DIR;
-            ent.cmd_correcto=true;
+        ent.cmd=DIR;
+        ent.cmd_correcto=true;
     }
     if ((strcmp(cmd, "CREATE"))==0)
     {
-            ent.cmd=CREATE;
-            ent.cmd_correcto=true;
+        ent.cmd=CREATE;
+        ent.cmd_correcto=true;
     }
     if ((strcmp(cmd, "DELETE"))==0)
     {
-            ent.cmd=DELETE;
-            ent.cmd_correcto=true;
+        ent.cmd=DELETE;
+        ent.cmd_correcto=true;
     }
     if ((strcmp(cmd, "UNDELETE"))==0)
     {
-            ent.cmd=UNDELETE;
-            ent.cmd_correcto=true;
+        ent.cmd=UNDELETE;
+        ent.cmd_correcto=true;
     }
     if ((strcmp(cmd, "IC"))==0)
     {
-            ent.cmd=IC;
-            ent.cmd_correcto=true;
+        ent.cmd=IC;
+        ent.cmd_correcto=true;
     }
     if ((strcmp(cmd, "IC"))==0)
     {
-            ent.cmd=IC;
-            ent.cmd_correcto=true;
+        ent.cmd=IC;
+        ent.cmd_correcto=true;
     }
     if ((strcmp(cmd, "TYPE"))==0)
     {
-            ent.cmd=TYPE;
-            ent.cmd_correcto=true;
+        ent.cmd=TYPE;
+        ent.cmd_correcto=true;
     }
     if ((strcmp(cmd, "IF"))==0)
     {
-            ent.cmd=IF;
-            ent.cmd_correcto=true;
+        ent.cmd=IF;
+        ent.cmd_correcto=true;
     }
     if ((strcmp(cmd, "BC"))==0)
     {
-            ent.cmd=BC;
-            ent.cmd_correcto=true;
+        ent.cmd=BC;
+        ent.cmd_correcto=true;
     }
     if ((strcmp(cmd, "BF"))==0)
     {
-            ent.cmd=BF;
-            ent.cmd_correcto=true;
+        ent.cmd=BF;
+        ent.cmd_correcto=true;
     }
     if ((strcmp(cmd, "CAT"))==0)
     {
-            ent.cmd=CAT;
-            ent.cmd_correcto=true;
+        ent.cmd=CAT;
+        ent.cmd_correcto=true;
     }
 
 
@@ -263,28 +265,28 @@ Descom_param_name param_solo_name(char parametros[])
                 ubc=i;
             }
         }
-        for(i=0; i<=ubc;i++)
+        for(i=0; i<=ubc; i++)
         {
             param.ubic[i]=parametros[i];
         }
         i=ubc+1;
     }
 
-    for(j=0;j<T_ARC;j++)
+    for(j=0; j<T_ARC; j++)
     {
         nombre[j]=0;
     }
 
-    for(j=0;j<T_EXT;j++)
+    for(j=0; j<T_EXT; j++)
     {
         ext[j]=0;
     }
-    for(j=0;j<T_ARC_Y_EXT;j++)
+    for(j=0; j<T_ARC_Y_EXT; j++)
     {
         param.nombre_ext[i]=0;
     }
 
-    for (j=0;j<T_ENT;j++)
+    for (j=0; j<T_ENT; j++)
     {
         if((parametros[i]=='.')&&(var2==true))
         {
@@ -303,7 +305,7 @@ Descom_param_name param_solo_name(char parametros[])
     u=0;
     var=true;
 
-    for(j=0;j<T_EXT;j++)
+    for(j=0; j<T_EXT; j++)
     {
         if (((parametros[i]==' ')||(parametros[i]=='\n'))&&(i<T_ENT))
         {
@@ -318,7 +320,7 @@ Descom_param_name param_solo_name(char parametros[])
     }
 
     param.cant_ayext=cant_a+cant_ext+1;
-    for(u=0;u<cant_a;u++)
+    for(u=0; u<cant_a; u++)
     {
         param.nombre_ext[u]=nombre[u];
     }
@@ -327,7 +329,7 @@ Descom_param_name param_solo_name(char parametros[])
     u++;
     j=0;
 
-    for(u=u;u<param.cant_ayext;u++)
+    for(u=u; u<param.cant_ayext; u++)
     {
         param.nombre_ext[u]=ext[j];
         j++;
@@ -354,7 +356,7 @@ Descom_param_if_ic descompone_param_de_if_ic(char parametros[])
 
     Descom_param_if_ic param;
 
-    for(j=0;j<60;j++)
+    for(j=0; j<60; j++)
     {
         param.ubic[j]=0;
     }
@@ -372,33 +374,33 @@ Descom_param_if_ic descompone_param_de_if_ic(char parametros[])
                 ubc=i;
             }
         }
-        for(i=0; i<=ubc;i++)
+        for(i=0; i<=ubc; i++)
         {
             param.ubic[i]=parametros[i];
         }
         i=ubc+1;
     }
 
-    for(j=0;j<T_ARC;j++)
+    for(j=0; j<T_ARC; j++)
     {
         nombre[j]=0;
     }
 
-    for(j=0;j<T_EXT;j++)
+    for(j=0; j<T_EXT; j++)
     {
         ext[j]=0;
     }
-    for(j=0;j<T_ARC_Y_EXT;j++)
+    for(j=0; j<T_ARC_Y_EXT; j++)
     {
         param.nombre_ext[j]=0;
     }
-    for(j=0;j<TEXTO_MAX;j++)
+    for(j=0; j<TEXTO_MAX; j++)
     {
         param.linea[j]=0;
     }
 
 
-    for (j=0;j<T_ENT;j++)
+    for (j=0; j<T_ENT; j++)
     {
         if((parametros[i]=='.')&&(var2==true))
         {
@@ -417,7 +419,7 @@ Descom_param_if_ic descompone_param_de_if_ic(char parametros[])
     u=0;
     var=true;
 
-    for(j=0;j<T_EXT;j++)
+    for(j=0; j<T_EXT; j++)
     {
         if (((parametros[i]==' ')||(parametros[i]=='\n'))&&(i<T_ENT))
         {
@@ -432,7 +434,7 @@ Descom_param_if_ic descompone_param_de_if_ic(char parametros[])
     }
 
     param.cant_ayext=cant_a+cant_ext+1;
-    for(u=0;u<cant_a;u++)
+    for(u=0; u<cant_a; u++)
     {
         param.nombre_ext[u]=nombre[u];
     }
@@ -441,7 +443,7 @@ Descom_param_if_ic descompone_param_de_if_ic(char parametros[])
     u++;
     j=0;
 
-    for(u=u;u<param.cant_ayext;u++)
+    for(u=u; u<param.cant_ayext; u++)
     {
         param.nombre_ext[u]=ext[j];
         j++;
@@ -531,15 +533,15 @@ TipoRet ret_create(Sistema *s, char parametros[])
     r=cmd_create(&*s, parametros);
     switch(r)
     {
-        case 0:
-            return OK;
-            break;
-        case 1:
-            return ERROR;
-            break;
-        case 2:
-            return NO_IMPLEMENTADO;
-            break;
+    case 0:
+        return OK;
+        break;
+    case 1:
+        return ERROR;
+        break;
+    case 2:
+        return NO_IMPLEMENTADO;
+        break;
     }
 
 }
@@ -550,11 +552,11 @@ void insert_p_a(Sistema *s, char nombre_ext[], int cant_ayext)
 
     int i=0;
 
-    for(i=0;i<T_ARC_Y_EXT;i++)
+    for(i=0; i<T_ARC_Y_EXT; i++)
     {
         nuevo_nodo->nombre_ext[i]=00;
     }
-    for(i=0;i<cant_ayext;i++)
+    for(i=0; i<cant_ayext; i++)
     {
         nuevo_nodo->nombre_ext[i]=nombre_ext[i];
     }
@@ -572,18 +574,18 @@ void insert_f_a(Sistema *s, char nombre_ext[], int cant_ayext)
     aux=(*s).cabezal_archivos;
     int i=0;
 
-    for(i=0;i<T_ARC_Y_EXT;i++)
+    for(i=0; i<T_ARC_Y_EXT; i++)
     {
         nuevo_nodo->nombre_ext[i]=00;
     }
-    for(i=0;i<cant_ayext;i++)
+    for(i=0; i<cant_ayext; i++)
     {
         nuevo_nodo->nombre_ext[i]=nombre_ext[i];
     }
 
     while (aux->sig!=NULL)
     {
-            aux=aux->sig;
+        aux=aux->sig;
     }
     nuevo_nodo->cant=0;
     aux->sig=nuevo_nodo;
@@ -593,7 +595,8 @@ int cmd_create(Sistema *s, char parametros[])
 {
     int i=0;
 
-    bool inserta; inserta=true;
+    bool inserta;
+    inserta=true;
 
     Archivos nuevo_nodo=new _nodo2;
     Archivos aux;
@@ -668,15 +671,15 @@ TipoRet ret_if(Sistema *s, char parametros[])
     r=cmd_if(&*s, parametros);
     switch(r)
     {
-        case 0:
-            return OK;
-            break;
-        case 1:
-            return ERROR;
-            break;
-        case 2:
-            return NO_IMPLEMENTADO;
-            break;
+    case 0:
+        return OK;
+        break;
+    case 1:
+        return ERROR;
+        break;
+    case 2:
+        return NO_IMPLEMENTADO;
+        break;
     }
 }
 
@@ -702,7 +705,7 @@ int cmd_if(Sistema *s, char parametros[])
         return 1;
     }
 
-    for(i=0;i<TEXTO_MAX; i++)
+    for(i=0; i<TEXTO_MAX; i++)
     {
         nuevo_linea->linea_texto[i]=param.linea[i];
     }
@@ -765,15 +768,15 @@ TipoRet ret_ic(Sistema *s, char parametros[])
     r=cmd_ic(&*s, parametros);
     switch(r)
     {
-        case 0:
-            return OK;
-            break;
-        case 1:
-            return ERROR;
-            break;
-        case 2:
-            return NO_IMPLEMENTADO;
-            break;
+    case 0:
+        return OK;
+        break;
+    case 1:
+        return ERROR;
+        break;
+    case 2:
+        return NO_IMPLEMENTADO;
+        break;
     }
 }
 
@@ -799,7 +802,7 @@ int cmd_ic(Sistema *s, char parametros[])
         return 1;
     }
 
-    for(i=0;i<TEXTO_MAX; i++)
+    for(i=0; i<TEXTO_MAX; i++)
     {
         nuevo_linea->linea_texto[i]=param.linea[i];
     }
@@ -863,15 +866,15 @@ TipoRet ret_type(Sistema *s, char parametros[])
     r=cmd_type(&*s, parametros);
     switch(r)
     {
-        case 0:
-            return OK;
-            break;
-        case 1:
-            return ERROR;
-            break;
-        case 2:
-            return NO_IMPLEMENTADO;
-            break;
+    case 0:
+        return OK;
+        break;
+    case 1:
+        return ERROR;
+        break;
+    case 2:
+        return NO_IMPLEMENTADO;
+        break;
     }
 }
 
@@ -951,15 +954,15 @@ TipoRet ret_delete(Sistema *s, char parametros[])
     r=cmd_delete(&*s, parametros);
     switch(r)
     {
-        case 0:
-            return OK;
-            break;
-        case 1:
-            return ERROR;
-            break;
-        case 2:
-            return NO_IMPLEMENTADO;
-            break;
+    case 0:
+        return OK;
+        break;
+    case 1:
+        return ERROR;
+        break;
+    case 2:
+        return NO_IMPLEMENTADO;
+        break;
     }
 }
 
@@ -987,38 +990,39 @@ void elimnar_f_a(Sistema *s)
     delete aux;
 }
 
-
 int cmd_delete(Sistema *s, char parametros[])
 {
-    int i; i=0;
+    int i;
+    i=0;
 
     bool existe=false;
-
-    Lineas nuevo_linea=new _nodo;
 
     Archivos aux;
     Archivos aux2;
     Archivos ant;
-    Archivos undelete;
+    Archivos undelete=new _nodo2;
+
+    Lineas linea_aux;
 
     aux = (*s).cabezal_archivos;
     aux2 = (*s).cabezal_archivos;
     ant = (*s).cabezal_archivos;
-    undelete = (*s).cabezal_arch_D;
+
     undelete->sig=NULL;
 
     Descom_param_name param;
     param=param_solo_name(parametros);
 
-    if(es_vacia(*s))
+    if(aux==NULL)
     {
         errores_mensajes(DIR,0,0);
+        return 0;
     }
     else
     {
         while ((aux!=NULL)&&(existe==false))
         {
-            if((iguales(aux->nombre_ext,param.nombre_ext))==true)
+            if(iguales(aux->nombre_ext,param.nombre_ext))
             {
                 existe=true;
                 aux2=aux;
@@ -1029,15 +1033,43 @@ int cmd_delete(Sistema *s, char parametros[])
         if(existe==false)
         {
             errores_mensajes(DELETE,1,0);
+            return 1;
         }
         else
         {
-            ///INSERTAR LINEAS COMO NUEVOS NODOS
+            undelete->cant_lineas=aux2->cant_lineas;
             undelete->cant=aux2->cant;
+
+            linea_aux=aux2->cabezal_linea.pri;
+            undelete->cabezal_linea.pri=NULL;
+
+            for(i=0; i<aux2->cant_lineas; i++)
+            {
+                Lineas nuevo_linea=new _nodo;
+
+                for(i=0; i<TEXTO_MAX; i++)
+                {
+                    nuevo_linea->linea_texto[i]=linea_aux->linea_texto[i];
+                }
+
+                nuevo_linea->sig=NULL;
+                nuevo_linea->ant=undelete->cabezal_linea.ult;
+
+                if(undelete->cabezal_linea.pri==NULL)
+                {
+                    undelete->cabezal_linea.pri=nuevo_linea;
+                }
+                else
+                {
+                    undelete->cabezal_linea.ult->sig=nuevo_linea;
+                }
+                undelete->cabezal_linea.ult=nuevo_linea;
+                linea_aux=linea_aux->sig;
+            }
 
             for(i=0; i<T_ARC_Y_EXT; i++)
             {
-                undelete->nombre_ext[i]=aux->nombre_ext[i];
+                undelete->nombre_ext[i]=aux2->nombre_ext[i];
             }
             if((*s).cabezal_archivos==aux2)
             {
@@ -1054,29 +1086,46 @@ int cmd_delete(Sistema *s, char parametros[])
                     ant->sig=aux2->sig;
                 }
             }
-                delete aux2;
+            delete aux2;
         }
     }
-    return 2;
+    return 0;
 }
 
 
+///UNDELETE
 
+TipoRet ret_undelete(Sistema *s)
+{
+    int r;
+    r=cmd_undelete(&*s);
+    switch(r)
+    {
+    case 0:
+        return OK;
+        break;
+    case 1:
+        return ERROR;
+        break;
+    case 2:
+        return NO_IMPLEMENTADO;
+        break;
+    }
+}
 
-//                    if(aux->dato==valor)
-//                    {
-//                        ant_aux->sig=aux->sig;
-//                        delete aux;
-//                    }
-//                    else
-//                    {
-//                        cant_rep++;
-//                    }
-//                }
-//                if (cant_rep==ult)
-//                {
-//                    error(2);
-//                }
+int cmd_undelete(Sistema *s)
+{
+    Archivos undelete=new _nodo2;
+    undelete=(*s).cabezal_arch_D;
+    int r;
 
-
+    char param[T_ARC_Y_EXT];
+    for(int i=0; i<T_ARC_Y_EXT;i++)
+    {
+        param[i]=undelete->nombre_ext[i];
+    }
+    cout<<param<<endl;
+    r=cmd_create(&*s, param);
+    return 2;
+}
 

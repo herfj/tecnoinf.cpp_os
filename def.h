@@ -118,15 +118,19 @@ int cmd_if(Sistema *s, char parametros[]);
 TipoRet ret_ic(Sistema *s, char parametros[T_ENT]);
 int cmd_ic(Sistema *s, char parametros[]);
 
-
 ///TYPE
 
 TipoRet ret_type(Sistema *s, char parametros[]);
 int cmd_type(Sistema *s, char parametros[]);
 
-
 ///DELETE
 
 TipoRet ret_delete(Sistema *s, char parametros[]);
 int cmd_delete(Sistema *s, char parametros[]);
+
+///UNDELETE
+
+TipoRet ret_undelete(Sistema *s);
+int cmd_undelete(Sistema *s);
+
 #endif // DEF_H_INCLUDED
