@@ -47,6 +47,15 @@ typedef struct
     bool error=false;
 }Descom_param_if_ic;
 
+typedef struct
+{
+    int cant_ayext=0;
+    char ubic[T_ENT];
+    char nombre_ext[T_ARC_Y_EXT];
+    int k;
+    bool error=false;
+}Descom_param_name_k;
+
 //Lineas texto de los archivos
 struct _nodo{
     _nodo *ant;
@@ -133,4 +142,18 @@ int cmd_delete(Sistema *s, char parametros[]);
 TipoRet ret_undelete(Sistema *s);
 int cmd_undelete(Sistema *s);
 
+///BF
+
+TipoRet ret_bf(Sistema *s, char parametros[]);
+int cmd_bf(Sistema *s, char parametros[]);
+
+///BC
+
+TipoRet ret_bc(Sistema *s, char parametros[]);
+int cmd_bc(Sistema *s, char parametros[]);
+
+///CAT
+
+TipoRet ret_cat(Sistema *s, char parametros[]);
+int cmd_cat(Sistema *s, char parametros[]);
 #endif // DEF_H_INCLUDED

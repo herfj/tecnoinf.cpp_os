@@ -475,15 +475,20 @@ Descom_param_if_ic descompone_param_de_if_ic(char parametros[])
                 {
                     param.linea[j]=parametros[w];
                     j++;
+                    if(j<=TEXTO_MAX)
+                    {
+                        param.error=true;
+                        errores_mensajes(IF, 1, 2);
+                        return param;
+                    }
                 }
-                else if((parametros[w]=='"')&&(var3==true))
+                else
                 {
-                    var3=false ;
-
-                }
-                if (var3==false)
-                {
-                    param.cant_letras=j;
+                    if((parametros[w]=='"')&&(var3==true))
+                    {
+                        var3=false ;
+                        param.cant_letras=j;
+                    }
                 }
             }
         }
@@ -491,6 +496,173 @@ Descom_param_if_ic descompone_param_de_if_ic(char parametros[])
     else
     {
         param.error==true;
+    }
+
+    return param;
+}
+
+Descom_param_name_k param_name_k(char parametros[])
+{
+    int ubc=0;
+    int i=0;
+    int u=0;
+    int j=0;
+    int cant_a=0;
+    int cant_ext=0;
+
+    int centena=-1;
+    int decena=-1;
+    int unidad=-1;
+    int k_cant;
+
+    char nombre[T_ARC];
+    char ext[T_EXT];
+
+    bool var=true;
+    bool var2=true;
+    bool k=false;
+
+    Descom_param_name_k param;
+
+    if(parametros[0]=='/')
+    {
+        for(i=0; i<60; i++)
+        {
+            if(parametros[i]=='"')
+            {
+                var=false;
+            }
+            if ((parametros[i]=='/')&&(var==true))
+            {
+                ubc=i;
+            }
+        }
+        for(i=0; i<=ubc; i++)
+        {
+            param.ubic[i]=parametros[i];
+        }
+        i=ubc+1;
+    }
+
+    for(j=0; j<T_ARC; j++)
+    {
+        nombre[j]=0;
+    }
+
+    for(j=0; j<T_EXT; j++)
+    {
+        ext[j]=0;
+    }
+    for(j=0; j<T_ARC_Y_EXT; j++)
+    {
+        param.nombre_ext[i]=0;
+    }
+
+    for (j=0; j<T_ENT; j++)
+    {
+        if((parametros[i]=='.')&&(var2==true))
+        {
+            var2=false;
+        }
+        if(var2==true)
+        {
+            nombre[u]=parametros[i];
+            i++;
+            u++;
+            cant_a++;
+        }
+    }
+
+    i++;
+    u=0;
+    var=true;
+
+    for(j=0; j<T_EXT; j++)
+    {
+        if (((parametros[i]==' ')||(parametros[i]=='\n'))&&(i<T_ENT))
+        {
+            var=false;
+        }
+        if(var==true)
+        {
+            ext[j]=parametros[i];
+            i++;
+            cant_ext++;
+        }
+    }
+    for(i=i;i<T_ENT;i++)
+    {
+        if(parametros[i]==' ')
+        {
+
+        }
+        else
+        {
+            if(((int)parametros[i]>=48)&&((int)parametros[i]<=57))
+            {
+                if(k==false)
+                {
+                    unidad=parametros[i]-48;
+                    k=true;
+                }
+                else
+                {
+                    if(decena==-1)
+                    {
+                        decena=unidad;
+                        unidad=parametros[i]-48;
+                    }
+                    else
+                    {
+                        if(centena==-1)
+                        {
+                            centena=decena;
+                            decena=unidad;
+                            unidad=parametros[i]-48;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    if(unidad==-1)
+    {
+        param.error=true;
+        return param;
+    }
+    else
+    {
+        if(centena!=-1)
+        {
+            param.k=(centena*100)+(decena*10)+unidad;
+        }
+        else
+        {
+            if(decena!=-1)
+            {
+                param.k=(decena*10)+unidad;
+            }
+            else
+            {
+                param.k=unidad;
+            }
+        }
+    }
+
+    param.cant_ayext=cant_a+cant_ext+1;
+    for(u=0; u<cant_a; u++)
+    {
+        param.nombre_ext[u]=nombre[u];
+    }
+
+    param.nombre_ext[u]='.';
+    u++;
+    j=0;
+
+    for(u=u; u<param.cant_ayext; u++)
+    {
+        param.nombre_ext[u]=ext[j];
+        j++;
     }
 
     return param;
@@ -1125,7 +1297,157 @@ int cmd_undelete(Sistema *s)
         param[i]=undelete->nombre_ext[i];
     }
     cout<<param<<endl;
-    r=cmd_create(&*s, param);
+    //r=cmd_create(&*s, param);
     return 2;
 }
 
+
+///BF
+
+TipoRet ret_bf(Sistema *s, char parametros[])
+{
+    int r;
+    r=cmd_bf(&*s, parametros);
+    switch(r)
+    {
+    case 0:
+        return OK;
+        break;
+    case 1:
+        return ERROR;
+        break;
+    case 2:
+        return NO_IMPLEMENTADO;
+        break;
+    }
+}
+
+int cmd_bf(Sistema *s, char parametros[])
+{
+    int i;
+    i=0;
+
+    bool existe=false;
+
+    Archivos aux;
+    Archivos aux2;
+    Archivos ant;
+    Archivos undelete=new _nodo2;
+
+    Lineas linea_aux;
+
+    aux = (*s).cabezal_archivos;
+    aux2 = (*s).cabezal_archivos;
+    ant = (*s).cabezal_archivos;
+
+    undelete->sig=NULL;
+
+    Descom_param_name_k param;
+    param=param_name_k(parametros);
+
+    if(param.error==true)
+    {
+        errores_mensajes(BF,1,0);
+        return 1;
+    }
+
+    if(aux==NULL)
+    {
+        errores_mensajes(DIR,0,0);
+        return 0;
+    }
+    else
+    {
+        while ((aux!=NULL)&&(existe==false))
+        {
+            if((iguales(aux->nombre_ext,param.nombre_ext))==true)
+            {
+                existe=true;
+                aux2=aux;
+            }
+            aux=aux->sig;
+        }
+
+        if(aux->cabezal_linea.pri==NULL)
+        {
+            errores_mensajes(BF,1,1);
+        }
+        else
+        {
+            if (aux2->cant_lineas<param.k)
+            {
+                errores_mensajes(BF,1,2);
+            }
+            else
+            {
+                if(aux2->cant_lineas==param.k)
+                {
+                    aux2->cabezal_linea.pri=NULL;
+                    aux2->cabezal_linea.ult=NULL;
+                }
+                else
+                {
+                    linea_aux=aux->cabezal_linea.ult;
+                    for(i=0;i<param.k;i++)
+                    {
+                        linea_aux=linea_aux->ant;
+                    }
+                    linea_aux->sig=NULL;
+                }
+
+            }
+        }
+    }
+}
+
+
+///BC
+
+TipoRet ret_bc(Sistema *s, char parametros[])
+{
+    int r;
+    r=cmd_bc(&*s, parametros);
+    switch(r)
+    {
+    case 0:
+        return OK;
+        break;
+    case 1:
+        return ERROR;
+        break;
+    case 2:
+        return NO_IMPLEMENTADO;
+        break;
+    }
+}
+
+int cmd_bc(Sistema *s, char parametros[])
+{
+
+}
+
+
+///CAT
+
+TipoRet ret_cat(Sistema *s, char parametros[])
+{
+    int r;
+    r=cmd_cat(&*s, parametros);
+    switch(r)
+    {
+    case 0:
+        return OK;
+        break;
+    case 1:
+        return ERROR;
+        break;
+    case 2:
+        return NO_IMPLEMENTADO;
+        break;
+    }
+}
+
+int cmd_cat(Sistema *s, char parametros[])
+{
+
+}
