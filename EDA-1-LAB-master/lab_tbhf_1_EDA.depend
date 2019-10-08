@@ -1,0 +1,70 @@
+# depslib dependency file v1.0
+1568729428 source:/home/tecnologo/Escritorio/lab_tbhf_1_EDA/main.cpp
+	<iostream>
+
+1568850730 source:/home/ceibal/Escritorio/CB_PP/lab_tbhf_1_EDA/main.cpp
+	<iostream>
+	<string.h>
+	"def.h"
+	"funciones.cpp"
+
+1568847368 /home/ceibal/Escritorio/CB_PP/lab_tbhf_1_EDA/def.h
+
+1568850766 /home/ceibal/Escritorio/CB_PP/lab_tbhf_1_EDA/funciones.cpp
+	"def.h"
+
+1570493272 source:/home/tecnologo/Escritorio/EDA-1-LAB-master/main.cpp
+	<iostream>
+	<string.h>
+	"def.h"
+	"funciones.cpp"
+
+1570545811 /home/tecnologo/Escritorio/EDA-1-LAB-master/def.h
+
+1570547679 /home/tecnologo/Escritorio/EDA-1-LAB-master/funciones.cpp
+	"def.h"
+
+1570483276 source:/home/ceibal/Escritorio/CB_PP/EDA-1-LAB-master/main.cpp
+	<iostream>
+	<string.h>
+	"def.h"
+	"funciones.cpp"
+
+1570490370 /home/ceibal/Escritorio/CB_PP/EDA-1-LAB-master/def.h
+
+1570492911 /home/ceibal/Escritorio/CB_PP/EDA-1-LAB-master/funciones.cpp
+	"def.h"
+
+1570074833 source:/home/ceibal/Escritorio/CB_PP/EDA-1-LAB-master (2)/main.cpp
+	<iostream>
+	<string.h>
+	"def.h"
+	"funciones.cpp"
+
+1570155584 /home/ceibal/Escritorio/CB_PP/EDA-1-LAB-master (2)/def.h
+
+1570155602 /home/ceibal/Escritorio/CB_PP/EDA-1-LAB-master (2)/funciones.cpp
+	"def.h"
+
+1569946893 source:/home/ceibal/Escritorio/EDA-1-LAB-master/main.cpp
+	<iostream>
+	<string.h>
+	"def.h"
+	"funciones.cpp"
+
+1569946893 /home/ceibal/Escritorio/EDA-1-LAB-master/def.h
+
+1569970879 /home/ceibal/Escritorio/EDA-1-LAB-master/funciones.cpp
+	"def.h"
+
+1570194627 source:/home/tecnologo/Escritorio/EDA-1-LAB-master (2)/EDA-1-LAB-master/main.cpp
+	<iostream>
+	<string.h>
+	"def.h"
+	"funciones.cpp"
+
+1570194627 /home/tecnologo/Escritorio/EDA-1-LAB-master (2)/EDA-1-LAB-master/def.h
+
+1570200190 /home/tecnologo/Escritorio/EDA-1-LAB-master (2)/EDA-1-LAB-master/funciones.cpp
+	"def.h"
+
