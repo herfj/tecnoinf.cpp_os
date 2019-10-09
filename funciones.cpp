@@ -1261,6 +1261,7 @@ int cmd_delete(Sistema *s, char parametros[])
             delete aux2;
         }
     }
+    (*s).cabezal_arch_D=undelete;
     return 0;
 }
 
@@ -1288,19 +1289,72 @@ TipoRet ret_undelete(Sistema *s)
 int cmd_undelete(Sistema *s)
 {
     Archivos undelete=new _nodo2;
-    undelete=(*s).cabezal_arch_D;
+    Archivos ausiliar;
+    Lineas linea_aux;
+
+    undelete= (*s).cabezal_arch_D;
+    int i;
+    bool k;
     int r;
 
     char param[T_ARC_Y_EXT];
-    for(int i=0; i<T_ARC_Y_EXT;i++)
+    //cout<<"PUTASO"<<endl;
+    //cout<<undelete->nombre_ext<<endl;
+
+    for(i=0; i<T_ARC_Y_EXT;i++)
     {
         param[i]=undelete->nombre_ext[i];
     }
-    cout<<param<<endl;
-    //r=cmd_create(&*s, param);
+
+
+    //cout<<param<<endl;
+
+    r=cmd_create(&*s, param);
+    ausiliar=(*s).cabezal_archivos;
+    if(iguales(ausiliar->nombre_ext,param))
+    {
+    k=true;
+    }
+    while(k){
+    if(iguales(ausiliar->nombre_ext,param))
+    {
+    k=false;
+    }
+    ausiliar=ausiliar->sig;
+    cout<<"enTRE AL WHILE WACHOOOOO"<<endl;
+    }
+    /*ausiliar->cant_lineas=undelete->cant_lineas;
+    for(i=0; i<ausiliar->cant_lineas; i++)
+            {
+                Lineas nuevo_linea=new _nodo;
+
+                for(i=0; i<TEXTO_MAX; i++)
+                {
+                    nuevo_linea->linea_texto[i]=linea_aux->linea_texto[i];
+                }
+
+                nuevo_linea->sig=NULL;
+                nuevo_linea->ant=undelete->cabezal_linea.ult;
+
+                if(ausiliar->cabezal_linea.pri==NULL)
+                {
+                    ausiliar->cabezal_linea.pri=nuevo_linea;
+                }
+                else
+                {
+                    ausiliar->cabezal_linea.ult->sig=nuevo_linea;
+                }
+                ausiliar->cabezal_linea.ult=nuevo_linea;
+                linea_aux=linea_aux->sig;
+            }
+*/
+
+
+
+
+
     return 2;
 }
-
 
 ///BF
 
