@@ -9,6 +9,7 @@ Sistema crear()
 {
     Sistema aux;
     aux.cabezal_archivos=NULL;
+    aux.cabezal_arch_D=NULL;
     return aux;
 }
 
@@ -193,11 +194,22 @@ void errores_mensajes (Comandos cmd, int error, int cod)
             {
                 cout << "Error: Has superado el limite de lineas a insertar. - E" << cmd << "x" << cod << cod << cod << endl;
             }
+            break;
         case DELETE:
-            cout << "Error: NO existe un archivo con ese nombre  - E" << cmd << "x" << cod << cod << cod << endl;
+            cout << "Error: NO existe un archivo con ese nombre.  - E" << cmd << "x" << cod << cod << cod << endl;
             break;
         case TYPE:
             cout << "Error: NO existe ese nombre completo en este directorio. - E" << cmd << "x" << cod << cod << cod << endl;
+            break;
+        case UNDELETE:
+            if(cod==0)
+            {
+                cout << "Error: NO existe un archivo a restaurar.  - E" << cmd << "x" << cod << cod << cod << endl;
+            }
+            if(cod==1)
+            {
+                cout << "Error: NO se puede restaurar dado que ya un archivo con el mismo nombre.  - E" << cmd << "x" << cod << cod << cod << endl;
+            }
             break;
         default:
             cout << "Error Desconocido - E" << cod << "x" << cmd << cod << cod << endl;
@@ -497,13 +509,13 @@ Descom_param_if_ic descompone_param_de_if_ic(char parametros[], Comandos cmd)
                 {
                     param.linea[j]=parametros[w];
                     j++;
+                    param.cant_letras=j;
                 }
                 else
                 {
                     if((parametros[w]=='"')&&(var3==true))
                     {
                         var3=false ;
-                        param.cant_letras=j;
                     }
                 }
             }
@@ -1234,15 +1246,15 @@ int cmd_delete(Sistema *s, char parametros[])
             {
                 Lineas nuevo_linea=new _nodo;
 
-                for(i=0; i<TEXTO_MAX; i++)
+                for(int d=0; d<TEXTO_MAX; d++)
                 {
-                    nuevo_linea->linea_texto[i]=linea_aux->linea_texto[i];
+                    nuevo_linea->linea_texto[d]=linea_aux->linea_texto[d];
                 }
 
                 nuevo_linea->sig=NULL;
                 nuevo_linea->ant=undelete->cabezal_linea.ult;
 
-                if(undelete->cabezal_linea.pri==NULL)
+                if(lineas_es_vacia(undelete->cabezal_linea))
                 {
                     undelete->cabezal_linea.pri=nuevo_linea;
                 }
@@ -1258,6 +1270,7 @@ int cmd_delete(Sistema *s, char parametros[])
             {
                 undelete->nombre_ext[i]=aux2->nombre_ext[i];
             }
+
             if((*s).cabezal_archivos==aux2)
             {
                 eliminar_p_a(&*s);
@@ -1271,9 +1284,9 @@ int cmd_delete(Sistema *s, char parametros[])
                 else
                 {
                     ant->sig=aux2->sig;
+                    delete aux2;
                 }
             }
-            delete aux2;
         }
     }
     (*s).cabezal_arch_D=undelete;
@@ -1303,72 +1316,99 @@ TipoRet ret_undelete(Sistema *s)
 
 int cmd_undelete(Sistema *s)
 {
-    Archivos undelete=new _nodo2;
+    Archivos undelete;
     Archivos ausiliar;
+    Archivos aux;
+    Archivos aux2;
+    aux2=(*s).cabezal_archivos;
+
     Lineas linea_aux;
 
     undelete= (*s).cabezal_arch_D;
     int i;
-    bool k;
+    bool k=true;
+    bool error1=false;
     int r;
 
     char param[T_ARC_Y_EXT];
-    //cout<<"PUTASO"<<endl;
-    //cout<<undelete->nombre_ext<<endl;
+
+    if(undelete==NULL)
+    {
+        errores_mensajes(UNDELETE, 1, 0);
+        return 1;
+    }
 
     for(i=0; i<T_ARC_Y_EXT;i++)
     {
         param[i]=undelete->nombre_ext[i];
     }
 
+    while((aux2!=NULL)&&(error1==false))
+    {
+        if(iguales(aux2->nombre_ext,param))
+        {
+            error1=true;
+        }
+        aux2=aux2->sig;
+    }
 
-    //cout<<param<<endl;
+    if (error1==true)
+    {
+        errores_mensajes(UNDELETE, 1, 1);
+        undelete=NULL;
+        return 1;
+    }
 
     r=cmd_create(&*s, param);
     ausiliar=(*s).cabezal_archivos;
-    if(iguales(ausiliar->nombre_ext,param))
+
+    while((ausiliar!=NULL)&&(k))
     {
-    k=true;
+        if(iguales(ausiliar->nombre_ext,param))
+        {
+            k=false;
+            aux=ausiliar;
+        }
+        ausiliar=ausiliar->sig;
     }
-    while(k){
-    if(iguales(ausiliar->nombre_ext,param))
+
+    aux->cant=undelete->cant;
+    aux->cant_lineas=undelete->cant_lineas;
+
+    linea_aux=undelete->cabezal_linea.pri;
+
+    int h;
+
+    h=aux->cant_lineas;
+
+    for(i=0; i<h; i++)
     {
-    k=false;
+        Lineas nuevo_linea=new _nodo;
+
+        for(int s=0; s<TEXTO_MAX; s++)
+        {
+            nuevo_linea->linea_texto[s]=linea_aux->linea_texto[s];
+        }
+
+        nuevo_linea->sig=NULL;
+        nuevo_linea->ant=aux->cabezal_linea.ult;
+
+        if(lineas_es_vacia(aux->cabezal_linea))
+        {
+            aux->cabezal_linea.pri=nuevo_linea;
+        }
+        else
+        {
+            aux->cabezal_linea.ult->sig=nuevo_linea;
+        }
+
+        aux->cabezal_linea.ult=nuevo_linea;
+
+        cout<<linea_aux->linea_texto<<endl;
+        linea_aux=linea_aux->sig;
     }
-    ausiliar=ausiliar->sig;
-    cout<<"enTRE AL WHILE WACHOOOOO"<<endl;
-    }
-    /*ausiliar->cant_lineas=undelete->cant_lineas;
-    for(i=0; i<ausiliar->cant_lineas; i++)
-            {
-                Lineas nuevo_linea=new _nodo;
-
-                for(i=0; i<TEXTO_MAX; i++)
-                {
-                    nuevo_linea->linea_texto[i]=linea_aux->linea_texto[i];
-                }
-
-                nuevo_linea->sig=NULL;
-                nuevo_linea->ant=undelete->cabezal_linea.ult;
-
-                if(ausiliar->cabezal_linea.pri==NULL)
-                {
-                    ausiliar->cabezal_linea.pri=nuevo_linea;
-                }
-                else
-                {
-                    ausiliar->cabezal_linea.ult->sig=nuevo_linea;
-                }
-                ausiliar->cabezal_linea.ult=nuevo_linea;
-                linea_aux=linea_aux->sig;
-            }
-*/
-
-
-
-
-
-    return 2;
+    cout<<"Recuperamos el archivo eliminado recientemente, “"<<aux->nombre_ext<< "”"<<endl;
+    return 0;
 }
 
 ///BF
@@ -1518,21 +1558,5 @@ TipoRet ret_cat(Sistema *s, char parametros[])
 
 int cmd_cat(Sistema *s, char parametros[])
 {
-//  Archivos aux;
-//  int i,k;
-//  k=0;
-//  i=1;
-//    char yoleo[T_ARC_Y_EXT];
-//  char nombre_ext1[T_ARC_Y_EXT];
-//  char nombre_ext2[T_ARC_Y_EXT];
-//  aux=(*s).cabezal_archivos;
-//  while((yoleo[i]!=',')){
-//  nombre_ext1[k]=parametros[i];
-//  cout<<"puto"<<endl;
-//  i++;
-//  k++;
-//  }
-//cout<<nombre_ext1<<endl;
-//
 
 }
