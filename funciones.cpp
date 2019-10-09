@@ -337,7 +337,7 @@ Descom_param_name param_solo_name(char parametros[])
     return param;
 }
 
-Descom_param_if_ic descompone_param_de_if_ic(char parametros[])
+Descom_param_if_ic descompone_param_de_if_ic(char parametros[], Comandos cmd)
 {
     int ubc=0;
     int i=0;
@@ -345,6 +345,7 @@ Descom_param_if_ic descompone_param_de_if_ic(char parametros[])
     int j=0;
     int cant_a=0;
     int cant_ext=0;
+    int cant_texto=0;
 
     char nombre[T_ARC];
     char ext[T_EXT];
@@ -353,6 +354,7 @@ Descom_param_if_ic descompone_param_de_if_ic(char parametros[])
     bool var2=true;
     bool var3=false;
     bool no_comillas=true;
+    bool primeravez=true;
 
     Descom_param_if_ic param;
 
@@ -467,7 +469,27 @@ Descom_param_if_ic descompone_param_de_if_ic(char parametros[])
             if((parametros[w]=='"')&&(var3==false))
             {
                 var3=true;
-
+                if(primeravez==true)
+                {
+                    int y=w+1;
+                    for(y=y;y<T_ENT;y++)
+                    {
+                        if ((parametros[y]!='"')&&((primeravez==true)))
+                        {
+                            cant_texto++;
+                        }
+                        else
+                        {
+                            primeravez=false;
+                        }
+                    }
+                }
+                if(cant_texto>TEXTO_MAX)
+                {
+                    param.error=true;
+                    errores_mensajes(cmd, 1, 2);
+                    return param;
+                }
             }
             else
             {
@@ -475,12 +497,6 @@ Descom_param_if_ic descompone_param_de_if_ic(char parametros[])
                 {
                     param.linea[j]=parametros[w];
                     j++;
-                    if(j<=TEXTO_MAX)
-                    {
-                        param.error=true;
-                        errores_mensajes(IF, 1, 2);
-                        return param;
-                    }
                 }
                 else
                 {
@@ -495,6 +511,7 @@ Descom_param_if_ic descompone_param_de_if_ic(char parametros[])
     }
     else
     {
+        errores_mensajes(cmd, 1, 3);
         param.error==true;
     }
 
@@ -867,13 +884,12 @@ int cmd_if(Sistema *s, char parametros[])
     aux2=(*s).cabezal_archivos;
 
     Descom_param_if_ic param;
-    param=descompone_param_de_if_ic(parametros);
+    param=descompone_param_de_if_ic(parametros, IF);
 
     Lineas nuevo_linea=new _nodo;
 
     if(param.error==true)
     {
-        errores_mensajes(IF, 1, 3);
         return 1;
     }
 
@@ -964,13 +980,12 @@ int cmd_ic(Sistema *s, char parametros[])
     aux2=(*s).cabezal_archivos;
 
     Descom_param_if_ic param;
-    param=descompone_param_de_if_ic(parametros);
+    param=descompone_param_de_if_ic(parametros, IC);
 
     Lineas nuevo_linea=new _nodo;
 
     if(param.error==true)
     {
-        errores_mensajes(IC, 1, 3);
         return 1;
     }
 
