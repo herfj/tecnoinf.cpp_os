@@ -1518,5 +1518,21 @@ TipoRet ret_cat(Sistema *s, char parametros[])
 
 int cmd_cat(Sistema *s, char parametros[])
 {
+//  Archivos aux;
+//  int i,k;
+//  k=0;
+//  i=1;
+//    char yoleo[T_ARC_Y_EXT];
+//  char nombre_ext1[T_ARC_Y_EXT];
+//  char nombre_ext2[T_ARC_Y_EXT];
+//  aux=(*s).cabezal_archivos;
+//  while((yoleo[i]!=',')){
+//  nombre_ext1[k]=parametros[i];
+//  cout<<"puto"<<endl;
+//  i++;
+//  k++;
+//  }
+//cout<<nombre_ext1<<endl;
+//
 
 }
