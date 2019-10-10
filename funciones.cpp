@@ -39,7 +39,7 @@ bool lineas_es_vacia(CabezalLineas l)
 
 CMD_PARAM entrada()
 {
-    CMD_PARAM ent; 
+    CMD_PARAM ent;
     char cmd[T_CORT];
 
     char txt_bruto[T_ENT];//texto sin analizar, contiene comando, nombre, ubicacion
@@ -162,7 +162,7 @@ void errores_mensajes (Comandos cmd, int error, int cod)
         case IF:
             if(cod==1)
             {
-                cout << "Error: NO existe ese nombre completo en este directorio. - E" << cmd << "x" << cod << cod << cod << endl;
+                cout << "Error: NO existe un archivo con ese nombre en este directorio.  - E" << cmd << "x" << cod << cod << cod << endl;
             }
             if(cod==2)
             {
@@ -180,7 +180,7 @@ void errores_mensajes (Comandos cmd, int error, int cod)
         case IC:
             if(cod==1)
             {
-                cout << "Error: NO existe ese nombre completo en este directorio. - E" << cmd << "x" << cod << cod << cod << endl;
+                cout << "Error: NO existe un archivo con ese nombre en este directorio.  - E" << cmd << "x" << cod << cod << cod << endl;
             }
             if(cod==2)
             {
@@ -196,10 +196,10 @@ void errores_mensajes (Comandos cmd, int error, int cod)
             }
             break;
         case DELETE:
-            cout << "Error: NO existe un archivo con ese nombre.  - E" << cmd << "x" << cod << cod << cod << endl;
+            cout << "Error: NO existe un archivo con ese nombre en este directorio.  - E" << cmd << "x" << cod << cod << cod << endl;
             break;
         case TYPE:
-            cout << "Error: NO existe ese nombre completo en este directorio. - E" << cmd << "x" << cod << cod << cod << endl;
+            cout << "Error: NO existe un archivo con ese nombre en este directorio.  - E" << cmd << "x" << cod << cod << cod << endl;
             break;
         case UNDELETE:
             if(cod==0)
@@ -209,6 +209,20 @@ void errores_mensajes (Comandos cmd, int error, int cod)
             if(cod==1)
             {
                 cout << "Error: NO se puede restaurar dado que ya un archivo con el mismo nombre.  - E" << cmd << "x" << cod << cod << cod << endl;
+            }
+            break;
+        case CAT:
+            if(cod==0)
+            {
+                cout << "Error: NO existe un archivo con el primer nombre que ingreso en este directorio.  - E" << cmd << "x" << cod << cod << cod << endl;
+            }
+            if(cod==1)
+            {
+                cout << "Error: NO existe un archivo con el segundo nombre que ingreso en este directorio.  - E" << cmd << "x" << cod << cod << cod << endl;
+            }
+            if(cod==2)
+            {
+                cout << "Error: Se supera el limite de lineas a insertar  - E" << cmd << "x" << cod << cod << cod << endl;
             }
             break;
         default:
@@ -734,8 +748,9 @@ Descom_param_2name param_2_name(char parametros[])
             u++;
         }
     }
-    a1=param_solo_name(n1);
-    a2=param_solo_name(n2);
+    param.a1=param_solo_name(n1);
+    param.a2=param_solo_name(n2);
+
 
     return param;
 }
@@ -1446,7 +1461,6 @@ int cmd_undelete(Sistema *s)
 
         aux->cabezal_linea.ult=nuevo_linea;
 
-        cout<<linea_aux->linea_texto<<endl;
         linea_aux=linea_aux->sig;
     }
     cout<<"Recuperamos el archivo eliminado recientemente, “"<<aux->nombre_ext<< "”"<<endl;
@@ -1617,14 +1631,13 @@ int cmd_cat(Sistema *s, char parametros[])
     bool encontro_a1=false; //Sirve para sabersi lo encontro
     bool encontro_a2=false; //Sirve para sabersi lo encontro
 
-
     //Busca a1
     while((aux!=NULL)&&(encontro_a1==false))
     {
-        if(iguales(aux->nombre_ext,param.a2.nombre_ext))
+        if(iguales(aux->nombre_ext,param.a1.nombre_ext))
         {
             encontro_a1=true;
-            a1=aux
+            a1=aux;
         }
         aux=aux->sig;
     }
@@ -1637,17 +1650,73 @@ int cmd_cat(Sistema *s, char parametros[])
         if(iguales(aux->nombre_ext,param.a2.nombre_ext))
         {
             encontro_a2=true;
-            a2=aux
+            a2=aux;
         }
         aux=aux->sig;
     }
+
     if((encontro_a1==false)||(encontro_a2==false))
     {
-
+        if(encontro_a1==false)
+        {
+            errores_mensajes(CAT, 1, 0);
+            return 1;
+        }
+        else
+        {
+            errores_mensajes(CAT, 1, 1);
+            return 1;
+        }
     }
     else
     {
+        l_a1=a1->cabezal_linea.pri;
+        l_a2=a2->cabezal_linea.pri;
 
+        int h;
+        h=a2->cant_lineas;
+        int i;
+
+        int cant_lineas_nueva=0;
+
+        cant_lineas_nueva=a1->cant_lineas+a2->cant_lineas;
+
+        if (cant_lineas_nueva>LARGO_MAX)
+        {
+            errores_mensajes(CAT, 1, 2);
+            return 1;
+        }
+        else
+        {
+            a1->cant_lineas=cant_lineas_nueva;
+            a1->cant=a1->cant+a2->cant;
+            for(i=0; i<h; i++)
+            {
+                Lineas nuevo_linea=new _nodo;
+
+                for(int s=0; s<TEXTO_MAX; s++)
+                {
+                    nuevo_linea->linea_texto[s]=l_a2->linea_texto[s];
+                }
+
+                nuevo_linea->sig=NULL;
+                nuevo_linea->ant=aux->cabezal_linea.ult;
+
+                if(lineas_es_vacia(a1->cabezal_linea))
+                {
+                    a1->cabezal_linea.pri=nuevo_linea;
+                }
+                else
+                {
+                    a1->cabezal_linea.ult->sig=nuevo_linea;
+                }
+
+                a1->cabezal_linea.ult=nuevo_linea;
+
+                l_a2=l_a2->sig;
+            }
+        }
     }
+
     return 2;
 }
