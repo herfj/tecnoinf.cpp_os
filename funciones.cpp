@@ -39,18 +39,18 @@ bool lineas_es_vacia(CabezalLineas l)
 
 CMD_PARAM entrada()
 {
-    CMD_PARAM ent;
+    CMD_PARAM ent; 
     char cmd[T_CORT];
 
-    char txt_bruto[T_ENT];
+    char txt_bruto[T_ENT];//texto sin analizar, contiene comando, nombre, ubicacion
 
     bool var;
     var=false;
 
     int t_cor_valor=20;
-    int i=0;
-    int j;
-    int u=0;
+    int i=0; //variables para fot
+    int j;//variables para for
+    int u=0;//variables para for
     int cont;
     cont=1;
     int ubc=0; //Guarda la ultima ubicacion de: /
@@ -58,14 +58,14 @@ CMD_PARAM entrada()
     ent.cmd_correcto=false;
     for(j=0; j<T_ENT; j++)
     {
-        txt_bruto[i]=00;
+        txt_bruto[i]=00; //inicializa txt_bruto
     }
 
     cout<<"> ";
 
     cin>>cmd;
     cin.clear();
-    cin.getline(txt_bruto, T_ENT, '\n');
+    cin.getline(txt_bruto, T_ENT, '\n'); //recibe la linea que ingresa el usuario
 
     if (txt_bruto[i]==' ')
     {
@@ -76,13 +76,13 @@ CMD_PARAM entrada()
         var=true;
     }
 
-    while ((txt_bruto[i]!='\n')&&(var)&&(i<T_ENT))
+    while ((txt_bruto[i]!='\n')&&(var)&&(i<T_ENT)) //lee la linea hasta que presiona entero se supera el tamaño estipulado
     {
-        ent.parametros[u]=txt_bruto[i];
+        ent.parametros[u]=txt_bruto[i]; //guarda todos los caracteres que ingreso el usuario
         u++;
         i++;
     }
-
+ ///a continuacion compara y determina que comando ingreso el usuario
 
     if ((strcmp(cmd, "DIR"))==0)
     {
@@ -141,7 +141,7 @@ CMD_PARAM entrada()
     }
 
 
-    if(ent.cmd_correcto==false)
+    if(ent.cmd_correcto==false) //si lo ingresado no corresponde a ningun comando se muestra un error
     {
         cout<<""<<endl;
         cout<<"Error: Comando Incorrecto."<<endl;
