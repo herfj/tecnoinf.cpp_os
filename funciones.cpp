@@ -697,6 +697,48 @@ Descom_param_name_k param_name_k(char parametros[])
     return param;
 }
 
+Descom_param_2name param_2_name(char parametros[])
+{
+    int ubc=0;
+    int i=0;
+    int u=0;
+    int j=0;
+    int cant_a=0;
+    int cant_ext=0;
+
+    char nombre[T_ARC];
+    char ext[T_EXT];
+    char n1[T_ENT];
+    char n2[T_ENT];
+
+    bool var=true;
+    bool var2=true;
+
+    Descom_param_2name param;
+    Descom_param_name a1;
+    Descom_param_name a2;
+    for(i=0;i<T_ENT;i++)
+    {
+        if ((parametros[i]!=' ')&&(var==true))
+        {
+            n1[j]=parametros[i];
+            j++;
+        }
+        else
+        {
+            var=false;
+        }
+        if ((parametros[i]!=' ')&&(var==false))
+        {
+            n2[u]=parametros[i];
+            u++;
+        }
+    }
+    a1=param_solo_name(n1);
+    a2=param_solo_name(n2);
+
+    return param;
+}
 
 ///DIR
 
@@ -1558,5 +1600,54 @@ TipoRet ret_cat(Sistema *s, char parametros[])
 
 int cmd_cat(Sistema *s, char parametros[])
 {
+    Descom_param_2name param;
+    param=param_2_name(parametros);
 
+    Archivos aux; //auxiliar de busqueda
+    Archivos a1; //si se encuentra el archivo 1 se almacena en esta variable auxiliar
+    Archivos a2; //si se encuentra el archivo 2 se almacena en esta variable auxiliar
+
+    Lineas l_a1;
+    Lineas l_a2;
+
+    aux=(*s).cabezal_archivos;
+    a1=(*s).cabezal_archivos;
+    a2=(*s).cabezal_archivos;
+
+    bool encontro_a1=false; //Sirve para sabersi lo encontro
+    bool encontro_a2=false; //Sirve para sabersi lo encontro
+
+
+    //Busca a1
+    while((aux!=NULL)&&(encontro_a1==false))
+    {
+        if(iguales(aux->nombre_ext,param.a2.nombre_ext))
+        {
+            encontro_a1=true;
+            a1=aux
+        }
+        aux=aux->sig;
+    }
+
+    aux=(*s).cabezal_archivos;
+
+    //Busca a2
+    while((aux!=NULL)&&(encontro_a2==false))
+    {
+        if(iguales(aux->nombre_ext,param.a2.nombre_ext))
+        {
+            encontro_a2=true;
+            a2=aux
+        }
+        aux=aux->sig;
+    }
+    if((encontro_a1==false)||(encontro_a2==false))
+    {
+
+    }
+    else
+    {
+
+    }
+    return 2;
 }

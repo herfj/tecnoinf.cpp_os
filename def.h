@@ -56,6 +56,12 @@ typedef struct
     bool error=false;
 }Descom_param_name_k;
 
+typedef struct
+{
+    Descom_param_name a1;
+    Descom_param_name a2;
+}Descom_param_2name;
+
 //Lineas texto de los archivos
 struct _nodo{
     _nodo *ant;

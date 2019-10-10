@@ -47,15 +47,6 @@ int main()
                 cout<<""<<endl;
                 retorna=ret_delete(&s, ent.parametros);
                 cout<<""<<endl;
-
-    Lineas auxx;
-    auxx=s.cabezal_arch_D->cabezal_linea.pri;
-    while(auxx!=NULL)
-    {
-        cout<<auxx->linea_texto<<endl;
-        auxx=auxx->sig;
-    }
-
                 break;
 
             case UNDELETE:
