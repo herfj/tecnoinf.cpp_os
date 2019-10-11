@@ -168,7 +168,7 @@ void errores_mensajes (Comandos cmd, int error, int cod)
             }
             if (cod==2)
             {
-                cout << "Error: EL nombre del contiene más 3 caracteres. - E" << cmd << "x" << cod << cod << cod << endl;
+                cout << "Error: EL extension del contiene más 3 caracteres. - E" << cmd << "x" << cod << cod << cod << endl;
             }
             break;
         case IF:
@@ -365,26 +365,32 @@ Descom_param_name param_solo_name(char parametros[])
 
     for(j=0; j<T_ENT; j++)
     {
-        if ((parametros[i]==' ')||(parametros[i]=='\n'))
+        if (((parametros[i]==' ')||(parametros[i]==0))&&(i<T_ENT)&&(var==true))
         {
             var=false;
         }
         if(var==true)
         {
-            ext[r]=parametros[i];
-            i++;
-            r++;
-            cant_ext++;
+            if(cant_ext<T_EXT)
+            {
+                ext[r]=parametros[i];
+                r++;
+                i++;
+                cant_ext++;
+            }
+            else
+            {
+                errores_mensajes(CREATE, 1, 2);
+                param.error=true;
+                return param;
+            }
         }
-        if(cant_ext>T_EXT)
-        {
-            errores_mensajes(CREATE, 1, 2);
-            param.error=true;
-            return param;
-        }
+
     }
 
+
     param.cant_ayext=cant_a+cant_ext+1;
+
     for(u=0; u<cant_a; u++)
     {
         param.nombre_ext[u]=nombre[u];
@@ -907,7 +913,6 @@ int cmd_create(Sistema *s, char parametros[])
     {
         if ((es_vacia(*s))||((strcmp(param.nombre_ext,(*s).cabezal_archivos->nombre_ext))<0))
         {
-
             insert_p_a(&(*s), param.nombre_ext, param.cant_ayext);
             return 0;
         }
