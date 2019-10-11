@@ -110,6 +110,8 @@ bool iguales (char char1[], char char2[]);
 
 Descom_param_name param_solo_name(char parametros[]);
 Descom_param_if_ic descompone_param_de_if_ic(char parametros[]);
+Descom_param_name_k param_name_k(char parametros[], Comandos cmd);
+Descom_param_2name param_2_name(char parametros[]);
 
 ///DIR
 
