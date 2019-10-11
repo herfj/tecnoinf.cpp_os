@@ -380,6 +380,7 @@ Descom_param_if_ic descompone_param_de_if_ic(char parametros[], Comandos cmd)
     bool var2=true;
     bool var3=false;
     bool no_comillas=true;
+    bool no_comillas2=true;
     bool primeravez=true;
 
     Descom_param_if_ic param;
@@ -480,29 +481,39 @@ Descom_param_if_ic descompone_param_de_if_ic(char parametros[], Comandos cmd)
     j=0;
     i++;
 
-    for(int f=i; f<T_ENT; f++)
+    for(int f=0; f<T_ENT; f++)
     {
-        if(parametros[f]=='"')
+        if ((parametros[f]=='"')&&(no_comillas==true))
         {
             no_comillas=false;
         }
+        else
+        {
+            if ((parametros[f]=='"')&&(no_comillas2==true))
+            {
+                no_comillas2=false;
+            }
+        }
     }
 
-    if (no_comillas==false)
+    if ((no_comillas==false)&&(no_comillas2==false))
     {
         for(int w=i; w<T_ENT; w++)
         {
             if((parametros[w]=='"')&&(var3==false))
             {
                 var3=true;
+
                 if(primeravez==true)
                 {
                     int y=w+1;
+
                     for(y=y;y<T_ENT;y++)
                     {
                         if ((parametros[y]!='"')&&((primeravez==true)))
                         {
                             cant_texto++;
+                            param.cant_letras=cant_texto;
                         }
                         else
                         {
@@ -523,7 +534,7 @@ Descom_param_if_ic descompone_param_de_if_ic(char parametros[], Comandos cmd)
                 {
                     param.linea[j]=parametros[w];
                     j++;
-                    param.cant_letras=j;
+                    //param.cant_letras=j;
                 }
                 else
                 {
@@ -538,7 +549,7 @@ Descom_param_if_ic descompone_param_de_if_ic(char parametros[], Comandos cmd)
     else
     {
         errores_mensajes(cmd, 1, 3);
-        param.error==true;
+        param.error=true;
     }
 
     return param;
@@ -978,11 +989,6 @@ int cmd_if(Sistema *s, char parametros[])
         aux=aux->sig;
     }
 
-    if (param.cant_letras>TEXTO_MAX)
-    {
-        errores_mensajes(IF, 1, 2);
-        return 1;
-    }
     if(encontre==true)
     {
         if(aux2->cant_lineas<LARGO_MAX)
@@ -1155,7 +1161,7 @@ int cmd_type(Sistema *s, char parametros[])
 
     if (es_vacia((*s)))
     {
-        errores_mensajes(TYPE,1,1);
+        errores_mensajes(DIR,0,0);
         return 1;
     }
     else
@@ -1170,13 +1176,15 @@ int cmd_type(Sistema *s, char parametros[])
             }
             aux=aux->sig;
         }
+
         linea_aux=aux2->cabezal_linea.pri;
 
         if(encontre==true)
         {
-            if (linea_aux==NULL)
+            if ((aux2->cabezal_linea.pri==NULL)||(aux2->cant_lineas==0))
             {
                 errores_mensajes(TYPE,0,1);
+                return 0;
             }
             else
             {
