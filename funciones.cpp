@@ -157,7 +157,19 @@ void errores_mensajes (Comandos cmd, int error, int cod)
         switch(cmd)
         {
         case CREATE:
-            cout << "Error: Ya existe un archivo con ese nombre completo. - E" << cmd << "x" << cod << cod << cod << endl;
+
+            if(cod==0)
+            {
+                cout << "Error: Ya existe un archivo con ese nombre completo. - E" << cmd << "x" << cod << cod << cod << endl;
+            }
+            if(cod==1)
+            {
+                cout << "Error: EL nombre del contiene más 15 caracteres. - E" << cmd << "x" << cod << cod << cod << endl;
+            }
+            if (cod==2)
+            {
+                cout << "Error: EL nombre del contiene más 3 caracteres. - E" << cmd << "x" << cod << cod << cod << endl;
+            }
             break;
         case IF:
             if(cod==1)
@@ -280,6 +292,7 @@ Descom_param_name param_solo_name(char parametros[])
     int i=0;
     int u=0;
     int j=0;
+    int r=0;
     int cant_a=0;
     int cant_ext=0;
 
@@ -338,23 +351,36 @@ Descom_param_name param_solo_name(char parametros[])
             u++;
             cant_a++;
         }
+        if(cant_a>T_ARC)
+        {
+            errores_mensajes(CREATE, 1, 1);
+            param.error=true;
+            return param;
+        }
     }
 
     i++;
     u=0;
     var=true;
 
-    for(j=0; j<T_EXT; j++)
+    for(j=0; j<T_ENT; j++)
     {
-        if (((parametros[i]==' ')||(parametros[i]=='\n'))&&(i<T_ENT))
+        if ((parametros[i]==' ')||(parametros[i]=='\n'))
         {
             var=false;
         }
         if(var==true)
         {
-            ext[j]=parametros[i];
+            ext[r]=parametros[i];
             i++;
+            r++;
             cant_ext++;
+        }
+        if(cant_ext>T_EXT)
+        {
+            errores_mensajes(CREATE, 1, 2);
+            param.error=true;
+            return param;
         }
     }
 
@@ -623,6 +649,7 @@ Descom_param_name_k param_name_k(char parametros[], Comandos cmd)
         param.nombre_ext[j]=0;
     }
 
+
     for (j=0; j<T_ENT; j++)
     {
         if((parametros[i]=='.')&&(var2==true))
@@ -860,12 +887,17 @@ int cmd_create(Sistema *s, char parametros[])
     Descom_param_name param;
     param=param_solo_name(parametros);
 
+    if (param.error==true)
+    {
+        return 1;
+    }
+
     while(aux2!=NULL)
     {
         if ((iguales(param.nombre_ext, aux2->nombre_ext))&&(inserta==true))
         {
             inserta=false;
-            errores_mensajes(CREATE,1,1);
+            errores_mensajes(CREATE,1,0);
             return 1;
         }
         aux2=aux2->sig;

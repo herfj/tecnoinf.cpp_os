@@ -35,6 +35,7 @@ typedef struct
     int cant_ayext=0;
     char ubic[T_ENT];
     char nombre_ext[T_ARC_Y_EXT];
+    bool error=false;
 }Descom_param_name;
 
 typedef struct
