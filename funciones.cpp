@@ -234,10 +234,6 @@ void errores_mensajes (Comandos cmd, int error, int cod)
             {
                 cout << "Error: NO existe un archivo con ese nombre en este directorio.  - E" << cmd << "x" << cod << cod << cod << endl;
             }
-            if(cod==2)
-            {
-                cout << "Error: NO existe un archivo con ese nombre en este directorio.  - E" << cmd << "x" << cod << cod << cod << endl;
-            }
             break;
         default:
             cout << "Error Desconocido - E" << cod << "x" << cmd << cod << cod << endl;
@@ -1547,7 +1543,7 @@ int cmd_bf(Sistema *s, char parametros[])
 
         if (existe==false)
         {
-            errores_mensajes(BF,1, 2);
+            errores_mensajes(BF,1, 1);
         }
         else
         {
@@ -1560,8 +1556,11 @@ int cmd_bf(Sistema *s, char parametros[])
             {
                 if (aux2->cant_lineas<param.k)
                 {
-                    errores_mensajes(BF,1,1);
-                    return 1;
+                        aux2->cabezal_linea.pri=NULL;
+                        aux2->cabezal_linea.ult=NULL;
+                        aux2->cant_lineas=0;
+                        aux2->cant=0;
+                        return 0;
                 }
                 else
                 {
@@ -1571,6 +1570,7 @@ int cmd_bf(Sistema *s, char parametros[])
                         aux2->cabezal_linea.ult=NULL;
                         aux2->cant_lineas=0;
                         aux2->cant=0;
+                        return 0;
                     }
                     else
                     {
