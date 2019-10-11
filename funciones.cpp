@@ -322,7 +322,7 @@ Descom_param_name param_solo_name(char parametros[])
     }
     for(j=0; j<T_ARC_Y_EXT; j++)
     {
-        param.nombre_ext[i]=0;
+        param.nombre_ext[j]=0;
     }
 
     for (j=0; j<T_ENT; j++)
@@ -577,8 +577,6 @@ Descom_param_name_k param_name_k(char parametros[], Comandos cmd)
     int cant_a=0;
     int cant_ext=0;
 
-    int centena=-1;
-    int decena=-1;
     int unidad=-1;
     int k_cant;
 
@@ -622,7 +620,7 @@ Descom_param_name_k param_name_k(char parametros[], Comandos cmd)
     }
     for(j=0; j<T_ARC_Y_EXT; j++)
     {
-        param.nombre_ext[i]=0;
+        param.nombre_ext[j]=0;
     }
 
     for (j=0; j<T_ENT; j++)
@@ -658,39 +656,21 @@ Descom_param_name_k param_name_k(char parametros[], Comandos cmd)
         }
     }
 
-    for(i=i;i<T_ENT;i++)
+    for(int df=i;df<T_ENT;df++)
     {
-        if(parametros[i]==' ')
+        if(parametros[df]==' ')
         {
 
         }
         else
         {
-            if(((int)parametros[i]>=48)&&((int)parametros[i]<=57))
+            if((parametros[df]=='0')||(parametros[df]=='1')||(parametros[df]=='2')||(parametros[df]=='3')||(parametros[df]=='4')||(parametros[df]=='5')||(parametros[df]=='6')||(parametros[df]=='7')||(parametros[df]=='8')||(parametros[df]=='9'))
             {
                 if(k==false)
                 {
-                    unidad=parametros[i]-48;
+                    unidad=((int)parametros[df])-48;
                     k=true;
                     param.k=unidad;
-                }
-                else
-                {
-                    if(decena==-1)
-                    {
-                        decena=unidad;
-                        unidad=parametros[i]-48;
-                        param.k=(decena*10)+unidad;
-                    }
-                    else
-                    {
-                        if(centena==-1)
-                        {
-                            unidad=parametros[i]-48;
-                            centena=(param.k*10)+unidad;
-                            param.k=centena;
-                        }
-                    }
                 }
             }
         }
@@ -702,7 +682,7 @@ Descom_param_name_k param_name_k(char parametros[], Comandos cmd)
         param.error=true;
         return param;
     }
-
+    cout<<param.k<<endl;
     param.cant_ayext=cant_a+cant_ext+1;
 
     for(u=0; u<cant_a; u++)
@@ -997,6 +977,7 @@ int cmd_if(Sistema *s, char parametros[])
             aux2->cant=aux2->cant+param.cant_letras;
             nuevo_linea->sig=NULL;
             nuevo_linea->ant=aux2->cabezal_linea.ult;
+            nuevo_linea->c=param.cant_letras;
 
             if(lineas_es_vacia(aux2->cabezal_linea))
             {
@@ -1093,6 +1074,7 @@ int cmd_ic(Sistema *s, char parametros[])
             aux2->cant=aux2->cant+param.cant_letras;
             nuevo_linea->ant=NULL;
             nuevo_linea->sig=aux2->cabezal_linea.pri;
+            nuevo_linea->c=param.cant_letras;
 
             if(lineas_es_vacia(aux2->cabezal_linea))
             {
@@ -1502,6 +1484,8 @@ int cmd_bf(Sistema *s, char parametros[])
 {
     int i;
     i=0;
+    int cant_c;
+    cant_c=0;
 
     bool existe=false;
 
@@ -1534,7 +1518,6 @@ int cmd_bf(Sistema *s, char parametros[])
         {
             if(iguales(aux->nombre_ext,param.nombre_ext))
             {
-                cout<<aux->nombre_ext<<endl;
                 existe=true;
                 aux2=aux;
             }
@@ -1544,6 +1527,7 @@ int cmd_bf(Sistema *s, char parametros[])
         if (existe==false)
         {
             errores_mensajes(BF,1, 1);
+            return 1;
         }
         else
         {
@@ -1556,6 +1540,7 @@ int cmd_bf(Sistema *s, char parametros[])
             {
                 if (aux2->cant_lineas<param.k)
                 {
+
                         aux2->cabezal_linea.pri=NULL;
                         aux2->cabezal_linea.ult=NULL;
                         aux2->cant_lineas=0;
@@ -1580,11 +1565,14 @@ int cmd_bf(Sistema *s, char parametros[])
 
                         for(i=0; i<param.k; i++)
                         {
+                            cant_c=cant_c+linea_aux->c;
                             linea_aux=linea_aux->ant;
 
                             linea_aux->sig=NULL;
                         }
                         aux2->cabezal_linea.ult=linea_aux;
+                        aux2->cant_lineas=aux2->cant_lineas-param.k;
+                        aux2->cant=aux2->cant-cant_c;
                     }
                 }
             }

@@ -66,6 +66,7 @@ typedef struct
 struct _nodo{
     _nodo *ant;
     char linea_texto[TEXTO_MAX];
+    int c=0;
     _nodo *sig;
 };
 
