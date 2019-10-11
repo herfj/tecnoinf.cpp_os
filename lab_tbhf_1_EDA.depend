@@ -68,3 +68,14 @@
 1570200190 /home/tecnologo/Escritorio/EDA-1-LAB-master (2)/EDA-1-LAB-master/funciones.cpp
 	"def.h"
 
+1570827549 source:/home/gimena/Escritorio/EDA-1-LAB-master/main.cpp
+	<iostream>
+	<string.h>
+	"def.h"
+	"funciones.cpp"
+
+1570827549 /home/gimena/Escritorio/EDA-1-LAB-master/def.h
+
+1570829827 /home/gimena/Escritorio/EDA-1-LAB-master/funciones.cpp
+	"def.h"
+
