@@ -76,7 +76,7 @@ CMD_PARAM entrada()
         var=true;
     }
 
-    while ((txt_bruto[i]!='\n')&&(var)&&(i<T_ENT)) //lee la linea hasta que presiona entero se supera el tamaño estipulado
+    while ((txt_bruto[i]!='\n')&&(var)&&(i<T_ENT)) //lee la linea hasta que presiona enter o se supera el tamaño estipulado
     {
         ent.parametros[u]=txt_bruto[i]; //guarda todos los caracteres que ingreso el usuario
         u++;
@@ -385,7 +385,6 @@ Descom_param_name param_solo_name(char parametros[])
                 return param;
             }
         }
-
     }
 
 
@@ -755,6 +754,13 @@ Descom_param_2name param_2_name(char parametros[])
     Descom_param_2name param;
     Descom_param_name a1;
     Descom_param_name a2;
+
+      for(i=0;i<T_ENT;i++)
+    {
+            n1[i]=0;
+            n2[i]=0;
+    }
+
     for(i=0;i<T_ENT;i++)
     {
         if ((parametros[i]!=' ')&&(var==true))
@@ -766,16 +772,17 @@ Descom_param_2name param_2_name(char parametros[])
         {
             var=false;
         }
-        if ((parametros[i]!=' ')&&(var==false))
+        if (((parametros[i]!=' ')||(parametros[i]!=0))&&(var==false))
         {
-            n2[u]=parametros[i];
-            u++;
+            if(parametros[i]!=' ')
+            {
+                n2[u]=parametros[i];
+                u++;
+            }
         }
     }
     param.a1=param_solo_name(n1);
     param.a2=param_solo_name(n2);
-
-
     return param;
 }
 
@@ -1334,6 +1341,7 @@ int cmd_delete(Sistema *s, char parametros[])
                 {
                     nuevo_linea->linea_texto[d]=linea_aux->linea_texto[d];
                 }
+                nuevo_linea->c=linea_aux->c;
 
                 nuevo_linea->sig=NULL;
                 nuevo_linea->ant=undelete->cabezal_linea.ult;
@@ -1473,6 +1481,7 @@ int cmd_undelete(Sistema *s)
         {
             nuevo_linea->linea_texto[s]=linea_aux->linea_texto[s];
         }
+        nuevo_linea->c=linea_aux->c;
 
         nuevo_linea->sig=NULL;
         nuevo_linea->ant=aux->cabezal_linea.ult;
@@ -1784,6 +1793,7 @@ int cmd_cat(Sistema *s, char parametros[])
     //Busca a1
     while((aux!=NULL)&&(encontro_a1==false))
     {
+
         if(iguales(aux->nombre_ext,param.a1.nombre_ext))
         {
             encontro_a1=true;
@@ -1842,6 +1852,7 @@ int cmd_cat(Sistema *s, char parametros[])
             a1->cant=a1->cant+a2->cant;
             for(i=0; i<h; i++)
             {
+                cout<<"hola---"<<endl;
                 Lineas nuevo_linea=new _nodo;
 
                 for(int s=0; s<TEXTO_MAX; s++)
@@ -1849,8 +1860,11 @@ int cmd_cat(Sistema *s, char parametros[])
                     nuevo_linea->linea_texto[s]=l_a2->linea_texto[s];
                 }
 
+                cout<<"hola---qh"<<endl;
+                nuevo_linea->c=l_a2->c;
+
                 nuevo_linea->sig=NULL;
-                nuevo_linea->ant=aux->cabezal_linea.ult;
+                nuevo_linea->ant=a1->cabezal_linea.ult;
 
                 if(lineas_es_vacia(a1->cabezal_linea))
                 {
