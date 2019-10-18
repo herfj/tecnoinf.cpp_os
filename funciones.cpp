@@ -304,6 +304,11 @@ Descom_param_name param_solo_name(char parametros[])
 
     Descom_param_name param;
 
+    for(j=0; j<T_ENT; j++)
+    {
+        param.ubic[j]=0;
+    }
+
     if(parametros[0]=='/')
     {
         for(i=0; i<60; i++)
@@ -328,7 +333,6 @@ Descom_param_name param_solo_name(char parametros[])
     {
         nombre[j]=0;
     }
-
     for(j=0; j<T_EXT; j++)
     {
         ext[j]=0;
@@ -404,6 +408,7 @@ Descom_param_name param_solo_name(char parametros[])
         param.nombre_ext[u]=ext[j];
         j++;
     }
+
     return param;
 }
 
