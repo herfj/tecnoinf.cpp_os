@@ -7,7 +7,7 @@
 #define T_EXT 3
 #define T_ARC_Y_EXT 19
 #define TEXTO_MAX 50
-#define LARGO_MAX 10
+#define LARGO_MAX 9
 
 using namespace std;
 
