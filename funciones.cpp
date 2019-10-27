@@ -10,10 +10,11 @@ Sistema crear()
     Sistema aux;
     aux.cabezal_archivos=NULL;
     aux.cabezal_arch_D=NULL;
+    aux.d_primera_linea=NULL;
     return aux;
 }
 
-bool es_vacia(Sistema s)
+bool es_vacia(Sistema s) ///Tal vez debemos cambiar esto
 {
     if (s.cabezal_archivos==NULL)
     {
@@ -279,6 +280,24 @@ bool iguales (char char1[], char char2[])
     else
     {
         return false;
+    }
+}
+
+void borrar_linea(Lineas borrar, int i, int m)
+{
+    if (i<m)
+    {
+        borrar_linea(borrar->sig, i+1, m);
+        delete borrar;
+    }
+}
+
+void borrar_linea2(Lineas borrar, int i, int m)
+{
+    if (i<m)
+    {
+        borrar_linea(borrar->ant, i+1, m);
+        delete borrar;
     }
 }
 
@@ -791,6 +810,8 @@ Descom_param_2name param_2_name(char parametros[])
     return param;
 }
 
+
+
 ///DIR
 
 TipoRet ret_dir(Sistema c)
@@ -815,7 +836,6 @@ void cmd_dir(Sistema s)
         }
     }
 }
-
 
 
 
@@ -1391,6 +1411,7 @@ int cmd_delete(Sistema *s, char parametros[])
 }
 
 
+
 ///UNDELETE
 
 TipoRet ret_undelete(Sistema *s)
@@ -1609,7 +1630,6 @@ int cmd_bf(Sistema *s, char parametros[])
                     }
                     else
                     {
-
                         linea_aux=aux2->cabezal_linea.ult;
                         linea_ant=aux2->cabezal_linea.ult;
 
@@ -1617,9 +1637,11 @@ int cmd_bf(Sistema *s, char parametros[])
                         {
                             cant_c=cant_c+linea_aux->c;
                             linea_aux=linea_aux->ant;
-
-                            linea_aux->sig=NULL;
                         }
+
+                        borrar_linea(linea_aux->sig,0, param.k);
+                        linea_aux->sig=NULL;
+
                         aux2->cabezal_linea.ult=linea_aux;
                         aux2->cant_lineas=aux2->cant_lineas-param.k;
                         aux2->cant=aux2->cant-cant_c;
@@ -1628,9 +1650,10 @@ int cmd_bf(Sistema *s, char parametros[])
             }
         }
     }
-    //delete linea_aux;
-    return 2;
+    delete linea_aux;
+    return 0;
 }
+
 
 
 ///BC
@@ -1740,9 +1763,11 @@ int cmd_bc(Sistema *s, char parametros[])
                         {
                             cant_c=cant_c+linea_aux->c;
                             linea_aux=linea_aux->sig;
-
-                            linea_aux->sig=NULL;
                         }
+
+                        borrar_linea2(linea_aux->ant,0, param.k);
+                        linea_aux->ant=NULL;
+
                         aux2->cabezal_linea.pri=linea_aux;
                         aux2->cant_lineas=aux2->cant_lineas-param.k;
                         aux2->cant=aux2->cant-cant_c;
@@ -1751,9 +1776,10 @@ int cmd_bc(Sistema *s, char parametros[])
             }
         }
     }
-    //delete linea_aux;
-    return 2;
+    delete linea_aux;
+    return 0;
 }
+
 
 
 ///CAT

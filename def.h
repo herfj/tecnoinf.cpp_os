@@ -92,9 +92,19 @@ struct _nodo2{
 };
 typedef  _nodo2 *Archivos;
 
+//Nodo de DIRECTORIOS
+struct _nodo3{
+    char nombre[T_ARC];
+    Archivos cabezal_archivos;
+    _nodo3 hijo;
+    _nodo her_sig;
+};
+typedef  _nodo3 *Directorios;
+
 
 typedef struct
 {
+    Directorios d_primera_linea;
     Archivos cabezal_archivos;
     Archivos cabezal_arch_D;
 }Sistema;
@@ -107,6 +117,8 @@ bool es_vacia(Sistema c);
 CMD_PARAM entrada();
 void errores_mensajes (Comandos cmd, int error, int cod);
 bool iguales (char char1[], char char2[]);
+void borrar_linea(Lineas borrar, int i, int m);
+void borrar_linea2(Lineas borrar, int i, int m);
 
 ///Descomposicion parametro (arreglo)
 
