@@ -96,8 +96,10 @@ typedef  _nodo2 *Archivos;
 struct _nodo3{
     char nombre[T_ARC];
     Archivos cabezal_archivos;
-    _nodo3 hijo;
-    _nodo her_sig;
+    _nodo3 *hijo;
+    _nodo3 *padre;
+    _nodo3 *hermano;
+
 };
 typedef  _nodo3 *Directorios;
 

@@ -25,6 +25,18 @@ bool es_vacia(Sistema s) ///Tal vez debemos cambiar esto
         return false;
     }
 }
+bool vaciaD(Directorios D)
+{
+    if(D==NULL)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+
+}
 
 bool lineas_es_vacia(CabezalLineas l)
 {
@@ -1914,4 +1926,26 @@ int cmd_cat(Sistema *s, char parametros[])
     }
 
     return 2;
+}
+
+Directorios buscanodoD(Directorios dir, char nombrepadre[T_ARC])
+{
+
+    if(iguales(nombrepadre,dir->nombre))
+    {
+        cout<<"encontre amigo"<<endl;
+        return dir;
+    }
+    else
+    {
+        if(!vaciaD(dir))
+            {
+                return buscanodoD(dir->hijo,nombrepadre);
+            }
+        if(!vaciaD(dir))
+            {
+                return buscanodoD(dir->hermano, nombrepadre);
+            }
+    }
+
 }
