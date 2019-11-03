@@ -3,9 +3,13 @@
 
 #define T_ENT 100
 #define T_CORT 20
+//Constantes de Directorios
+#define T_DIR 15
+//Constantes de Archivos
 #define T_ARC 15
 #define T_EXT 3
 #define T_ARC_Y_EXT 19
+//Constantes de Lineas
 #define TEXTO_MAX 50
 #define LARGO_MAX 9
 
@@ -15,7 +19,7 @@ using namespace std;
 ///Enum
 
 typedef enum _Comandos{
-    DIR, CREATE, DELETE, UNDELETE, IC, TYPE, IF, BC, BF, CAT
+    DIR, CREATE, DELETE, UNDELETE, IC, TYPE, IF, BC, BF, CAT, MKDIR, CD, PWD, RMDIR, COPY
 }Comandos;
 
 typedef enum _TipoRet{
@@ -63,7 +67,7 @@ typedef struct
     Descom_param_name a2;
 }Descom_param_2name;
 
-//Lineas texto de los archivos
+//Nodo de LINEAS de Archivos
 struct _nodo{
     _nodo *ant;
     char linea_texto[TEXTO_MAX];
@@ -82,7 +86,7 @@ struct _cabezalineas
 typedef struct _cabezalineas CabezalLineas;
 
 
-//Nodo de archivo
+//Nodo de ARCHIVOS
 struct _nodo2{
     char nombre_ext[T_ARC_Y_EXT];
     CabezalLineas cabezal_linea;
@@ -94,12 +98,12 @@ typedef  _nodo2 *Archivos;
 
 //Nodo de DIRECTORIOS
 struct _nodo3{
-    char nombre[T_ARC];
+    char nombre[T_DIR];
+    int cota;
+    int tamanio;
     Archivos cabezal_archivos;
-    _nodo3 *hijo;
-    _nodo3 *padre;
-    _nodo3 *hermano;
-
+    _nodo3 hijo;
+    _nodo her_sig;
 };
 typedef  _nodo3 *Directorios;
 
@@ -180,4 +184,34 @@ int cmd_bc(Sistema *s, char parametros[]);
 
 TipoRet ret_cat(Sistema *s, char parametros[]);
 int cmd_cat(Sistema *s, char parametros[]);
+
+///MKDIR
+
+TipoRet ret_mkdir(Sistema *s, char parametros[]);
+
+int cmd_mkdir(Sistema *s, char parametros[]);
+
+
+///CD 
+
+TipoRet ret_cd(Sistema *s, char parametros[]);
+
+///PWD
+
+TipoRet ret_pwd(Sistema *s, char parametros[]);
+
+int cmd_pwd(Sistema *s, char parametros[]);
+
+///RMDIR
+
+TipoRet ret_rmdir(Sistema *s, char parametros[]);
+
+int cmd_rmdir(Sistema *s, char parametros[]);
+
+//COPY
+
+TipoRet ret_copy(Sistema *s, char parametros[]);
+
+int cmd_copy(Sistema *s, char parametros[]);
+
 #endif // DEF_H_INCLUDED

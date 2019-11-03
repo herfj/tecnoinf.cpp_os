@@ -2,53 +2,19 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Release" />
+	<File name="funciones.cpp" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="39987" topLine="1878" />
+		</Cursor>
+	</File>
+	<File name="def.h" open="1" top="1" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="590" topLine="19" />
+		</Cursor>
+	</File>
 	<File name="main.cpp" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="1505" topLine="13" />
-		</Cursor>
-	</File>
-	<File name="funciones.cpp" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="40308" topLine="395" />
-		</Cursor>
-		<Folding>
-			<Collapse line="8" />
-			<Collapse line="166" />
-			<Collapse line="286" />
-			<Collapse line="298" />
-			<Collapse line="307" />
-			<Collapse line="320" />
-			<Collapse line="446" />
-			<Collapse line="638" />
-			<Collapse line="773" />
-			<Collapse line="829" />
-			<Collapse line="835" />
-			<Collapse line="856" />
-			<Collapse line="875" />
-			<Collapse line="894" />
-			<Collapse line="920" />
-			<Collapse line="998" />
-			<Collapse line="1016" />
-			<Collapse line="1090" />
-			<Collapse line="1108" />
-			<Collapse line="1188" />
-			<Collapse line="1206" />
-			<Collapse line="1278" />
-			<Collapse line="1296" />
-			<Collapse line="1305" />
-			<Collapse line="1320" />
-			<Collapse line="1429" />
-			<Collapse line="1447" />
-			<Collapse line="1548" />
-			<Collapse line="1566" />
-			<Collapse line="1673" />
-			<Collapse line="1691" />
-			<Collapse line="1799" />
-		</Folding>
-	</File>
-	<File name="def.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1483" topLine="51" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>

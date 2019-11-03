@@ -1,3 +1,5 @@
+///Hernán Fbrica & Tomas Baute
+
 #include "def.h"
 
 using namespace std;
@@ -24,18 +26,6 @@ bool es_vacia(Sistema s) ///Tal vez debemos cambiar esto
     {
         return false;
     }
-}
-bool vaciaD(Directorios D)
-{
-    if(D==NULL)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-
 }
 
 bool lineas_es_vacia(CabezalLineas l)
@@ -313,6 +303,27 @@ void borrar_linea2(Lineas borrar, int i, int m)
     }
 }
 
+Directorios buscanodoD(Directorios dir, char nombrepadre[])
+{
+
+    if(iguales(nombrepadre,dir->nombre))
+    {
+        cout<<"encontre amigo"<<endl;
+        return dir;
+    }
+    else
+    {
+        if(!vaciaD(dir))
+            {
+                return buscanodoD(dir->hijo,nombrepadre);
+            }
+        if(!vaciaD(dir))
+            {
+                return buscanodoD(dir->hermano, nombrepadre);
+            }
+    }
+
+}
 
 
 ///Descompocion de parametro (otorgando los datos para cada funcion)
@@ -1928,24 +1939,139 @@ int cmd_cat(Sistema *s, char parametros[])
     return 2;
 }
 
-Directorios buscanodoD(Directorios dir, char nombrepadre[T_ARC])
+
+
+///MKDIR
+
+TipoRet ret_mkdir(Sistema *s, char parametros[])
 {
-
-    if(iguales(nombrepadre,dir->nombre))
+    int r;
+    r=cmd_mkdir(&*s, parametros);
+    switch(r)
     {
-        cout<<"encontre amigo"<<endl;
-        return dir;
+    case 0:
+        return OK;
+        break;
+    case 1:
+        return ERROR;
+        break;
+    case 2:
+        return NO_IMPLEMENTADO;
+        break;
     }
-    else
-    {
-        if(!vaciaD(dir))
-            {
-                return buscanodoD(dir->hijo,nombrepadre);
-            }
-        if(!vaciaD(dir))
-            {
-                return buscanodoD(dir->hermano, nombrepadre);
-            }
-    }
-
 }
+
+int cmd_mkdir(Sistema *s, char parametros[])
+{
+    return 2;
+}
+
+
+
+///CD 
+
+TipoRet ret_cd(Sistema *s, char parametros[])
+{
+    int r;
+    r=cmd_cd(&*s, parametros);
+    switch(r)
+    {
+    case 0:
+        return OK;
+        break;
+    case 1:
+        return ERROR;
+        break;
+    case 2:
+        return NO_IMPLEMENTADO;
+        break;
+    }
+}
+
+int cmd_cd(Sistema *s, char parametros[])
+{
+    return 2;
+}
+
+
+
+///PWD
+
+TipoRet ret_pwd(Sistema *s, char parametros[])
+{
+    int r;
+    r=cmd_pwd(&*s, parametros);
+    switch(r)
+    {
+    case 0:
+        return OK;
+        break;
+    case 1:
+        return ERROR;
+        break;
+    case 2:
+        return NO_IMPLEMENTADO;
+        break;
+    }
+}
+
+int cmd_pwd(Sistema *s, char parametros[])
+{
+    return 2;
+}
+
+
+
+///RMDIR
+
+TipoRet ret_rmdir(Sistema *s, char parametros[])
+{
+    int r;
+    r=cmd_rmdir(&*s, parametros);
+    switch(r)
+    {
+    case 0:
+        return OK;
+        break;
+    case 1:
+        return ERROR;
+        break;
+    case 2:
+        return NO_IMPLEMENTADO;
+        break;
+    }
+}
+
+int cmd_rmdir(Sistema *s, char parametros[])
+{
+    return 2;
+}
+
+
+
+//COPY
+
+TipoRet ret_copy(Sistema *s, char parametros[])
+{
+    int r;
+    r=cmd_copy(&*s, parametros);
+    switch(r)
+    {
+    case 0:
+        return OK;
+        break;
+    case 1:
+        return ERROR;
+        break;
+    case 2:
+        return NO_IMPLEMENTADO;
+        break;
+    }
+}
+
+int cmd_copy(Sistema *s, char parametros[])
+{
+    return 2;
+}
+
+
