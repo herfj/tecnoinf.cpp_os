@@ -38,6 +38,8 @@ typedef struct
 {
     int cant_ayext=0;
     char ubic[T_ENT];
+    bool absoluta;
+    bool hay_ubc;
     char nombre_ext[T_ARC_Y_EXT];
     bool error=false;
 }Descom_param_name;
@@ -47,6 +49,8 @@ typedef struct
     int cant_ayext=0;
     int cant_letras=0;
     char ubic[T_ENT];
+    bool absoluta;
+    bool hay_ubc;
     char nombre_ext[T_ARC_Y_EXT];
     char linea[TEXTO_MAX];
     bool error=false;
@@ -56,6 +60,8 @@ typedef struct
 {
     int cant_ayext=0;
     char ubic[T_ENT];
+    bool absoluta;
+    bool hay_ubc;
     char nombre_ext[T_ARC_Y_EXT];
     int k;
     bool error=false;
@@ -102,15 +108,16 @@ struct _nodo3{
     int cota;
     int tamanio;
     Archivos cabezal_archivos;
-    _nodo3 hijo;
-    _nodo her_sig;
+    _nodo3 *hijo;
+    _nodo3 *hermano;
+    _nodo3 *padre;
 };
 typedef  _nodo3 *Directorios;
 
 
 typedef struct
 {
-    Directorios d_primera_linea;
+    //Directorios RAIZ;
     Archivos cabezal_archivos;
     Archivos cabezal_arch_D;
 }Sistema;
@@ -192,7 +199,7 @@ TipoRet ret_mkdir(Sistema *s, char parametros[]);
 int cmd_mkdir(Sistema *s, char parametros[]);
 
 
-///CD 
+///CD
 
 TipoRet ret_cd(Sistema *s, char parametros[]);
 

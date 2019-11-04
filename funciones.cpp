@@ -12,13 +12,25 @@ Sistema crear()
     Sistema aux;
     aux.cabezal_archivos=NULL;
     aux.cabezal_arch_D=NULL;
-    aux.d_primera_linea=NULL;
+
     return aux;
 }
 
 bool es_vacia(Sistema s) ///Tal vez debemos cambiar esto
 {
     if (s.cabezal_archivos==NULL)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool es_vaciaD(Directorios s) ///Tal vez debemos cambiar esto
+{
+    if (s==NULL)
     {
         return true;
     }
@@ -303,27 +315,27 @@ void borrar_linea2(Lineas borrar, int i, int m)
     }
 }
 
-Directorios buscanodoD(Directorios dir, char nombrepadre[])
-{
-
-    if(iguales(nombrepadre,dir->nombre))
-    {
-        cout<<"encontre amigo"<<endl;
-        return dir;
-    }
-    else
-    {
-        if(!vaciaD(dir))
-            {
-                return buscanodoD(dir->hijo,nombrepadre);
-            }
-        if(!vaciaD(dir))
-            {
-                return buscanodoD(dir->hermano, nombrepadre);
-            }
-    }
-
-}
+//Directorios buscanodoD(Directorios dir, char nombrepadre[])
+//{
+//
+//    if(iguales(nombrepadre,dir->nombre))
+//    {
+//        cout<<"encontre amigo"<<endl;
+//        return dir;
+//    }
+//    else
+//    {
+//        if(!es_vaciaD(dir->hijo))
+//            {
+//                return buscanodoD(dir->hijo,nombrepadre);
+//            }
+//        if(!es_vaciaD(dir->hermano))
+//            {
+//                return buscanodoD(dir->hermano, nombrepadre);
+//            }
+//    }
+//
+//}
 
 
 ///Descompocion de parametro (otorgando los datos para cada funcion)
@@ -345,15 +357,31 @@ Descom_param_name param_solo_name(char parametros[])
     bool var2=true;
 
     Descom_param_name param;
+    param.hay_ubc=false;
+    param.absoluta=false;
+
 
     for(j=0; j<T_ENT; j++)
     {
         param.ubic[j]=0;
     }
 
-    if(parametros[0]=='/')
+    for(j=0; j<T_ENT; j++)
     {
-        for(i=0; i<60; i++)
+        if (parametros[j]=='/')
+        {
+            param.hay_ubc=true;
+        }
+    }
+
+    if(param.hay_ubc==true)
+    {
+        if(parametros[0]=='/')
+        {
+            param.absoluta=true;
+        }
+
+        for(i=0; i<T_ENT; i++)
         {
             if(parametros[i]=='"')
             {
@@ -450,7 +478,7 @@ Descom_param_name param_solo_name(char parametros[])
         param.nombre_ext[u]=ext[j];
         j++;
     }
-
+    cout<<param.ubic<<endl;
     return param;
 }
 
@@ -1968,12 +1996,12 @@ int cmd_mkdir(Sistema *s, char parametros[])
 
 
 
-///CD 
+///CD
 
 TipoRet ret_cd(Sistema *s, char parametros[])
 {
     int r;
-    r=cmd_cd(&*s, parametros);
+//    r=cmd_cd(&*s, parametros);
     switch(r)
     {
     case 0:
