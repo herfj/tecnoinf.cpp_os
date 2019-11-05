@@ -34,6 +34,7 @@ typedef struct
     bool cmd_correcto;
 }CMD_PARAM;
 
+//Partes de Archivo solo nombre y ext
 typedef struct
 {
     int cant_ayext=0;
@@ -73,6 +74,18 @@ typedef struct
     Descom_param_name a2;
 }Descom_param_2name;
 
+//Partes de Directorio solo nombre
+typedef struct
+{
+    int cant=0;
+    char ubic[T_ENT];
+    bool absoluta;
+    bool hay_ubc;
+    char nombre[T_DIR];
+    bool error=false;
+}Descom_param_name_D;
+
+
 //Nodo de LINEAS de Archivos
 struct _nodo{
     _nodo *ant;
@@ -107,6 +120,7 @@ struct _nodo3{
     char nombre[T_DIR];
     int cota;
     int tamanio;
+    bool tiene_cota;
     Archivos cabezal_archivos;
     _nodo3 *hijo;
     _nodo3 *hermano;
@@ -117,8 +131,7 @@ typedef  _nodo3 *Directorios;
 
 typedef struct
 {
-    //Directorios RAIZ;
-    Archivos cabezal_archivos;
+    Directorios RAIZ;
     Archivos cabezal_arch_D;
 }Sistema;
 

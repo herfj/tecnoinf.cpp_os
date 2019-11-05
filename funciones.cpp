@@ -10,15 +10,27 @@ using namespace std;
 Sistema crear()
 {
     Sistema aux;
-    aux.cabezal_archivos=NULL;
+    aux.RAIZ=new _nodo3;
+    aux.RAIZ->hermano=NULL;
+    aux.RAIZ->padre=NULL;
     aux.cabezal_arch_D=NULL;
 
     return aux;
 }
 
-bool es_vacia(Sistema s) ///Tal vez debemos cambiar esto
+bool es_raiz(Directorios s)
 {
-    if (s.cabezal_archivos==NULL)
+    if((s->padre==NULL)&&(s->hermano==NULL)){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+bool es_vacia(Sistema s)
+{
+    if (s.RAIZ==NULL)
     {
         return true;
     }
@@ -28,9 +40,21 @@ bool es_vacia(Sistema s) ///Tal vez debemos cambiar esto
     }
 }
 
-bool es_vaciaD(Directorios s) ///Tal vez debemos cambiar esto
+bool es_vaciaD(Directorios s)
 {
     if (s==NULL)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool es_vaciaA(Archivos a)
+{
+    if (a==NULL)
     {
         return true;
     }
@@ -154,8 +178,31 @@ CMD_PARAM entrada()
         ent.cmd=CAT;
         ent.cmd_correcto=true;
     }
-
-
+    if ((strcmp(cmd, "MKDIR"))==0)
+    {
+        ent.cmd=MKDIR;
+        ent.cmd_correcto=true;
+    }
+    if ((strcmp(cmd, "CD"))==0)
+    {
+        ent.cmd=CD;
+        ent.cmd_correcto=true;
+    }
+    if ((strcmp(cmd, "PWD"))==0)
+    {
+        ent.cmd=PWD;
+        ent.cmd_correcto=true;
+    }
+    if ((strcmp(cmd, "RMDIR"))==0)
+    {
+        ent.cmd=RMDIR;
+        ent.cmd_correcto=true;
+    }
+    if ((strcmp(cmd, "COPY"))==0)
+    {
+        ent.cmd=COPY;
+        ent.cmd_correcto=true;
+    }
     if(ent.cmd_correcto==false) //si lo ingresado no corresponde a ningun comando se muestra un error
     {
         cout<<""<<endl;
@@ -338,7 +385,7 @@ void borrar_linea2(Lineas borrar, int i, int m)
 //}
 
 
-///Descompocion de parametro (otorgando los datos para cada funcion)
+///Descompocion de parametros PARA ARCHIVOS (otorgando los datos para cada funcion)
 
 Descom_param_name param_solo_name(char parametros[])
 {
@@ -478,11 +525,11 @@ Descom_param_name param_solo_name(char parametros[])
         param.nombre_ext[u]=ext[j];
         j++;
     }
-    cout<<param.ubic<<endl;
+
     return param;
 }
 
-Descom_param_if_ic descompone_param_de_if_ic(char parametros[], Comandos cmd)
+Descom_param_if_ic param_de_if_ic(char parametros[], Comandos cmd)
 {
     int ubc=0;
     int i=0;
@@ -508,10 +555,22 @@ Descom_param_if_ic descompone_param_de_if_ic(char parametros[], Comandos cmd)
     {
         param.ubic[j]=0;
     }
-
-    if(parametros[0]=='/')
+    for(j=0; j<T_ENT; j++)
     {
-        for(i=0; i<60; i++)
+        if (parametros[j]=='/')
+        {
+            param.hay_ubc=true;
+        }
+    }
+
+    if(param.hay_ubc==true)
+    {
+        if(parametros[0]=='/')
+        {
+            param.absoluta=true;
+        }
+
+        for(i=0; i<T_ENT; i++)
         {
             if(parametros[i]=='"')
             {
@@ -528,6 +587,7 @@ Descom_param_if_ic descompone_param_de_if_ic(char parametros[], Comandos cmd)
         }
         i=ubc+1;
     }
+
 
     for(j=0; j<T_ARC; j++)
     {
@@ -695,9 +755,22 @@ Descom_param_name_k param_name_k(char parametros[], Comandos cmd)
 
     Descom_param_name_k param;
 
-    if(parametros[0]=='/')
+for(j=0; j<T_ENT; j++)
     {
-        for(i=0; i<60; i++)
+        if (parametros[j]=='/')
+        {
+            param.hay_ubc=true;
+        }
+    }
+
+    if(param.hay_ubc==true)
+    {
+        if(parametros[0]=='/')
+        {
+            param.absoluta=true;
+        }
+
+        for(i=0; i<T_ENT; i++)
         {
             if(parametros[i]=='"')
             {
@@ -714,6 +787,7 @@ Descom_param_name_k param_name_k(char parametros[], Comandos cmd)
         }
         i=ubc+1;
     }
+
 
     for(j=0; j<T_ARC; j++)
     {
@@ -861,6 +935,105 @@ Descom_param_2name param_2_name(char parametros[])
     return param;
 }
 
+///Descompocion de parametros PARA DIRECTORIOS (otorgando los datos para cada funcion)
+
+Descom_param_name_D param_solo_name_D(char parametros[])
+{
+    int ubc=0;
+    int i=0;
+    int u=0;
+    int j=0;
+    int r=0;
+    int cant=0;
+
+    char nombre[T_DIR];
+
+
+    bool var=true;
+    bool var2=true;
+
+    Descom_param_name_D param;
+    param.hay_ubc=false;
+    param.absoluta=false;
+
+
+    for(j=0; j<T_ENT; j++)
+    {
+        param.ubic[j]=0;
+    }
+
+    for(j=0; j<T_ENT; j++)
+    {
+        if (parametros[j]=='/')
+        {
+            param.hay_ubc=true;
+        }
+    }
+
+    if(param.hay_ubc==true)
+    {
+        if(parametros[0]=='/')
+        {
+            param.absoluta=true;
+        }
+
+        for(i=0; i<T_ENT; i++)
+        {
+            if(parametros[i]=='"')
+            {
+                var=false;
+            }
+            if ((parametros[i]=='/')&&(var==true))
+            {
+                ubc=i;
+            }
+        }
+        for(i=0; i<=ubc; i++)
+        {
+            param.ubic[i]=parametros[i];
+        }
+        i=ubc+1;
+    }
+
+    for(j=0; j<T_DIR; j++)
+    {
+        nombre[j]=0;
+    }
+
+
+    for (j=0; j<T_ENT; j++)
+    {
+        if(((parametros[i]==' ')||(parametros[i]==0))&&(var2==true))
+        {
+            var2=false;
+        }
+        if(var2==true)
+        {
+            nombre[u]=parametros[i];
+            i++;
+            u++;
+            cant++;
+        }
+        if(cant>T_DIR)
+        {
+            errores_mensajes(CREATE, 1, 1);
+            param.error=true;
+            return param;
+        }
+    }
+
+    u=0;
+    var=true;
+
+    param.cant_ayext=cant_a+cant_ext+1;
+
+    for(u=0; u<cant; u++)
+    {
+        param.nombre[u]=nombre[u];
+    }
+    return param;
+}
+
 
 
 ///DIR
@@ -871,19 +1044,28 @@ TipoRet ret_dir(Sistema c)
     return OK;
 }
 
-void cmd_dir(Sistema s)
+void cmd_dir(Sistema s, Directorios aux)
 {
 
-    if (es_vacia(s))
+    if ((es_vaciaA(aux->cabezal_archivos))&&(es_vaciaD(aux)))
     {
         errores_mensajes(DIR, 0,0);
     }
     else
     {
-        while (!(es_vacia(s)))
+        while (!(es_vaciaA(aux->cabezal_archivos)))
         {
-            cout << s.cabezal_archivos->nombre_ext <<"     Archivo     " << s.cabezal_archivos->cant << endl;
-            s.cabezal_archivos=s.cabezal_archivos->sig;
+            cout << aux->cabezal_archivos->nombre_ext <<"     Archivo     " << aux->cabezal_archivos->cant << endl;
+            aux->cabezal_archivos=aux->cabezal_archivos->sig;
+        }
+        if (!(es_vaciaD(aux->hijo)))
+        {
+            aux=aux->hijo;
+            while (!(es_vaciaA(aux->cabezal_archivos)))
+            {
+                cout << aux->nombre <<"     Directorio     "<< aux->tamanio << endl;
+                aux0=aux->hermano;
+            }
         }
     }
 }
@@ -1991,6 +2173,23 @@ TipoRet ret_mkdir(Sistema *s, char parametros[])
 
 int cmd_mkdir(Sistema *s, char parametros[])
 {
+    Directorios nuevo=new _nodo3;
+    Directorios padre;
+
+    Descom_param_name_D param;
+
+    param=param_solo_name_D(parametros);
+
+    if(param.hay_ubc==true)
+    {
+        ///mueve ubic
+        ///ubic
+    }
+    if(es_vaciaD(padre->hijo))
+    {
+        padre->hijo=nuevo;
+    }
+
     return 2;
 }
 
@@ -2077,7 +2276,7 @@ int cmd_rmdir(Sistema *s, char parametros[])
 
 
 
-//COPY
+///COPY
 
 TipoRet ret_copy(Sistema *s, char parametros[])
 {

@@ -90,6 +90,36 @@ int main()
                 retorna=ret_cat(&s, ent.parametros);
                 cout<<""<<endl;
                 break;
+            case MKDIR:
+                cout<<""<<endl;
+                retorna=ret_mkdir(&s, ent.parametros);
+                cout<<"No IMPLEMENTADO"<<endl;
+                cout<<""<<endl;
+                break;
+            case CD:
+                cout<<""<<endl;
+                retorna=ret_cd(&s, ent.parametros);
+                cout<<"No IMPLEMENTADO"<<endl;
+                cout<<""<<endl;
+                break;
+            case PWD:
+                cout<<""<<endl;
+                retorna=ret_pwd(&s, ent.parametros);
+                cout<<"No IMPLEMENTADO"<<endl;
+                cout<<""<<endl;
+                break;
+            case RMDIR:
+                cout<<""<<endl;
+                retorna=ret_rmdir(&s, ent.parametros);
+                cout<<"No IMPLEMENTADO"<<endl;
+                cout<<""<<endl;
+                break;
+            case COPY:
+                cout<<""<<endl;
+                retorna=ret_copy(&s, ent.parametros);
+                cout<<"No IMPLEMENTADO"<<endl;
+                cout<<""<<endl;
+                break;
             }
         }
     }
