@@ -26,7 +26,7 @@ typedef enum _TipoRet{
     OK,ERROR,NO_IMPLEMENTADO
 }TipoRet;
 
-
+//CMD y PARAM
 typedef struct
 {
     Comandos cmd;
@@ -34,13 +34,15 @@ typedef struct
     bool cmd_correcto;
 }CMD_PARAM;
 
-//Partes de Archivo solo nombre y ext
+///Partes de Archivo solo nombre y ext
+
 typedef struct
 {
     int cant_ayext=0;
     char ubic[T_ENT];
     bool absoluta;
     bool hay_ubc;
+    bool es_raiz;
     char nombre_ext[T_ARC_Y_EXT];
     bool error=false;
 }Descom_param_name;
@@ -52,6 +54,7 @@ typedef struct
     char ubic[T_ENT];
     bool absoluta;
     bool hay_ubc;
+    bool es_raiz;
     char nombre_ext[T_ARC_Y_EXT];
     char linea[TEXTO_MAX];
     bool error=false;
@@ -63,6 +66,7 @@ typedef struct
     char ubic[T_ENT];
     bool absoluta;
     bool hay_ubc;
+    bool es_raiz;
     char nombre_ext[T_ARC_Y_EXT];
     int k;
     bool error=false;
@@ -74,19 +78,20 @@ typedef struct
     Descom_param_name a2;
 }Descom_param_2name;
 
-//Partes de Directorio solo nombre
+///Partes de Directorio solo nombre
+
 typedef struct
 {
     int cant=0;
     char ubic[T_ENT];
     bool absoluta;
     bool hay_ubc;
+    bool es_raiz;
     char nombre[T_DIR];
     bool error=false;
 }Descom_param_name_D;
 
-
-//Nodo de LINEAS de Archivos
+///Nodo de LINEAS de Archivos
 struct _nodo{
     _nodo *ant;
     char linea_texto[TEXTO_MAX];
@@ -104,8 +109,7 @@ struct _cabezalineas
 };
 typedef struct _cabezalineas CabezalLineas;
 
-
-//Nodo de ARCHIVOS
+///Nodo de ARCHIVOS
 struct _nodo2{
     char nombre_ext[T_ARC_Y_EXT];
     CabezalLineas cabezal_linea;
@@ -115,7 +119,7 @@ struct _nodo2{
 };
 typedef  _nodo2 *Archivos;
 
-//Nodo de DIRECTORIOS
+///Nodo de DIRECTORIOS
 struct _nodo3{
     char nombre[T_DIR];
     int cota;
@@ -128,11 +132,19 @@ struct _nodo3{
 };
 typedef  _nodo3 *Directorios;
 
+typedef struct
+{
+    Directorios *Padre;
+    bool es_raiz;
+    bool no_se_encontro;
+}Ubicacion;
 
+///Sistema
 typedef struct
 {
     Directorios RAIZ;
     Archivos cabezal_arch_D;
+    Directorios actual;
 }Sistema;
 
 
@@ -153,10 +165,14 @@ Descom_param_if_ic descompone_param_de_if_ic(char parametros[]);
 Descom_param_name_k param_name_k(char parametros[], Comandos cmd);
 Descom_param_2name param_2_name(char parametros[]);
 
+///Descompocion de parametros PARA DIRECTORIOS (otorgando los datos para cada funcion)
+
+Descom_param_name_D param_solo_name_D(char parametros[]);
+
 ///DIR
 
-TipoRet ret_dir(Sistema c);
-void cmd_dir(Sistema c);
+TipoRet ret_dir(Sistema s);
+void cmd_dir(Sistema s);
 
 ///CREATE
 

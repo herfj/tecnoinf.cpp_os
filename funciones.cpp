@@ -14,6 +14,7 @@ Sistema crear()
     aux.RAIZ->hermano=NULL;
     aux.RAIZ->padre=NULL;
     aux.cabezal_arch_D=NULL;
+    aux.actual=aux.RAIZ;
 
     return aux;
 }
@@ -384,6 +385,104 @@ void borrar_linea2(Lineas borrar, int i, int m)
 //
 //}
 
+///FALta cuando la ruta no es absoluta
+Ubicacion mueve_nodo(Directorios dir,char ubic[], bool absoluta)
+{
+    int i; i=0;
+    int u; u=0;
+    int j; j=0;
+    int ubc; ubc=0; //guarda la nueva ubicacion de /
+
+    bool termina=false;
+    bool b1=false; //bool 1
+
+    Directorios hijo;
+
+    Ubicacion retorno;
+
+    retorno.no_se_encontro=false;
+    retorno.es_raiz=false;
+
+    char nombre_dir[T_DIR];
+    char nueva_ubic[T_ENT];
+
+    for(j=0;j<T_DIR;j++)
+    {
+        nombre_dir[j]=0;
+    }
+
+    for(j=0;j<T_ENT;j++)
+    {
+        nueva_ubic[j]=0;
+    }
+
+    if(absoluta==true)
+    {
+        if(ubic[0]=='/')
+        {
+            i++;
+        }
+        while ((ubic[i]!='/')&&(b1==false))
+        {
+            if ((u<T_DIR)||(ubic[i]!=0))
+            {
+                nombre_dir[u]=ubic[i];
+                i++;
+                u++;
+            }
+            else
+            {
+                b1=true;
+            }
+        }
+
+        if (b1==true)
+        {
+            ///TERMINO
+        }
+        else
+        {
+             u=0;
+
+            for(int f=i;f<T_ENT;f++)
+            {
+                nueva_ubic[u]=ubic[f];
+                u++;
+            }
+
+            if (es_vaciaD(dir->hijo))
+            {
+                ///ERROR
+            }
+            else
+            {
+                hijo=dir->hijo;
+
+                while ((hijo->hermano!=NULL)||(termina==false))
+                {
+                    if (iguales(hijo->nombre, nombre_dir))
+                    {
+                        mueve_nodo(hijo, nueva_ubic,absoluta);
+                        termina=true;
+                    }
+                    else
+                    {
+                        hijo=hijo->hermano;
+                    }
+                }
+                if((hijo->hermano!=NULL)&&(termina==false))
+                {
+                    retorno.no_se_encontro=true;
+                }
+            }
+        }
+    }
+    else
+    {
+
+    }
+}
+
 
 ///Descompocion de parametros PARA ARCHIVOS (otorgando los datos para cada funcion)
 
@@ -524,6 +623,17 @@ Descom_param_name param_solo_name(char parametros[])
     {
         param.nombre_ext[u]=ext[j];
         j++;
+    }
+
+    if(iguales(param.ubic, "/"))
+    {
+        param.es_raiz=true;
+        cout<<"raiz papuuu"<<endl;
+    }
+    else
+    {
+        param.es_raiz=false;
+        cout<<"NO ES raiz papuuu"<<endl;
     }
 
     return param;
@@ -731,6 +841,17 @@ Descom_param_if_ic param_de_if_ic(char parametros[], Comandos cmd)
         param.error=true;
     }
 
+    if(iguales(param.ubic, "/"))
+    {
+        param.es_raiz=true;
+        cout<<"raiz papuuu"<<endl;
+    }
+    else
+    {
+        param.es_raiz=false;
+        cout<<"NO ES raiz papuuu"<<endl;
+    }
+
     return param;
 }
 
@@ -880,6 +1001,17 @@ for(j=0; j<T_ENT; j++)
         j++;
     }
 
+    if(iguales(param.ubic, "/"))
+    {
+        param.es_raiz=true;
+        cout<<"raiz papuuu"<<endl;
+    }
+    else
+    {
+        param.es_raiz=false;
+        cout<<"NO ES raiz papuuu"<<endl;
+    }
+
     return param;
 }
 
@@ -1025,11 +1157,20 @@ Descom_param_name_D param_solo_name_D(char parametros[])
     u=0;
     var=true;
 
-    param.cant_ayext=cant_a+cant_ext+1;
-
     for(u=0; u<cant; u++)
     {
         param.nombre[u]=nombre[u];
+    }
+
+    if(iguales(param.ubic, "/"))
+    {
+        param.es_raiz=true;
+        cout<<"raiz papuuu"<<endl;
+    }
+    else
+    {
+        param.es_raiz=false;
+        cout<<"NO ES raiz papuuu"<<endl;
     }
     return param;
 }
@@ -1038,16 +1179,18 @@ Descom_param_name_D param_solo_name_D(char parametros[])
 
 ///DIR
 
-TipoRet ret_dir(Sistema c)
+TipoRet ret_dir(Sistema s)
 {
-    cmd_dir(c);
+    cmd_dir(s);
     return OK;
 }
 
-void cmd_dir(Sistema s, Directorios aux)
+void cmd_dir(Sistema s)
 {
+    Directorios aux;
+    aux=s.actual;
 
-    if ((es_vaciaA(aux->cabezal_archivos))&&(es_vaciaD(aux)))
+    if ((es_vaciaA(aux->cabezal_archivos))&&(es_vaciaD(aux->hijo)))
     {
         errores_mensajes(DIR, 0,0);
     }
@@ -1064,12 +1207,12 @@ void cmd_dir(Sistema s, Directorios aux)
             while (!(es_vaciaA(aux->cabezal_archivos)))
             {
                 cout << aux->nombre <<"     Directorio     "<< aux->tamanio << endl;
-                aux0=aux->hermano;
+                aux=aux->hermano;
             }
         }
     }
 }
-
+/*
 
 
 ///CREATE, Funciones insercion entre otras
@@ -2149,7 +2292,7 @@ int cmd_cat(Sistema *s, char parametros[])
     return 2;
 }
 
-
+*/
 
 ///MKDIR
 
@@ -2173,8 +2316,12 @@ TipoRet ret_mkdir(Sistema *s, char parametros[])
 
 int cmd_mkdir(Sistema *s, char parametros[])
 {
+    bool en_raiz=false;
+
     Directorios nuevo=new _nodo3;
     Directorios padre;
+
+    Ubicacion ubc_ainsertar;
 
     Descom_param_name_D param;
 
@@ -2182,13 +2329,27 @@ int cmd_mkdir(Sistema *s, char parametros[])
 
     if(param.hay_ubc==true)
     {
-        ///mueve ubic
-        ///ubic
+        if(param.absoluta==true)
+        {
+            if(param.es_raiz==false)
+            {
+                ubc_ainsertar=mueve_nodo((*s).RAIZ, param.ubic, param.absoluta);
+            }
+            else
+            {
+                en_raiz=true;
+            }
+        }
+        else
+        {
+            ///UBICACION ACTUAL SE LE PASA
+            //ubc_ainsertar=mueve_nodo((*s).RAIZ, param.ubic, param.absoluta);
+        }
     }
-    if(es_vaciaD(padre->hijo))
-    {
-        padre->hijo=nuevo;
-    }
+//    if(es_vaciaD(padre->hijo))
+//    {
+//        padre->hijo=nuevo;
+//    }
 
     return 2;
 }
