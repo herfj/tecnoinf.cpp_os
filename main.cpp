@@ -42,7 +42,7 @@ int main()
 //                retorna=ret_create(&s, ent.parametros);
 //                cout<<""<<endl;
 //                break;
-//
+
 //            case DELETE:
 //                cout<<""<<endl;
 //                retorna=ret_delete(&s, ent.parametros);
@@ -93,7 +93,6 @@ int main()
             case MKDIR:
                 cout<<""<<endl;
                 retorna=ret_mkdir(&s, ent.parametros);
-                cout<<"No IMPLEMENTADO"<<endl;
                 cout<<""<<endl;
                 break;
             case CD:

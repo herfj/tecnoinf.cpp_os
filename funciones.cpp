@@ -401,7 +401,7 @@ Ubicacion mueve_nodo(Directorios dir,char ubic[], bool absoluta)
     Ubicacion retorno;
 
     retorno.no_se_encontro=false;
-    retorno.es_raiz=false;
+
 
     char nombre_dir[T_DIR];
     char nueva_ubic[T_ENT];
@@ -438,7 +438,8 @@ Ubicacion mueve_nodo(Directorios dir,char ubic[], bool absoluta)
 
         if (b1==true)
         {
-            ///TERMINO
+            retorno.Padre=dir;
+            return retorno;
         }
         else
         {
@@ -452,18 +453,20 @@ Ubicacion mueve_nodo(Directorios dir,char ubic[], bool absoluta)
 
             if (es_vaciaD(dir->hijo))
             {
-                ///ERROR
+                retorno.no_se_encontro=true;
+                return retorno;
             }
             else
             {
                 hijo=dir->hijo;
 
+                cout<<"nombre: "<<nombre_dir<<" - d ir: "<<nueva_ubic<<endl;
                 while ((hijo->hermano!=NULL)||(termina==false))
                 {
                     if (iguales(hijo->nombre, nombre_dir))
                     {
-                        mueve_nodo(hijo, nueva_ubic,absoluta);
                         termina=true;
+                        retorno=mueve_nodo(hijo, nueva_ubic,absoluta);
                     }
                     else
                     {
@@ -473,6 +476,7 @@ Ubicacion mueve_nodo(Directorios dir,char ubic[], bool absoluta)
                 if((hijo->hermano!=NULL)&&(termina==false))
                 {
                     retorno.no_se_encontro=true;
+                    return retorno;
                 }
             }
         }
@@ -628,12 +632,11 @@ Descom_param_name param_solo_name(char parametros[])
     if(iguales(param.ubic, "/"))
     {
         param.es_raiz=true;
-        cout<<"raiz papuuu"<<endl;
     }
     else
     {
         param.es_raiz=false;
-        cout<<"NO ES raiz papuuu"<<endl;
+
     }
 
     return param;
@@ -844,12 +847,10 @@ Descom_param_if_ic param_de_if_ic(char parametros[], Comandos cmd)
     if(iguales(param.ubic, "/"))
     {
         param.es_raiz=true;
-        cout<<"raiz papuuu"<<endl;
     }
     else
     {
         param.es_raiz=false;
-        cout<<"NO ES raiz papuuu"<<endl;
     }
 
     return param;
@@ -1004,14 +1005,11 @@ for(j=0; j<T_ENT; j++)
     if(iguales(param.ubic, "/"))
     {
         param.es_raiz=true;
-        cout<<"raiz papuuu"<<endl;
     }
     else
     {
         param.es_raiz=false;
-        cout<<"NO ES raiz papuuu"<<endl;
     }
-
     return param;
 }
 
@@ -1130,6 +1128,7 @@ Descom_param_name_D param_solo_name_D(char parametros[])
     for(j=0; j<T_DIR; j++)
     {
         nombre[j]=0;
+        param.nombre[j]=0;
     }
 
 
@@ -1165,12 +1164,10 @@ Descom_param_name_D param_solo_name_D(char parametros[])
     if(iguales(param.ubic, "/"))
     {
         param.es_raiz=true;
-        cout<<"raiz papuuu"<<endl;
     }
     else
     {
         param.es_raiz=false;
-        cout<<"NO ES raiz papuuu"<<endl;
     }
     return param;
 }
@@ -1204,7 +1201,7 @@ void cmd_dir(Sistema s)
         if (!(es_vaciaD(aux->hijo)))
         {
             aux=aux->hijo;
-            while (!(es_vaciaA(aux->cabezal_archivos)))
+            while (!(es_vaciaD(aux)))
             {
                 cout << aux->nombre <<"     Directorio     "<< aux->tamanio << endl;
                 aux=aux->hermano;
@@ -1212,9 +1209,9 @@ void cmd_dir(Sistema s)
         }
     }
 }
+
+
 /*
-
-
 ///CREATE, Funciones insercion entre otras
 
 TipoRet ret_create(Sistema *s, char parametros[])
@@ -1355,7 +1352,7 @@ int cmd_create(Sistema *s, char parametros[])
     }
 }
 
-
+/*
 
 ///IF
 
@@ -2294,6 +2291,7 @@ int cmd_cat(Sistema *s, char parametros[])
 
 */
 
+
 ///MKDIR
 
 TipoRet ret_mkdir(Sistema *s, char parametros[])
@@ -2317,15 +2315,27 @@ TipoRet ret_mkdir(Sistema *s, char parametros[])
 int cmd_mkdir(Sistema *s, char parametros[])
 {
     bool en_raiz=false;
+    bool inserta=true;
 
     Directorios nuevo=new _nodo3;
     Directorios padre;
+    Directorios aus;
+    Directorios ant;
 
     Ubicacion ubc_ainsertar;
 
     Descom_param_name_D param;
 
     param=param_solo_name_D(parametros);
+
+    cout<<"n: "<<param.nombre<<" u: "<<param.ubic<<endl;
+
+    int i;
+
+    for(i=0;i<T_DIR;i++)
+    {
+        nuevo->nombre[i]=0;
+    }
 
     if(param.hay_ubc==true)
     {
@@ -2334,10 +2344,12 @@ int cmd_mkdir(Sistema *s, char parametros[])
             if(param.es_raiz==false)
             {
                 ubc_ainsertar=mueve_nodo((*s).RAIZ, param.ubic, param.absoluta);
+                padre=ubc_ainsertar.Padre;
             }
             else
             {
                 en_raiz=true;
+                padre=(*s).RAIZ;
             }
         }
         else
@@ -2346,16 +2358,61 @@ int cmd_mkdir(Sistema *s, char parametros[])
             //ubc_ainsertar=mueve_nodo((*s).RAIZ, param.ubic, param.absoluta);
         }
     }
-//    if(es_vaciaD(padre->hijo))
-//    {
-//        padre->hijo=nuevo;
-//    }
 
-    return 2;
+
+    for(i=0;i<T_DIR;i++)
+    {
+        nuevo->nombre[i]=param.nombre[i];
+    }
+//        nuevo.cota;
+    nuevo->tamanio=0;
+    nuevo->tiene_cota=false;
+
+
+    if(es_vaciaD(padre->hijo))
+    {
+        nuevo->hijo=NULL;
+        nuevo->hermano=NULL;
+        padre->hijo=nuevo;
+        nuevo->padre=padre;
+    }
+    else
+    {
+        aus=padre->hijo;
+        while(aus!=NULL)
+        {
+            if ((iguales(nuevo->nombre, aus->nombre))&&(inserta==true))
+            {
+                inserta=false;
+                errores_mensajes(CREATE,1,0);
+                return 1;
+            }
+            aus=aus->hermano;;
+        }
+        aus=padre->hijo;
+        if((strcmp(nuevo->nombre, padre->hijo->nombre))<0)
+        {
+            nuevo->hermano=padre->hijo;
+            nuevo->padre=padre;
+            padre->hijo=nuevo;
+        }
+        else
+        {
+            while((aus!=NULL)&&(strcmp(nuevo->nombre, aus->nombre))>0)
+            {
+                ant=aus;
+                aus=aus->hermano;
+            }
+            nuevo->hermano=aus;
+            ant->hermano=nuevo;
+            return 0;
+        }
+    }
+    return 1;
 }
 
 
-
+///ESTA
 ///CD
 
 TipoRet ret_cd(Sistema *s, char parametros[])

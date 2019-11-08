@@ -134,8 +134,7 @@ typedef  _nodo3 *Directorios;
 
 typedef struct
 {
-    Directorios *Padre;
-    bool es_raiz;
+    Directorios Padre;
     bool no_se_encontro;
 }Ubicacion;
 
