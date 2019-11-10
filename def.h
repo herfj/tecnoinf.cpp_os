@@ -1,27 +1,34 @@
 #ifndef DEF_H_INCLUDED
 #define DEF_H_INCLUDED
 
+
+
+///Definiciones
+
+//Constantes Globales
 #define T_ENT 100
 #define T_CORT 20
-//Constantes de Directorios
-#define T_DIR 15
+
 //Constantes de Archivos
 #define T_ARC 15
 #define T_EXT 3
 #define T_ARC_Y_EXT 19
+
 //Constantes de Lineas
 #define TEXTO_MAX 50
 #define LARGO_MAX 9
 
+//Constantes de Directorios
+#define T_DIR 15
+
 using namespace std;
 
-
-///Enum
-
+///Comandos (Enum)
 typedef enum _Comandos{
     DIR, CREATE, DELETE, UNDELETE, IC, TYPE, IF, BC, BF, CAT, MKDIR, CD, PWD, RMDIR, COPY
 }Comandos;
 
+///TypeRET (Enum)
 typedef enum _TipoRet{
     OK,ERROR,NO_IMPLEMENTADO
 }TipoRet;
@@ -34,8 +41,10 @@ typedef struct
     bool cmd_correcto;
 }CMD_PARAM;
 
-///Partes de Archivo solo nombre y ext
 
+///Descomposicion partes (ARCHIVOS)
+
+//Descomposicion de Archivo solo nombre y ext (Struct)
 typedef struct
 {
     int cant_ayext=0;
@@ -47,6 +56,7 @@ typedef struct
     bool error=false;
 }Descom_param_name;
 
+//Descomposicion de Archivo para los Comandos IF & IC (Struct)
 typedef struct
 {
     int cant_ayext=0;
@@ -60,6 +70,7 @@ typedef struct
     bool error=false;
 }Descom_param_if_ic;
 
+//Descomposicion de Archivo para los Comandos BC & BF (Struct)
 typedef struct
 {
     int cant_ayext=0;
@@ -72,14 +83,17 @@ typedef struct
     bool error=false;
 }Descom_param_name_k;
 
+//Descomposicion de Archivo para el Comando CAT (Struct)
 typedef struct
 {
     Descom_param_name a1;
     Descom_param_name a2;
 }Descom_param_2name;
 
-///Partes de Directorio solo nombre
 
+///Descomposicion partes (DIRECTORIOS)
+
+//Descomposicion de Directorio solo nombre (Struct)
 typedef struct
 {
     int cant=0;
@@ -91,14 +105,16 @@ typedef struct
     bool error=false;
 }Descom_param_name_D;
 
-///Nodo de LINEAS de Archivos
+
+///NODOS LINEAS, ARCHIVOS, DIRECTORIOS
+
+//Nodo LINEAS
 struct _nodo{
     _nodo *ant;
     char linea_texto[TEXTO_MAX];
     int c=0;
     _nodo *sig;
 };
-
 typedef _nodo *Lineas;
 
 //Struct de cabezal de lineas
@@ -109,7 +125,7 @@ struct _cabezalineas
 };
 typedef struct _cabezalineas CabezalLineas;
 
-///Nodo de ARCHIVOS
+//Nodo de ARCHIVOS
 struct _nodo2{
     char nombre_ext[T_ARC_Y_EXT];
     CabezalLineas cabezal_linea;
@@ -119,7 +135,7 @@ struct _nodo2{
 };
 typedef  _nodo2 *Archivos;
 
-///Nodo de DIRECTORIOS
+//Nodo de DIRECTORIOS
 struct _nodo3{
     char nombre[T_DIR];
     int cota;
@@ -132,6 +148,7 @@ struct _nodo3{
 };
 typedef  _nodo3 *Directorios;
 
+//Struct Ubicacion nodo Directorio
 typedef struct
 {
     Directorios Padre;
@@ -147,17 +164,31 @@ typedef struct
 }Sistema;
 
 
-///Funciones
-
+//Creacion (Inizializacion del Sistema)
 Sistema crear();
-bool es_vacia(Sistema c);
-CMD_PARAM entrada();
-void errores_mensajes (Comandos cmd, int error, int cod);
-bool iguales (char char1[], char char2[]);
-void borrar_linea(Lineas borrar, int i, int m);
-void borrar_linea2(Lineas borrar, int i, int m);
 
-///Descomposicion parametro (arreglo)
+///Funciones de Consulta (tipo Bool)
+
+bool es_raiz(Directorios s);
+bool es_vacia(Sistema s);
+bool es_vaciaD(Directorios d);
+bool es_vaciaA(Archivos a);
+bool lineas_es_vacia(CabezalLineas l);
+bool iguales (char char1[], char char2[]);
+
+//Funciones Muestro Errores & Mensajes
+
+void errores_mensajes (Comandos cmd, int error, int cod);
+
+//Separa el comando de los parametros
+
+CMD_PARAM entrada();
+
+//Recibe un char[] de ubicacion y retorna el directorio de la ubicacion deseada
+
+Ubicacion mueve_nodo(Directorios dir,char ubic[]);
+
+///Descompocion de parametros PARA ARCHIVOS (otorgando los datos para cada funcion)
 
 Descom_param_name param_solo_name(char parametros[]);
 Descom_param_if_ic descompone_param_de_if_ic(char parametros[]);
@@ -208,11 +239,13 @@ int cmd_undelete(Sistema *s);
 ///BF
 
 TipoRet ret_bf(Sistema *s, char parametros[]);
+void borrar_linea(Lineas borrar, int i, int m);
 int cmd_bf(Sistema *s, char parametros[]);
 
 ///BC
 
 TipoRet ret_bc(Sistema *s, char parametros[]);
+void borrar_linea2(Lineas borrar, int i, int m);
 int cmd_bc(Sistema *s, char parametros[]);
 
 ///CAT
@@ -226,27 +259,25 @@ TipoRet ret_mkdir(Sistema *s, char parametros[]);
 
 int cmd_mkdir(Sistema *s, char parametros[]);
 
-
 ///CD
 
 TipoRet ret_cd(Sistema *s, char parametros[]);
+int cmd_cd(Sistema *s, char parametros[]);
 
 ///PWD
 
 TipoRet ret_pwd(Sistema *s, char parametros[]);
-
+void pwd_recursivo(Directorios u,char ubic[]);
 int cmd_pwd(Sistema *s, char parametros[]);
 
 ///RMDIR
 
 TipoRet ret_rmdir(Sistema *s, char parametros[]);
-
 int cmd_rmdir(Sistema *s, char parametros[]);
 
 //COPY
 
 TipoRet ret_copy(Sistema *s, char parametros[]);
-
 int cmd_copy(Sistema *s, char parametros[]);
 
 #endif // DEF_H_INCLUDED

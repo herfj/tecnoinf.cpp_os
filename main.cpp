@@ -98,13 +98,11 @@ int main()
             case CD:
                 cout<<""<<endl;
                 retorna=ret_cd(&s, ent.parametros);
-                cout<<"No IMPLEMENTADO"<<endl;
                 cout<<""<<endl;
                 break;
             case PWD:
                 cout<<""<<endl;
                 retorna=ret_pwd(&s, ent.parametros);
-                cout<<"No IMPLEMENTADO"<<endl;
                 cout<<""<<endl;
                 break;
             case RMDIR:

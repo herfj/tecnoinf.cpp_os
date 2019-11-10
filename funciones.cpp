@@ -5,8 +5,9 @@
 using namespace std;
 
 
-///Funciones de Entrada, Errores , emtre otros
+///Funciones Elementales
 
+//Creacion (Inizializacion del Sistema)
 Sistema crear()
 {
     Sistema aux;
@@ -15,9 +16,10 @@ Sistema crear()
     aux.RAIZ->padre=NULL;
     aux.cabezal_arch_D=NULL;
     aux.actual=aux.RAIZ;
-
     return aux;
 }
+
+///Funciones de Consulta (tipo Bool)
 
 bool es_raiz(Directorios s)
 {
@@ -77,141 +79,20 @@ bool lineas_es_vacia(CabezalLineas l)
     }
 }
 
-CMD_PARAM entrada()
+bool iguales (char char1[], char char2[])
 {
-    CMD_PARAM ent;
-    char cmd[T_CORT];
-
-    char txt_bruto[T_ENT];//texto sin analizar, contiene comando, nombre, ubicacion
-
-    bool var;
-    var=false;
-
-    int t_cor_valor=20;
-    int i=0; //variables para fot
-    int j;//variables para for
-    int u=0;//variables para for
-    int cont;
-    cont=1;
-    int ubc=0; //Guarda la ultima ubicacion de: /
-
-    ent.cmd_correcto=false;
-    for(j=0; j<T_ENT; j++)
+    if ((strcmp(char1, char2)==0))
     {
-        txt_bruto[i]=00; //inicializa txt_bruto
+        return true;
     }
-
-    cout<<"> ";
-
-    cin>>cmd;
-    cin.clear();
-    cin.getline(txt_bruto, T_ENT, '\n'); //recibe la linea que ingresa el usuario
-
-    if (txt_bruto[i]==' ')
+    else
     {
-        while (txt_bruto[i]==' ')
-        {
-            i++;
-        }
-        var=true;
+        return false;
     }
-
-    while ((txt_bruto[i]!='\n')&&(var)&&(i<T_ENT)) //lee la linea hasta que presiona enter o se supera el tamaño estipulado
-    {
-        ent.parametros[u]=txt_bruto[i]; //guarda todos los caracteres que ingreso el usuario
-        u++;
-        i++;
-    }
- ///a continuacion compara y determina que comando ingreso el usuario
-
-    if ((strcmp(cmd, "DIR"))==0)
-    {
-        ent.cmd=DIR;
-        ent.cmd_correcto=true;
-    }
-    if ((strcmp(cmd, "CREATE"))==0)
-    {
-        ent.cmd=CREATE;
-        ent.cmd_correcto=true;
-    }
-    if ((strcmp(cmd, "DELETE"))==0)
-    {
-        ent.cmd=DELETE;
-        ent.cmd_correcto=true;
-    }
-    if ((strcmp(cmd, "UNDELETE"))==0)
-    {
-        ent.cmd=UNDELETE;
-        ent.cmd_correcto=true;
-    }
-    if ((strcmp(cmd, "IC"))==0)
-    {
-        ent.cmd=IC;
-        ent.cmd_correcto=true;
-    }
-    if ((strcmp(cmd, "IC"))==0)
-    {
-        ent.cmd=IC;
-        ent.cmd_correcto=true;
-    }
-    if ((strcmp(cmd, "TYPE"))==0)
-    {
-        ent.cmd=TYPE;
-        ent.cmd_correcto=true;
-    }
-    if ((strcmp(cmd, "IF"))==0)
-    {
-        ent.cmd=IF;
-        ent.cmd_correcto=true;
-    }
-    if ((strcmp(cmd, "BC"))==0)
-    {
-        ent.cmd=BC;
-        ent.cmd_correcto=true;
-    }
-    if ((strcmp(cmd, "BF"))==0)
-    {
-        ent.cmd=BF;
-        ent.cmd_correcto=true;
-    }
-    if ((strcmp(cmd, "CAT"))==0)
-    {
-        ent.cmd=CAT;
-        ent.cmd_correcto=true;
-    }
-    if ((strcmp(cmd, "MKDIR"))==0)
-    {
-        ent.cmd=MKDIR;
-        ent.cmd_correcto=true;
-    }
-    if ((strcmp(cmd, "CD"))==0)
-    {
-        ent.cmd=CD;
-        ent.cmd_correcto=true;
-    }
-    if ((strcmp(cmd, "PWD"))==0)
-    {
-        ent.cmd=PWD;
-        ent.cmd_correcto=true;
-    }
-    if ((strcmp(cmd, "RMDIR"))==0)
-    {
-        ent.cmd=RMDIR;
-        ent.cmd_correcto=true;
-    }
-    if ((strcmp(cmd, "COPY"))==0)
-    {
-        ent.cmd=COPY;
-        ent.cmd_correcto=true;
-    }
-    if(ent.cmd_correcto==false) //si lo ingresado no corresponde a ningun comando se muestra un error
-    {
-        cout<<""<<endl;
-        cout<<"Error: Comando Incorrecto."<<endl;
-        cout<<""<<endl;
-    }
-    return ent;
 }
+
+
+//Funciones Muestro Errores & Mensajes
 
 void errores_mensajes (Comandos cmd, int error, int cod)
 {
@@ -310,6 +191,29 @@ void errores_mensajes (Comandos cmd, int error, int cod)
                 cout << "Error: NO existe un archivo con ese nombre en este directorio.  - E" << cmd << "x" << cod << cod << cod << endl;
             }
             break;
+        case MKDIR:
+            if(cod==0)
+            {
+                cout << "Error: No se ha encontrado la ubicacion ingresada. - E" << cmd << "x" << cod << cod << cod << endl;
+            }
+            if(cod==1)
+            {
+                cout << "Error: Ya existe un directorio con ese nombre. - E" << cmd << "x" << cod << cod << cod << endl;
+            }
+            if(cod==2)
+            {
+                cout << "Error: EL nombre del contiene más 15 caracteres. - E" << cmd << "x" << cod << cod << cod << endl;
+            }
+            break;
+        case CD:
+            if(cod==0)
+            {
+                cout << "Error: No se ha encontrado la ubicacion ingresada. - E" << cmd << "x" << cod << cod << cod << endl;
+            }
+            break;
+        case DIR: //Se usa este para mencionar este error dado que no lanza error
+                cout << "Error: Faltan parametros en el comando ingresado. - E" << cmd << "x" << cod << cod << cod << endl;
+            break;
         default:
             cout << "Error Desconocido - E" << cod << "x" << cmd << cod << cod << endl;
         }
@@ -323,7 +227,7 @@ void errores_mensajes (Comandos cmd, int error, int cod)
             cout << "Mensaje: EL contenido del archivo esta vacio. - M" << cmd << "x" << cod << cod << cod << endl;
             break;
         case DIR:
-            cout<<"Mensaje: La direccion '/' se encuentra vacia. - M"<< cmd << "x" << cod << cod << cod << endl;
+            cout<<"Mensaje: La direccion se encuentra vacia. - M"<< cmd << "x" << cod << cod << cod << endl;
             break;
         case BF:
             cout << "Mensaje: EL contenido del archivo esta vacio. - M" << cmd << "x" << cod << cod << cod << endl;
@@ -333,65 +237,158 @@ void errores_mensajes (Comandos cmd, int error, int cod)
 
 }
 
-bool iguales (char char1[], char char2[])
+
+//Separa el comando de los parametros
+
+CMD_PARAM entrada()
 {
-    if ((strcmp(char1, char2)==0))
+    CMD_PARAM ent;
+    char cmd[T_CORT];
+
+    char txt_bruto[T_ENT];//texto sin analizar, contiene comando, nombre, ubicacion
+
+    bool var;
+    var=false;
+
+    int t_cor_valor=20;
+    int i=0; //variables para fot
+    int j;//variables para for
+    int u=0;//variables para for
+    int cont;
+    cont=1;
+    int ubc=0; //Guarda la ultima ubicacion de: /
+
+    ent.cmd_correcto=false;
+    for(j=0; j<T_ENT; j++)
     {
-        return true;
+        txt_bruto[i]=0; //inicializa txt_bruto
     }
-    else
+
+    cout<<"> ";
+
+    cin>>cmd;
+    cin.clear();
+    cin.getline(txt_bruto, T_ENT, '\n'); //recibe la linea que ingresa el usuario
+
+    if (txt_bruto[i]==' ')
     {
-        return false;
+        while (txt_bruto[i]==' ')
+        {
+            i++;
+        }
+        //var=true;
     }
+    //while ((txt_bruto[i]!='\n')&&(var)&&(i<T_ENT)) //lee la linea hasta que presiona enter o se supera el tamaño estipulado
+    while ((txt_bruto[i]!='\n')&&(i<T_ENT)) //lee la linea hasta que presiona enter o se supera el tamaño estipulado
+    {
+        ent.parametros[u]=txt_bruto[i]; //guarda todos los caracteres que ingreso el usuario
+        u++;
+        i++;
+    }
+ ///a continuacion compara y determina que comando ingreso el usuario
+
+    if ((strcmp(cmd, "DIR"))==0)
+    {
+        ent.cmd=DIR;
+        ent.cmd_correcto=true;
+    }
+    if ((strcmp(cmd, "CREATE"))==0)
+    {
+        ent.cmd=CREATE;
+        ent.cmd_correcto=true;
+    }
+    if ((strcmp(cmd, "DELETE"))==0)
+    {
+        ent.cmd=DELETE;
+        ent.cmd_correcto=true;
+    }
+    if ((strcmp(cmd, "UNDELETE"))==0)
+    {
+        ent.cmd=UNDELETE;
+        ent.cmd_correcto=true;
+    }
+    if ((strcmp(cmd, "IC"))==0)
+    {
+        ent.cmd=IC;
+        ent.cmd_correcto=true;
+    }
+    if ((strcmp(cmd, "IC"))==0)
+    {
+        ent.cmd=IC;
+        ent.cmd_correcto=true;
+    }
+    if ((strcmp(cmd, "TYPE"))==0)
+    {
+        ent.cmd=TYPE;
+        ent.cmd_correcto=true;
+    }
+    if ((strcmp(cmd, "IF"))==0)
+    {
+        ent.cmd=IF;
+        ent.cmd_correcto=true;
+    }
+    if ((strcmp(cmd, "BC"))==0)
+    {
+        ent.cmd=BC;
+        ent.cmd_correcto=true;
+    }
+    if ((strcmp(cmd, "BF"))==0)
+    {
+        ent.cmd=BF;
+        ent.cmd_correcto=true;
+    }
+    if ((strcmp(cmd, "CAT"))==0)
+    {
+        ent.cmd=CAT;
+        ent.cmd_correcto=true;
+    }
+    if ((strcmp(cmd, "MKDIR"))==0)
+    {
+        ent.cmd=MKDIR;
+        ent.cmd_correcto=true;
+    }
+    if ((strcmp(cmd, "CD"))==0)
+    {
+        ent.cmd=CD;
+        ent.cmd_correcto=true;
+    }
+    if ((strcmp(cmd, "PWD"))==0)
+    {
+        ent.cmd=PWD;
+        ent.cmd_correcto=true;
+    }
+    if ((strcmp(cmd, "RMDIR"))==0)
+    {
+        ent.cmd=RMDIR;
+        ent.cmd_correcto=true;
+    }
+    if ((strcmp(cmd, "COPY"))==0)
+    {
+        ent.cmd=COPY;
+        ent.cmd_correcto=true;
+    }
+    if(ent.cmd_correcto==false) //si lo ingresado no corresponde a ningun comando se muestra un error
+    {
+        cout<<""<<endl;
+        cout<<"Error: Comando Incorrecto."<<endl;
+        cout<<""<<endl;
+    }
+    return ent;
 }
 
-void borrar_linea(Lineas borrar, int i, int m)
-{
-    if (i<m)
-    {
-        borrar_linea(borrar->sig, i+1, m);
-        delete borrar;
-    }
-}
 
-void borrar_linea2(Lineas borrar, int i, int m)
-{
-    if (i<m)
-    {
-        borrar_linea(borrar->ant, i+1, m);
-        delete borrar;
-    }
-}
+//Recibe un char[] de ubicacion y retorna el directorio de la ubicacion deseada
 
-//Directorios buscanodoD(Directorios dir, char nombrepadre[])
-//{
-//
-//    if(iguales(nombrepadre,dir->nombre))
-//    {
-//        cout<<"encontre amigo"<<endl;
-//        return dir;
-//    }
-//    else
-//    {
-//        if(!es_vaciaD(dir->hijo))
-//            {
-//                return buscanodoD(dir->hijo,nombrepadre);
-//            }
-//        if(!es_vaciaD(dir->hermano))
-//            {
-//                return buscanodoD(dir->hermano, nombrepadre);
-//            }
-//    }
-//
-//}
-
-///FALta cuando la ruta no es absoluta
-Ubicacion mueve_nodo(Directorios dir,char ubic[], bool absoluta)
+Ubicacion mueve_nodo(Directorios dir,char ubic[])
 {
-    int i; i=0;
-    int u; u=0;
-    int j; j=0;
-    int ubc; ubc=0; //guarda la nueva ubicacion de /
+    int i;
+    i=0;
+    int u;
+    u=0;
+    int j;
+    j=0;
+    int ubc;
+    ubc=0; //guarda la nueva ubicacion de /
 
     bool termina=false;
     bool b1=false; //bool 1
@@ -399,6 +396,7 @@ Ubicacion mueve_nodo(Directorios dir,char ubic[], bool absoluta)
     Directorios hijo;
 
     Ubicacion retorno;
+    retorno.no_se_encontro=false;
 
     retorno.no_se_encontro=false;
 
@@ -406,84 +404,78 @@ Ubicacion mueve_nodo(Directorios dir,char ubic[], bool absoluta)
     char nombre_dir[T_DIR];
     char nueva_ubic[T_ENT];
 
-    for(j=0;j<T_DIR;j++)
+    for(j=0; j<T_DIR; j++)
     {
         nombre_dir[j]=0;
     }
 
-    for(j=0;j<T_ENT;j++)
+    for(j=0; j<T_ENT; j++)
     {
         nueva_ubic[j]=0;
     }
 
-    if(absoluta==true)
+
+    if(ubic[0]=='/')
     {
-        if(ubic[0]=='/')
+        i++;
+    }
+    while ((ubic[i]!='/')&&(b1==false))
+    {
+        if ((u<T_DIR)&&(ubic[i]!='\0'))
         {
+            nombre_dir[u]=ubic[i];
             i++;
+            u++;
         }
-        while ((ubic[i]!='/')&&(b1==false))
+        else
         {
-            if ((u<T_DIR)||(ubic[i]!=0))
-            {
-                nombre_dir[u]=ubic[i];
-                i++;
-                u++;
-            }
-            else
-            {
-                b1=true;
-            }
+            b1=true;
+        }
+    }
+
+    if (b1==true)
+    {
+        retorno.Padre=dir;
+        return retorno;
+    }
+    else
+    {
+        u=0;
+
+        for(int f=i; f<T_ENT; f++)
+        {
+            nueva_ubic[u]=ubic[f];
+            u++;
         }
 
-        if (b1==true)
+        if (es_vaciaD(dir->hijo))
         {
-            retorno.Padre=dir;
+            retorno.no_se_encontro=true;
             return retorno;
         }
         else
         {
-             u=0;
+            hijo=dir->hijo;
 
-            for(int f=i;f<T_ENT;f++)
+            while ((hijo!=NULL)&&(termina==false))
             {
-                nueva_ubic[u]=ubic[f];
-                u++;
+                if (iguales(hijo->nombre, nombre_dir))
+                {
+                    termina=true;
+                    retorno=mueve_nodo(hijo, nueva_ubic);
+                    return retorno;
+                }
+                else
+                {
+                    hijo=hijo->hermano;
+                }
             }
-
-            if (es_vaciaD(dir->hijo))
+            if((hijo!=NULL)&&(termina==false))
             {
                 retorno.no_se_encontro=true;
                 return retorno;
             }
-            else
-            {
-                hijo=dir->hijo;
-
-                cout<<"nombre: "<<nombre_dir<<" - d ir: "<<nueva_ubic<<endl;
-                while ((hijo->hermano!=NULL)||(termina==false))
-                {
-                    if (iguales(hijo->nombre, nombre_dir))
-                    {
-                        termina=true;
-                        retorno=mueve_nodo(hijo, nueva_ubic,absoluta);
-                    }
-                    else
-                    {
-                        hijo=hijo->hermano;
-                    }
-                }
-                if((hijo->hermano!=NULL)&&(termina==false))
-                {
-                    retorno.no_se_encontro=true;
-                    return retorno;
-                }
-            }
         }
-    }
-    else
-    {
-
     }
 }
 
@@ -826,7 +818,7 @@ Descom_param_if_ic param_de_if_ic(char parametros[], Comandos cmd)
                 {
                     param.linea[j]=parametros[w];
                     j++;
-                    //param.cant_letras=j;
+
                 }
                 else
                 {
@@ -877,7 +869,7 @@ Descom_param_name_k param_name_k(char parametros[], Comandos cmd)
 
     Descom_param_name_k param;
 
-for(j=0; j<T_ENT; j++)
+    for(j=0; j<T_ENT; j++)
     {
         if (parametros[j]=='/')
         {
@@ -1147,7 +1139,6 @@ Descom_param_name_D param_solo_name_D(char parametros[])
         }
         if(cant>T_DIR)
         {
-            errores_mensajes(CREATE, 1, 1);
             param.error=true;
             return param;
         }
@@ -1924,6 +1915,15 @@ TipoRet ret_bf(Sistema *s, char parametros[])
     }
 }
 
+void borrar_linea(Lineas borrar, int i, int m)
+{
+    if (i<m)
+    {
+        borrar_linea(borrar->sig, i+1, m);
+        delete borrar;
+    }
+}
+
 int cmd_bf(Sistema *s, char parametros[])
 {
     int i;
@@ -2046,6 +2046,15 @@ TipoRet ret_bc(Sistema *s, char parametros[])
     case 2:
         return NO_IMPLEMENTADO;
         break;
+    }
+}
+
+void borrar_linea2(Lineas borrar, int i, int m)
+{
+    if (i<m)
+    {
+        borrar_linea(borrar->ant, i+1, m);
+        delete borrar;
     }
 }
 
@@ -2292,6 +2301,7 @@ int cmd_cat(Sistema *s, char parametros[])
 */
 
 
+
 ///MKDIR
 
 TipoRet ret_mkdir(Sistema *s, char parametros[])
@@ -2325,10 +2335,22 @@ int cmd_mkdir(Sistema *s, char parametros[])
     Ubicacion ubc_ainsertar;
 
     Descom_param_name_D param;
+    if (parametros[0]!='\0')
+    {
+        param=param_solo_name_D(parametros);
+    }
+    else
+    {
+        errores_mensajes(DIR,1,0);
+        return 1;
+    }
+    
 
-    param=param_solo_name_D(parametros);
-
-    cout<<"n: "<<param.nombre<<" u: "<<param.ubic<<endl;
+    if(param.error==true)
+    {
+        errores_mensajes(MKDIR, 1, 2);
+        return 1;
+    }
 
     int i;
 
@@ -2343,8 +2365,18 @@ int cmd_mkdir(Sistema *s, char parametros[])
         {
             if(param.es_raiz==false)
             {
-                ubc_ainsertar=mueve_nodo((*s).RAIZ, param.ubic, param.absoluta);
-                padre=ubc_ainsertar.Padre;
+                ubc_ainsertar=mueve_nodo((*s).RAIZ, param.ubic);
+
+                if (ubc_ainsertar.no_se_encontro==false)
+                {
+                    padre=ubc_ainsertar.Padre;
+                }
+                else
+                {
+                    errores_mensajes(MKDIR,1,0);
+                    return 1;
+                }
+
             }
             else
             {
@@ -2354,17 +2386,27 @@ int cmd_mkdir(Sistema *s, char parametros[])
         }
         else
         {
-            ///UBICACION ACTUAL SE LE PASA
-            //ubc_ainsertar=mueve_nodo((*s).RAIZ, param.ubic, param.absoluta);
+            ubc_ainsertar=mueve_nodo((*s).actual, param.ubic);
+            if (ubc_ainsertar.no_se_encontro==false)
+            {
+                padre=ubc_ainsertar.Padre;
+            }
+            else
+            {
+                errores_mensajes(MKDIR,1,0);
+                return 1;
+            }
         }
     }
-
+    else
+    {
+        padre=(*s).actual;
+    }
 
     for(i=0;i<T_DIR;i++)
     {
         nuevo->nombre[i]=param.nombre[i];
     }
-//        nuevo.cota;
     nuevo->tamanio=0;
     nuevo->tiene_cota=false;
 
@@ -2379,21 +2421,23 @@ int cmd_mkdir(Sistema *s, char parametros[])
     else
     {
         aus=padre->hijo;
+        nuevo->padre=padre;
+
         while(aus!=NULL)
         {
             if ((iguales(nuevo->nombre, aus->nombre))&&(inserta==true))
             {
                 inserta=false;
-                errores_mensajes(CREATE,1,0);
+                errores_mensajes(MKDIR,1,1);
                 return 1;
             }
             aus=aus->hermano;;
         }
         aus=padre->hijo;
+
         if((strcmp(nuevo->nombre, padre->hijo->nombre))<0)
         {
             nuevo->hermano=padre->hijo;
-            nuevo->padre=padre;
             padre->hijo=nuevo;
         }
         else
@@ -2412,13 +2456,13 @@ int cmd_mkdir(Sistema *s, char parametros[])
 }
 
 
-///ESTA
+
 ///CD
 
 TipoRet ret_cd(Sistema *s, char parametros[])
 {
     int r;
-//    r=cmd_cd(&*s, parametros);
+    r=cmd_cd(&*s, parametros);
     switch(r)
     {
     case 0:
@@ -2435,7 +2479,123 @@ TipoRet ret_cd(Sistema *s, char parametros[])
 
 int cmd_cd(Sistema *s, char parametros[])
 {
-    return 2;
+    Directorios padre;
+    Directorios aus;
+    Ubicacion ubc;
+
+    char nombre[T_DIR];
+
+    bool vacio=false;
+    bool termina=false;
+    bool en_raiz=false;
+
+    Descom_param_name_D param;
+    param=param_solo_name_D(parametros);
+    int i;
+
+    if(param.error==true)
+    {
+        errores_mensajes(DIR, 1, 0);
+        return 1;
+    }
+
+    for(i=0;i<T_DIR;i++)
+    {
+        nombre[i]=0;
+    }
+
+    if(param.hay_ubc==true)
+    {
+        if(param.absoluta==true)
+        {
+            if(param.es_raiz==false)
+            {
+                ubc=mueve_nodo((*s).RAIZ, param.ubic);
+                if (ubc.no_se_encontro==false)
+                {
+                    padre=ubc.Padre;
+                }
+                else
+                {
+                    errores_mensajes(CD,1,0);
+                    return 1;
+                }
+
+            }
+            else
+            {
+                en_raiz=true;
+                padre=(*s).RAIZ;
+            }
+        }
+        else
+        {
+            ubc=mueve_nodo((*s).actual, param.ubic);
+            if (ubc.no_se_encontro==false)
+            {
+                padre=ubc.Padre;
+            }
+            else
+            {
+                errores_mensajes(CD,1,0);
+                return 1;
+            }
+        }
+    }
+    else
+    {
+        padre=(*s).actual;
+    }
+
+
+    for(i=0;i<T_DIR;i++)
+    {
+        nombre[i]=param.nombre[i];
+    }
+
+    if(nombre[0]=='\0')
+    {
+        vacio=true;;
+    }
+
+    if (vacio==true)
+    {
+        if(en_raiz==true)
+        {
+            (*s).actual=(*s).RAIZ;
+            return 0;
+        }
+         else
+        {
+            (*s).actual=padre;
+            return 0;
+        }
+    }
+
+    if(es_vaciaD(padre->hijo))
+    {
+        errores_mensajes(CD, 1, 0);
+        return 1;
+    }
+    else
+    {
+        aus=padre->hijo;
+
+        while ((aus->hermano!=NULL)||(termina==false))
+        {
+            if (iguales(aus->nombre, nombre))
+            {
+                (*s).actual=aus;
+                termina=true;
+                return 0;
+            }
+            else
+            {
+                aus=aus->hermano;
+            }
+        }
+    }
+    return 1;
 }
 
 
@@ -2460,9 +2620,62 @@ TipoRet ret_pwd(Sistema *s, char parametros[])
     }
 }
 
+void pwd_recursivo(Directorios u,char ubic[])
+{
+    int i=0;
+    int c=0; //cantidad
+    bool t=false;
+    char nubic[T_ENT];
+
+    nubic[c]='/';
+        c++;
+
+    if(es_raiz(u))
+    {
+        cout<<ubic<<endl;
+    }
+    else
+    {
+        for(i=0;i<(T_DIR+1);i++)
+        {
+            if(u->nombre[i]=='\0')
+            {
+                t=true;
+            }
+            if(t==false)
+            {
+                nubic[c]=u->nombre[i];
+                c++;
+            }
+        }
+         
+         for(i=0;i<T_ENT;i++)
+        {
+            nubic[c]=ubic[i];
+            c++;
+        }
+        pwd_recursivo(u->padre, nubic);
+    }
+    
+}
+
 int cmd_pwd(Sistema *s, char parametros[])
 {
-    return 2;
+    char nombre[T_ENT];
+    int i;
+    if(es_raiz((*s).actual))
+    {
+        cout<<"/"<<endl;
+    }
+    else
+    {
+        for (i=0;i<T_ENT;i++)
+        {
+            nombre[i]=0;
+        }
+        pwd_recursivo((*s).actual,nombre);
+    }
+    return 0;
 }
 
 
