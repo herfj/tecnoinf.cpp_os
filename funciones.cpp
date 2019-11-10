@@ -1167,26 +1167,154 @@ Descom_param_name_D param_solo_name_D(char parametros[])
 
 ///DIR
 
-TipoRet ret_dir(Sistema s)
+TipoRet ret_dir(Sistema s, char parametros[])
 {
-    cmd_dir(s);
-    return OK;
+    int r;
+    r=cmd_dir(s, parametros);
+    switch(r)
+    {
+    case 0:
+        return OK;
+        break;
+    case 1:
+        return ERROR;
+        break;
+    case 2:
+        return NO_IMPLEMENTADO;
+        break;
+    }
 }
 
-void cmd_dir(Sistema s)
+void dir_s(Directorios d, int c)
+{
+    int i;
+
+    Directorios aus;
+    aus=d;
+
+    for(i=0;i<(c-1);i++)
+    {
+        cout <<"     ";
+    }
+    cout<<"<contenido: "<< d->nombre <<">"<<endl;
+
+    if ((es_vaciaA(d->cabezal_archivos))&&(es_vaciaD(d->hijo)))
+    {
+        char nombre[T_ENT];
+        int i;
+        
+        for (i=0;i<T_ENT;i++)
+        {
+        nombre[i]=0;
+        }
+        for(i=0;i<c;i++)
+        {
+            cout <<"     ";
+        }
+        cout<<"Mensaje: La direccion: ";
+        pwd_recursivo(d,nombre);
+        cout<<" se encuentra vacia. - M0x000" << endl;
+    }
+    else
+    {
+        while (!(es_vaciaA(d->cabezal_archivos)))
+        {
+            for(i=0;i<c;i++)
+            {
+                cout <<"     ";
+            }
+            cout << d->cabezal_archivos->nombre_ext <<"     Archivo"<< endl;
+            d->cabezal_archivos=d->cabezal_archivos->sig;
+        }
+        if (!(es_vaciaD(d->hijo)))
+        {
+            d=d->hijo;
+            while (!(es_vaciaD(d)))
+            {
+                for(i=0;i<c;i++)
+                {
+                    cout <<"     ";
+                }
+                cout << d->nombre <<"     Directorio     "<< endl;
+                
+                dir_s(d, c+1);
+                d=d->hermano;
+            }
+        }
+    }
+    for(i=0;i<(c-1);i++)
+    {
+        cout <<"     ";
+    }
+    cout<<"</contenido: "<< aus->nombre <<">"<<endl;
+}
+
+int cmd_dir(Sistema s, char parametros[])
 {
     Directorios aux;
     aux=s.actual;
+    
+    int c=0;
+    bool tiene_s=false;
+
+    Descom_param_name_D param;
+
+    if (parametros[0]!='\0')
+    {
+        param=param_solo_name_D(parametros);
+        if((iguales(param.nombre,"s"))||(iguales(param.nombre,"S")))
+        {
+            tiene_s=true;
+        }
+        else 
+        {
+            cout<<"Mensaje: Ingreso un parametro no valido (Distinto de S). - M0x001" << endl;
+            return 1;
+        }
+
+    }
+    else
+    {
+        tiene_s=false;
+    }
 
     if ((es_vaciaA(aux->cabezal_archivos))&&(es_vaciaD(aux->hijo)))
     {
-        errores_mensajes(DIR, 0,0);
+        char nombre[T_ENT];
+        int i;
+        if(es_raiz(aux))
+        {
+            cout<<"Mensaje: La direccion: ";
+            cout<<"/";
+            cout<<" se encuentra vacia. - M0x000" << endl;
+        }
+        else
+        {
+            for (i=0;i<T_ENT;i++)
+            {
+            nombre[i]=0;
+            }
+            for(i=0;i<c;i++)
+            
+            cout<<"Mensaje: La direccion: ";
+            pwd_recursivo(aux,nombre);
+            cout<<" se encuentra vacia. - M0x000" << endl;
+        }
     }
     else
     {
         while (!(es_vaciaA(aux->cabezal_archivos)))
         {
-            cout << aux->cabezal_archivos->nombre_ext <<"     Archivo     " << aux->cabezal_archivos->cant << endl;
+            cout << aux->cabezal_archivos->nombre_ext <<"     Archivo     ";
+            if (tiene_s==false)
+            {
+                cout << aux->cabezal_archivos->cant << endl;
+            }
+            else
+            {
+                cout << "" << endl;
+            }
+            
             aux->cabezal_archivos=aux->cabezal_archivos->sig;
         }
         if (!(es_vaciaD(aux->hijo)))
@@ -1194,11 +1322,24 @@ void cmd_dir(Sistema s)
             aux=aux->hijo;
             while (!(es_vaciaD(aux)))
             {
-                cout << aux->nombre <<"     Directorio     "<< aux->tamanio << endl;
+                cout << aux->nombre <<"     Directorio     "; 
+                if ((aux->tiene_cota==true)&&(tiene_s==false))
+                {
+                    cout << aux->tamanio << endl;
+                }
+                else
+                {
+                    cout << "" << endl;
+                }
+                if(tiene_s==true)
+                {
+                    dir_s(aux, c+1);
+                }
                 aux=aux->hermano;
             }
         }
     }
+    return 0;
 }
 
 
@@ -2490,7 +2631,16 @@ int cmd_cd(Sistema *s, char parametros[])
     bool en_raiz=false;
 
     Descom_param_name_D param;
-    param=param_solo_name_D(parametros);
+    if (parametros[0]!='\0')
+    {
+        param=param_solo_name_D(parametros);
+    }
+    else
+    {
+        errores_mensajes(DIR,1,0);
+        return 1;
+    }
+    
     int i;
 
     if(param.error==true)
@@ -2632,7 +2782,7 @@ void pwd_recursivo(Directorios u,char ubic[])
 
     if(es_raiz(u))
     {
-        cout<<ubic<<endl;
+        cout<<ubic;
     }
     else
     {
@@ -2674,6 +2824,7 @@ int cmd_pwd(Sistema *s, char parametros[])
             nombre[i]=0;
         }
         pwd_recursivo((*s).actual,nombre);
+        cout<<""<<endl;
     }
     return 0;
 }

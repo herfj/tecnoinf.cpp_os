@@ -33,7 +33,7 @@ int main()
             {
             case DIR:
                 cout<<""<<endl;
-                retorna=ret_dir(s);
+                retorna=ret_dir(s, ent.parametros);
                 cout<<""<<endl;
                 break;
 
