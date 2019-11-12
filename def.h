@@ -208,8 +208,8 @@ int cmd_dir(Sistema s, char parametros[]);
 ///CREATE
 
 TipoRet ret_create(Sistema *s, char parametros[T_ENT]);
-void insert_p_a(Sistema *s, char nombre_ext[], int cant_ayext);
-void insert_f_a(Sistema *s, char nombre_ext[], int cant_ayext);
+void insert_p_a(Directorios padre, char nombre_ext[], int cant_ayext);
+void insert_f_a(Directorios padre, char nombre_ext[], int cant_ayext);
 int cmd_create(Sistema *s, char parametros[]);
 
 ///IF

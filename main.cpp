@@ -37,11 +37,11 @@ int main()
                 cout<<""<<endl;
                 break;
 
-//            case CREATE:
-//                cout<<""<<endl;
-//                retorna=ret_create(&s, ent.parametros);
-//                cout<<""<<endl;
-//                break;
+            case CREATE:
+                cout<<""<<endl;
+                retorna=ret_create(&s, ent.parametros);
+                cout<<""<<endl;
+                break;
 
 //            case DELETE:
 //                cout<<""<<endl;

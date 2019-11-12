@@ -566,6 +566,7 @@ Descom_param_name param_solo_name(char parametros[])
         }
         if(cant_a>T_ARC)
         {
+            j=100;
             errores_mensajes(CREATE, 1, 1);
             param.error=true;
             return param;
@@ -593,6 +594,7 @@ Descom_param_name param_solo_name(char parametros[])
             }
             else
             {
+                j=100;
                 errores_mensajes(CREATE, 1, 2);
                 param.error=true;
                 return param;
@@ -1188,6 +1190,8 @@ void dir_s(Directorios d, int c)
 
     Directorios aus;
     aus=d;
+    Archivos arch;
+    arch=d->cabezal_archivos;
 
     for(i=0;i<(c-1);i++)
     {
@@ -1200,7 +1204,7 @@ void dir_s(Directorios d, int c)
     }
     cout<<"<contenido: "<< d->nombre <<">"<<endl;
 
-    if ((es_vaciaA(d->cabezal_archivos))&&(es_vaciaD(d->hijo)))
+    if ((es_vaciaA(arch))&&(es_vaciaD(d->hijo)))
     {
         char nombre[T_ENT];
         int i;
@@ -1219,26 +1223,20 @@ void dir_s(Directorios d, int c)
     }
     else
     {
-        while (!(es_vaciaA(d->cabezal_archivos)))
+        while (!(es_vaciaA(arch)))
         {
             for(i=0;i<c;i++)
             {
                 cout <<"     ";
             }
-            cout << d->cabezal_archivos->nombre_ext <<"     Archivo"<< endl;
-            d->cabezal_archivos=d->cabezal_archivos->sig;
+            cout << arch->nombre_ext <<"     Archivo"<< endl;
+            arch=arch->sig;
         }
         if (!(es_vaciaD(d->hijo)))
         {
             d=d->hijo;
             if (!(es_vaciaD(d)))
             {
-                //for(i=0;i<c;i++)
-                //{
-                //    cout <<"     ";
-                //}
-                //cout << d->nombre <<"     Directorio     "<< endl;
-
                 dir_s(d, c+1);
             }
         }
@@ -1256,10 +1254,32 @@ void dir_s(Directorios d, int c)
     }
 }
 
+bool param_s(char parametros[])
+{
+    int i;
+    if((parametros[0]=='s')||(parametros[0]=='S'))
+    {
+        if(parametros[1]==0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    else
+    {
+        return false;
+    }
+}
+
 int cmd_dir(Sistema s, char parametros[])
 {
     Directorios aux;
     aux=s.actual;
+    Archivos arch;
+    arch=aux->cabezal_archivos;
 
     int c=0;
     bool tiene_s=false;
@@ -1269,7 +1289,8 @@ int cmd_dir(Sistema s, char parametros[])
     if (parametros[0]!='\0')
     {
         param=param_solo_name_D(parametros);
-        if((iguales(param.nombre,"s"))||(iguales(param.nombre,"S")))
+
+        if(param_s(parametros))
         {
             tiene_s=true;
         }
@@ -1285,7 +1306,7 @@ int cmd_dir(Sistema s, char parametros[])
         tiene_s=false;
     }
 
-    if ((es_vaciaA(aux->cabezal_archivos))&&(es_vaciaD(aux->hijo)))
+    if ((es_vaciaA(arch))&&(es_vaciaD(aux->hijo)))
     {
         char nombre[T_ENT];
         int i;
@@ -1303,27 +1324,33 @@ int cmd_dir(Sistema s, char parametros[])
             }
             for(i=0;i<c;i++)
 
-            cout<<"Mensaje: La direccion: ";
+            cout<<"Mensaje: La direccion: "<<endl;
             pwd_recursivo(aux,nombre);
             cout<<" se encuentra vacia. - M0x000" << endl;
         }
     }
     else
     {
-        while (!(es_vaciaA(aux->cabezal_archivos)))
+        while (!(es_vaciaA(arch)))
         {
-            cout << aux->cabezal_archivos->nombre_ext <<"     Archivo     ";
+            cout << arch->nombre_ext <<"     Archivo     ";
+
             if (tiene_s==false)
             {
-                cout << aux->cabezal_archivos->cant << endl;
+                cout << arch->cant << endl;
             }
             else
             {
                 cout << "" << endl;
             }
 
-            aux->cabezal_archivos=aux->cabezal_archivos->sig;
+            arch=arch->sig;
         }
+        if ((!(es_vaciaA(aux->cabezal_archivos))&&(!(es_vaciaD(aux->hijo))))
+        {
+            cout << "" << endl;
+        }
+
         if (!(es_vaciaD(aux->hijo)))
         {
             aux=aux->hijo;
@@ -1354,7 +1381,7 @@ int cmd_dir(Sistema s, char parametros[])
 }
 
 
-/*
+
 ///CREATE, Funciones insercion entre otras
 
 TipoRet ret_create(Sistema *s, char parametros[])
@@ -1376,7 +1403,7 @@ TipoRet ret_create(Sistema *s, char parametros[])
 
 }
 
-void insert_p_a(Sistema *s, char nombre_ext[], int cant_ayext)
+void insert_p_a(Directorios padre, char nombre_ext[], int cant_ayext)
 {
     Archivos nuevo_nodo=new _nodo2;
 
@@ -1391,17 +1418,17 @@ void insert_p_a(Sistema *s, char nombre_ext[], int cant_ayext)
         nuevo_nodo->nombre_ext[i]=nombre_ext[i];
     }
     nuevo_nodo->cant=0;
-    nuevo_nodo->sig=(*s).cabezal_archivos;
-    (*s).cabezal_archivos=nuevo_nodo;
+    nuevo_nodo->sig=padre->cabezal_archivos;
+    padre->cabezal_archivos=nuevo_nodo;
 }
 
-void insert_f_a(Sistema *s, char nombre_ext[], int cant_ayext)
+void insert_f_a(Directorios padre, char nombre_ext[], int cant_ayext)
 {
     Archivos nuevo_nodo=new _nodo2;
     nuevo_nodo->sig=NULL;
     Archivos aux;
 
-    aux=(*s).cabezal_archivos;
+    aux=padre->cabezal_archivos;
     int i=0;
 
     for(i=0; i<T_ARC_Y_EXT; i++)
@@ -1425,26 +1452,88 @@ int cmd_create(Sistema *s, char parametros[])
 {
     int i=0;
 
-    bool inserta;
-    inserta=true;
+    bool inserta=true;
+    bool en_raiz=false;
 
     Archivos nuevo_nodo=new _nodo2;
+
+    Directorios padre;
+
+    Ubicacion ubc_ainsertar;
+
     Archivos aux;
     Archivos aux2;
     Archivos ant;
     Archivos ult;
-    ant=(*s).cabezal_archivos;
-    aux=(*s).cabezal_archivos;
-    aux2=(*s).cabezal_archivos;
-    ult=(*s).cabezal_archivos;
+
 
     Descom_param_name param;
-    param=param_solo_name(parametros);
+
+    if (parametros[0]!='\0')
+    {
+        param=param_solo_name(parametros);
+    }
+    else
+    {
+        errores_mensajes(DIR,1,0);
+        return 1;
+    }
 
     if (param.error==true)
     {
         return 1;
     }
+
+
+    if(param.hay_ubc==true)
+    {
+        if(param.absoluta==true)
+        {
+            if(param.es_raiz==false)
+            {
+                ubc_ainsertar=mueve_nodo((*s).RAIZ, param.ubic);
+
+                if (ubc_ainsertar.no_se_encontro==false)
+                {
+                    padre=ubc_ainsertar.Padre;
+                }
+                else
+                {
+                    errores_mensajes(MKDIR,1,0);
+                    return 1;
+                }
+
+            }
+            else
+            {
+                en_raiz=true;
+                padre=(*s).RAIZ;
+            }
+        }
+        else
+        {
+            ubc_ainsertar=mueve_nodo((*s).actual, param.ubic);
+
+            if (ubc_ainsertar.no_se_encontro==false)
+            {
+                padre=ubc_ainsertar.Padre;
+            }
+            else
+            {
+                errores_mensajes(MKDIR,1,0);
+                return 1;
+            }
+        }
+    }
+    else
+    {
+        padre=(*s).actual;
+    }
+
+    ant=padre->cabezal_archivos;
+    aux=padre->cabezal_archivos;
+    aux2=padre->cabezal_archivos;
+    ult=padre->cabezal_archivos;
 
     while(aux2!=NULL)
     {
@@ -1459,9 +1548,9 @@ int cmd_create(Sistema *s, char parametros[])
 
     if (inserta==true)
     {
-        if ((es_vacia(*s))||((strcmp(param.nombre_ext,(*s).cabezal_archivos->nombre_ext))<0))
+        if ((es_vaciaA(padre->cabezal_archivos))||((strcmp(param.nombre_ext,padre->cabezal_archivos->nombre_ext))<0))
         {
-            insert_p_a(&(*s), param.nombre_ext, param.cant_ayext);
+            insert_p_a(padre, param.nombre_ext, param.cant_ayext);
             return 0;
         }
         else
@@ -1470,11 +1559,13 @@ int cmd_create(Sistema *s, char parametros[])
             {
                 ult=ult->sig;
             }
+
             if ((strcmp(param.nombre_ext, ult->nombre_ext))>0)
             {
-                insert_f_a(&(*s), param.nombre_ext, param.cant_ayext);
+                insert_f_a(padre, param.nombre_ext, param.cant_ayext);
                 return 0;
             }
+
             else
             {
                 while ((strcmp(param.nombre_ext, aux->nombre_ext))>0)

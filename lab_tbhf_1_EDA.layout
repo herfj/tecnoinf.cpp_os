@@ -9,15 +9,39 @@
 	</File>
 	<File name="funciones.cpp" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="12226" topLine="355" />
+			<Cursor1 position="27631" topLine="154" />
 		</Cursor>
 		<Folding>
+			<Collapse line="34" />
+			<Collapse line="46" />
+			<Collapse line="58" />
+			<Collapse line="70" />
+			<Collapse line="82" />
+			<Collapse line="97" />
 			<Collapse line="243" />
+			<Collapse line="382" />
+			<Collapse line="482" />
+			<Collapse line="636" />
+			<Collapse line="850" />
+			<Collapse line="1007" />
+			<Collapse line="1061" />
+			<Collapse line="1169" />
+			<Collapse line="1187" />
+			<Collapse line="1257" />
+			<Collapse line="1387" />
+			<Collapse line="1406" />
+			<Collapse line="1425" />
+			<Collapse line="1451" />
+			<Collapse line="1588" />
+			<Collapse line="2550" />
+			<Collapse line="2568" />
+			<Collapse line="2705" />
+			<Collapse line="2723" />
 		</Folding>
 	</File>
 	<File name="def.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2514" topLine="137" />
+			<Cursor1 position="2514" topLine="128" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>
