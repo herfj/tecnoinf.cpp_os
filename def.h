@@ -202,7 +202,10 @@ Descom_param_name_D param_solo_name_D(char parametros[]);
 ///DIR
 
 TipoRet ret_dir(Sistema s,char parametros[]);
+void mostrar_archivo(Archivos a, int c);
+void pwd_dir(Directorios u,char ubic[]);
 void dir_s(Directorios d, int c);
+bool param_s(char parametros[]);
 int cmd_dir(Sistema s, char parametros[]);
 
 ///CREATE

@@ -204,6 +204,10 @@ void errores_mensajes (Comandos cmd, int error, int cod)
             {
                 cout << "Error: EL nombre del contiene más 15 caracteres. - E" << cmd << "x" << cod << cod << cod << endl;
             }
+            if(cod==3)
+            {
+                cout << "Error: EL nombre no puede se RAIZ. - E" << cmd << "x" << cod << cod << cod << endl;
+            }
             break;
         case CD:
             if(cod==0)
@@ -538,6 +542,7 @@ Descom_param_name param_solo_name(char parametros[])
         i=ubc+1;
     }
 
+    //Inicializacion
     for(j=0; j<T_ARC; j++)
     {
         nombre[j]=0;
@@ -550,6 +555,7 @@ Descom_param_name param_solo_name(char parametros[])
     {
         param.nombre_ext[j]=0;
     }
+    //FIN - Inicializacion
 
     for (j=0; j<T_ENT; j++)
     {
@@ -1184,6 +1190,67 @@ TipoRet ret_dir(Sistema s, char parametros[])
     }
 }
 
+void mostrar_archivo(Archivos a, int c)
+{
+    int i=0;
+
+    for(i=0;i<c;i++)
+    {
+        cout <<"     ";
+    }
+    cout << a->nombre_ext <<"     Archivo"<< endl;
+
+    if (!(es_vaciaA(a->sig)))
+    {
+        mostrar_archivo(a->sig, c);     
+    }
+}
+
+void pwd_dir(Directorios u,char ubic[])
+{
+    int i=0;
+    int c=0; //cantidad
+    int tdir=T_DIR;
+    tdir=tdir+1;
+    bool t=false;
+    char nubic[T_ENT];
+
+    nubic[c]='/';
+    c++;
+
+    if(es_raiz(u))
+    {
+        cout << "Mensaje: La direccion: ";
+        cout << ubic;
+        cout << " se encuentra vacia. - M0x000";
+        cout << endl;
+
+    }
+    else
+    {
+        for(i=0;i<tdir;i++)
+        {
+            if(u->nombre[i]=='\0')
+            {
+                t=true;
+            }
+            if(t==false)
+            {
+                nubic[c]=u->nombre[i];
+                c++;
+            }
+        }
+
+         for(i=0;i<T_ENT;i++)
+        {
+            nubic[c]=ubic[i];
+            c++;
+        }
+        pwd_dir(u->padre, nubic);
+    }
+
+}
+
 void dir_s(Directorios d, int c)
 {
     int i;
@@ -1211,26 +1278,24 @@ void dir_s(Directorios d, int c)
 
         for (i=0;i<T_ENT;i++)
         {
-        nombre[i]=0;
+            nombre[i]='\0';
         }
+        
         for(i=0;i<c;i++)
         {
             cout <<"     ";
         }
-        cout<<"Mensaje: La direccion: ";
-        pwd_recursivo(d,nombre);
-        cout<<" se encuentra vacia. - M0x000" << endl;
+        pwd_dir(d,nombre);
     }
     else
     {
-        while (!(es_vaciaA(arch)))
+        if (!(es_vaciaA(arch)))
         {
-            for(i=0;i<c;i++)
-            {
-                cout <<"     ";
-            }
-            cout << arch->nombre_ext <<"     Archivo"<< endl;
-            arch=arch->sig;
+            mostrar_archivo(arch, c);
+        }
+        if ((!(es_vaciaA(arch)))&&(!(es_vaciaD(d->hijo))))
+        {
+            cout << "" << endl;
         }
         if (!(es_vaciaD(d->hijo)))
         {
@@ -1320,33 +1385,23 @@ int cmd_dir(Sistema s, char parametros[])
         {
             for (i=0;i<T_ENT;i++)
             {
-            nombre[i]=0;
+                nombre[i]='\0';
             }
-            for(i=0;i<c;i++)
-
-            cout<<"Mensaje: La direccion: "<<endl;
-            pwd_recursivo(aux,nombre);
-            cout<<" se encuentra vacia. - M0x000" << endl;
+            for (i=0;i<T_ENT;i++)
+            {
+                nombre[i]='\0';
+            }
+            pwd_dir(aux,nombre);
         }
     }
     else
     {
-        while (!(es_vaciaA(arch)))
+        if (!(es_vaciaA(arch)))
         {
-            cout << arch->nombre_ext <<"     Archivo     ";
-
-            if (tiene_s==false)
-            {
-                cout << arch->cant << endl;
-            }
-            else
-            {
-                cout << "" << endl;
-            }
-
-            arch=arch->sig;
+            mostrar_archivo(arch, c);
         }
-        if ((!(es_vaciaA(aux->cabezal_archivos))&&(!(es_vaciaD(aux->hijo))))
+        
+        if ((!(es_vaciaA(aux->cabezal_archivos)))&&(!(es_vaciaD(aux->hijo))))
         {
             cout << "" << endl;
         }
@@ -2594,6 +2649,12 @@ int cmd_mkdir(Sistema *s, char parametros[])
         errores_mensajes(MKDIR, 1, 2);
         return 1;
     }
+    
+    if ((iguales(param.nombre,"RAIZ"))||(iguales(param.nombre,"raiz"))||(iguales(param.nombre,"Raiz")))
+    {
+        errores_mensajes(MKDIR,1,3);
+        return 1;
+    }
 
     int i;
 
@@ -2833,7 +2894,7 @@ int cmd_cd(Sistema *s, char parametros[])
     {
         aus=padre->hijo;
 
-        while ((aus->hermano!=NULL)||(termina==false))
+        while ((aus!=NULL)&&(termina==false))
         {
             if (iguales(aus->nombre, nombre))
             {
@@ -2845,6 +2906,11 @@ int cmd_cd(Sistema *s, char parametros[])
             {
                 aus=aus->hermano;
             }
+        }
+        if(es_vaciaD(aus))
+        {
+            errores_mensajes(CD, 1, 0);
+            return 1;
         }
     }
     return 1;
@@ -2876,6 +2942,8 @@ void pwd_recursivo(Directorios u,char ubic[])
 {
     int i=0;
     int c=0; //cantidad
+    int tdir=T_DIR;
+    tdir=tdir+1;
     bool t=false;
     char nubic[T_ENT];
 
@@ -2884,11 +2952,11 @@ void pwd_recursivo(Directorios u,char ubic[])
 
     if(es_raiz(u))
     {
-        cout<<ubic;
+        cout<<ubic<<endl;
     }
     else
     {
-        for(i=0;i<(T_DIR+1);i++)
+        for(i=0;i<tdir;i++)
         {
             if(u->nombre[i]=='\0')
             {
@@ -2915,6 +2983,9 @@ int cmd_pwd(Sistema *s, char parametros[])
 {
     char nombre[T_ENT];
     int i;
+    Directorios d;
+    d=(*s).actual;
+
     if(es_raiz((*s).actual))
     {
         cout<<"/"<<endl;
@@ -2923,8 +2994,9 @@ int cmd_pwd(Sistema *s, char parametros[])
     {
         for (i=0;i<T_ENT;i++)
         {
-            nombre[i]=0;
+            nombre[i]='\0';
         }
+        
         pwd_recursivo((*s).actual,nombre);
         cout<<""<<endl;
     }
