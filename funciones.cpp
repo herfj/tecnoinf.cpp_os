@@ -14,6 +14,7 @@ Sistema crear()
     aux.RAIZ=new _nodo3;
     aux.RAIZ->hermano=NULL;
     aux.RAIZ->padre=NULL;
+    aux.RAIZ->cabezal_archivos=NULL;
     aux.cabezal_arch_D=NULL;
     aux.actual=aux.RAIZ;
     return aux;
@@ -1190,7 +1191,7 @@ TipoRet ret_dir(Sistema s, char parametros[])
     }
 }
 
-void mostrar_archivo(Archivos a, int c)
+void mostrar_archivo(Archivos a, int c, bool s)
 {
     int i=0;
 
@@ -1198,11 +1199,18 @@ void mostrar_archivo(Archivos a, int c)
     {
         cout <<"     ";
     }
-    cout << a->nombre_ext <<"     Archivo"<< endl;
-
+    if (s==true)
+    {
+        cout << a->nombre_ext <<"     Archivo"<< endl;
+    }
+    else
+    {
+        cout << a->nombre_ext <<"     Archivo     "<< a->cant <<endl;
+    }
+    
     if (!(es_vaciaA(a->sig)))
     {
-        mostrar_archivo(a->sig, c);     
+        mostrar_archivo(a->sig, c, s);     
     }
 }
 
@@ -1291,7 +1299,7 @@ void dir_s(Directorios d, int c)
     {
         if (!(es_vaciaA(arch)))
         {
-            mostrar_archivo(arch, c);
+            mostrar_archivo(arch, c, true);
         }
         if ((!(es_vaciaA(arch)))&&(!(es_vaciaD(d->hijo))))
         {
@@ -1398,7 +1406,7 @@ int cmd_dir(Sistema s, char parametros[])
     {
         if (!(es_vaciaA(arch)))
         {
-            mostrar_archivo(arch, c);
+            mostrar_archivo(arch, c, tiene_s);
         }
         
         if ((!(es_vaciaA(aux->cabezal_archivos)))&&(!(es_vaciaD(aux->hijo))))
@@ -1831,7 +1839,7 @@ int cmd_ic(Sistema *s, char parametros[])
     }
 }
 
-
+/*
 
 ///TYPE
 
