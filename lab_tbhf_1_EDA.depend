@@ -112,3 +112,14 @@
 1573575095 /home/tecnologo/Escritorio/EDA-2-LAB-master/funciones.cpp
 	"def.h"
 
+1573770699 source:c:\users\usuario\eda-2-lab\main.cpp
+	<iostream>
+	<string.h>
+	"def.h"
+	"funciones.cpp"
+
+1573771479 c:\users\usuario\eda-2-lab\def.h
+
+1573771437 c:\users\usuario\eda-2-lab\funciones.cpp
+	"def.h"
+

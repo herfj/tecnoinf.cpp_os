@@ -244,8 +244,46 @@ void errores_mensajes (Comandos cmd, int error, int cod)
 
 
 //Separa el comando de los parametros
+void pwd_ent(Directorios u,char ubic[])
+{
+    int i=0;
+    int c=0; //cantidad
+    int tdir=T_DIR;
+    tdir=tdir+1;
+    bool t=false;
+    char nubic[T_ENT];
 
-CMD_PARAM entrada()
+    nubic[c]='/';
+    c++;
+
+    if(es_raiz(u))
+    {
+        cout << ubic;
+    }
+    else
+    {
+        for(i=0;i<tdir;i++)
+        {
+            if(u->nombre[i]=='\0')
+            {
+                t=true;
+            }
+            if(t==false){
+                nubic[c]=u->nombre[i];
+                c++;
+            }
+        }
+
+         for(i=0;i<T_ENT;i++)
+        {
+            nubic[c]=ubic[i];
+            c++;
+        }
+        pwd_ent(u->padre, nubic);
+    }
+}
+
+CMD_PARAM entrada(Directorios aux)
 {
     CMD_PARAM ent;
     char cmd[T_CORT];
@@ -256,7 +294,7 @@ CMD_PARAM entrada()
     var=false;
 
     int t_cor_valor=20;
-    int i=0; //variables para fot
+    int i=0; //variables para for
     int j;//variables para for
     int u=0;//variables para for
     int cont;
@@ -269,7 +307,26 @@ CMD_PARAM entrada()
         txt_bruto[i]=0; //inicializa txt_bruto
     }
 
-    cout<<"> ";
+    char nombre[T_ENT];
+
+    if(es_raiz(aux))
+    {
+        cout << "/> ";
+    }
+    else
+    {
+        for (i=0;i<T_ENT;i++)
+        {
+            nombre[i]='\0';
+        }
+        for (i=0;i<T_ENT;i++)
+        {
+            nombre[i]='\0';
+        }
+        pwd_ent(aux, nombre);
+        cout <<"> ";
+    }
+    
 
     cin>>cmd;
     cin.clear();
@@ -3064,5 +3121,3 @@ int cmd_copy(Sistema *s, char parametros[])
 {
     return 2;
 }
-
-

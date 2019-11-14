@@ -25,7 +25,7 @@ int main()
 
     while (rep)
     {
-        ent=entrada();
+        ent=entrada(s.actual);
 
         if(ent.cmd_correcto==true)
         {

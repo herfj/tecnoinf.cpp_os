@@ -182,7 +182,8 @@ void errores_mensajes (Comandos cmd, int error, int cod);
 
 //Separa el comando de los parametros
 
-CMD_PARAM entrada();
+void pwd_ent(Directorios u,char ubic[]);
+CMD_PARAM entrada(Directorios aux);
 
 //Recibe un char[] de ubicacion y retorna el directorio de la ubicacion deseada
 
