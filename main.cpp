@@ -61,11 +61,11 @@ int main()
 //                cout<<""<<endl;
 //                break;
 //
-//            case IF:
-//                cout<<""<<endl;
-//                retorna=ret_if(&s, ent.parametros);
-//                cout<<""<<endl;
-//                break;
+            case IF:
+                cout<<""<<endl;
+                retorna=ret_if(&s, ent.parametros);
+                cout<<""<<endl;
+                break;
 //
 //            case TYPE:
 //                cout<<""<<endl;

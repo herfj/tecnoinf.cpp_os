@@ -192,7 +192,7 @@ Ubicacion mueve_nodo(Directorios dir,char ubic[]);
 ///Descompocion de parametros PARA ARCHIVOS (otorgando los datos para cada funcion)
 
 Descom_param_name param_solo_name(char parametros[]);
-Descom_param_if_ic descompone_param_de_if_ic(char parametros[]);
+Descom_param_if_ic param_de_if_ic(char parametros[], Comandos cmd);
 Descom_param_name_k param_name_k(char parametros[], Comandos cmd);
 Descom_param_2name param_2_name(char parametros[]);
 

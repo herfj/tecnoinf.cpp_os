@@ -115,6 +115,11 @@ void errores_mensajes (Comandos cmd, int error, int cod)
             {
                 cout << "Error: EL extension del contiene más 3 caracteres. - E" << cmd << "x" << cod << cod << cod << endl;
             }
+            if (cod==3)
+            {
+                cout << "Error: No ingreso una extension. - E" << cmd << "x" << cod << cod << cod << endl;
+            }
+
             break;
         case IF:
             if(cod==1)
@@ -258,7 +263,7 @@ void pwd_ent(Directorios u,char ubic[])
 
     if(es_raiz(u))
     {
-        cout << ubic;
+        cout << ubic<<"> ";
     }
     else
     {
@@ -311,22 +316,23 @@ CMD_PARAM entrada(Directorios aux)
 
     if(es_raiz(aux))
     {
-        cout << "/> ";
+        cout << "> ";
     }
     else
     {
-        for (i=0;i<T_ENT;i++)
-        {
-            nombre[i]='\0';
-        }
-        for (i=0;i<T_ENT;i++)
-        {
-            nombre[i]='\0';
-        }
-        pwd_ent(aux, nombre);
-        cout <<"> ";
+//        for (i=0;i<T_ENT;i++)
+//        {
+//            nombre[i]='\0';
+//        }
+//        for (i=0;i<T_ENT;i++)
+//        {
+//            nombre[i]='\0';
+//        }
+//        pwd_ent(aux, nombre);
+    cout << "> ";
+
     }
-    
+
 
     cin>>cmd;
     cin.clear();
@@ -615,22 +621,43 @@ Descom_param_name param_solo_name(char parametros[])
     }
     //FIN - Inicializacion
 
-    for (j=0; j<T_ENT; j++)
+    bool salir=true;
+
+    for (j=0; j<T_ENT && salir; j++)
     {
-        if((parametros[i]=='.')&&(var2==true))
+        if(((parametros[i]==' ')||(parametros[i]==0)||(parametros[i]=='.'))&&(var2==true))
         {
             var2=false;
         }
         if(var2==true)
         {
-            nombre[u]=parametros[i];
-            i++;
-            u++;
-            cant_a++;
+
+            if(cant_a<T_ARC)
+            {
+                nombre[u]=parametros[i];
+                i++;
+                u++;
+                cant_a++;
+            }
+            else
+            {
+                param.nombre_ext[0]='\0';
+                nombre[0]='\0';
+                ext[0]='\0';
+                param.ubic[0]='\0';
+                salir=false;
+                errores_mensajes(CREATE, 1, 1);
+                param.error=true;
+                return param;
+            }
         }
         if(cant_a>T_ARC)
         {
-            j=100;
+            param.nombre_ext[0]='\0';
+            nombre[0]='\0';
+            ext[0]='\0';
+            param.ubic[0]='\0';
+            salir=false;
             errores_mensajes(CREATE, 1, 1);
             param.error=true;
             return param;
@@ -641,9 +668,20 @@ Descom_param_name param_solo_name(char parametros[])
     u=0;
     var=true;
 
+    if (((parametros[i]==' ')||(parametros[i]==0)||(parametros[i]=='\0'))&&((i<T_ENT)&&(var==true)))
+    {
+        param.nombre_ext[0]='\0';
+        nombre[0]='\0';
+        ext[0]='\0';
+        param.ubic[0]='\0';
+        errores_mensajes(CREATE, 1, 3);
+        param.error=true;
+        return param;
+    }
+
     for(j=0; j<T_ENT; j++)
     {
-        if (((parametros[i]==' ')||(parametros[i]==0))&&(i<T_ENT)&&(var==true))
+        if (((parametros[i]==' ')||(parametros[i]==0)||(parametros[i]=='\0'))&&((i<T_ENT)&&(var==true)))
         {
             var=false;
         }
@@ -658,12 +696,26 @@ Descom_param_name param_solo_name(char parametros[])
             }
             else
             {
-                j=100;
+                param.nombre_ext[0]='\0';
+                nombre[0]='\0';
+                ext[0]='\0';
+                param.ubic[0]='\0';
                 errores_mensajes(CREATE, 1, 2);
                 param.error=true;
                 return param;
             }
         }
+        if(cant_ext>T_EXT)
+        {
+            param.nombre_ext[0]='\0';
+            nombre[0]='\0';
+            ext[0]='\0';
+            param.ubic[0]='\0';
+            errores_mensajes(CREATE, 1, 2);
+            param.error=true;
+            return param;
+        }
+
     }
 
 
@@ -1195,13 +1247,28 @@ Descom_param_name_D param_solo_name_D(char parametros[])
         }
         if(var2==true)
         {
-            nombre[u]=parametros[i];
-            i++;
-            u++;
-            cant++;
+            if(cant<T_DIR)
+            {
+                nombre[u]=parametros[i];
+                i++;
+                u++;
+                cant++;
+            }
+            else
+            {
+                j=100;
+                param.nombre[0]='\0';
+                param.ubic[0]='\0';
+                param.error=true;
+                return param;
+            }
+
         }
         if(cant>T_DIR)
         {
+            j=100;
+            param.nombre[0]='\0';
+            param.ubic[0]='\0';
             param.error=true;
             return param;
         }
@@ -1264,10 +1331,10 @@ void mostrar_archivo(Archivos a, int c, bool s)
     {
         cout << a->nombre_ext <<"     Archivo     "<< a->cant <<endl;
     }
-    
+
     if (!(es_vaciaA(a->sig)))
     {
-        mostrar_archivo(a->sig, c, s);     
+        mostrar_archivo(a->sig, c, s);
     }
 }
 
@@ -1345,7 +1412,7 @@ void dir_s(Directorios d, int c)
         {
             nombre[i]='\0';
         }
-        
+
         for(i=0;i<c;i++)
         {
             cout <<"     ";
@@ -1465,7 +1532,7 @@ int cmd_dir(Sistema s, char parametros[])
         {
             mostrar_archivo(arch, c, tiene_s);
         }
-        
+
         if ((!(es_vaciaA(aux->cabezal_archivos)))&&(!(es_vaciaD(aux->hijo))))
         {
             cout << "" << endl;
@@ -1706,7 +1773,7 @@ int cmd_create(Sistema *s, char parametros[])
     }
 }
 
-/*
+
 
 ///IF
 
@@ -1733,14 +1800,29 @@ int cmd_if(Sistema *s, char parametros[])
     int i=0;
 
     bool encontre=false;
+    bool en_raiz=false;
+
+    Directorios padre;
+
+    Ubicacion ubc_ainsertar;
 
     Archivos aux;
     Archivos aux2;
-    aux=(*s).cabezal_archivos;
-    aux2=(*s).cabezal_archivos;
 
     Descom_param_if_ic param;
-    param=descompone_param_de_if_ic(parametros, IF);
+
+
+    if (parametros[0]!='\0')
+    {
+        param=param_de_if_ic(parametros, IF);
+    }
+
+    else
+    {
+        errores_mensajes(DIR,1,0);
+        return 1;
+    }
+
 
     Lineas nuevo_linea=new _nodo;
 
@@ -1749,12 +1831,60 @@ int cmd_if(Sistema *s, char parametros[])
         return 1;
     }
 
+    if(param.hay_ubc==true)
+    {
+        if(param.absoluta==true)
+        {
+            if(param.es_raiz==false)
+            {
+                ubc_ainsertar=mueve_nodo((*s).RAIZ, param.ubic);
+
+                if (ubc_ainsertar.no_se_encontro==false)
+                {
+                    padre=ubc_ainsertar.Padre;
+                }
+                else
+                {
+                    errores_mensajes(MKDIR,1,0);
+                    return 1;
+                }
+
+            }
+            else
+            {
+                en_raiz=true;
+                padre=(*s).RAIZ;
+            }
+        }
+        else
+        {
+            ubc_ainsertar=mueve_nodo((*s).actual, param.ubic);
+
+            if (ubc_ainsertar.no_se_encontro==false)
+            {
+                padre=ubc_ainsertar.Padre;
+            }
+            else
+            {
+                errores_mensajes(MKDIR,1,0);
+                return 1;
+            }
+        }
+    }
+    else
+    {
+        padre=(*s).actual;
+    }
+
+    aux=padre->cabezal_archivos;
+    aux2=padre->cabezal_archivos;
+
     for(i=0; i<TEXTO_MAX; i++)
     {
         nuevo_linea->linea_texto[i]=param.linea[i];
     }
 
-    while(aux!=NULL)
+    while((aux!=NULL)&&(encontre==false))
     {
 
         if ((iguales(param.nombre_ext, aux->nombre_ext)))
@@ -1799,7 +1929,7 @@ int cmd_if(Sistema *s, char parametros[])
 }
 
 
-
+/*
 ///IC
 
 TipoRet ret_ic(Sistema *s, char parametros[])
@@ -2708,13 +2838,12 @@ int cmd_mkdir(Sistema *s, char parametros[])
         return 1;
     }
 
-
     if(param.error==true)
     {
         errores_mensajes(MKDIR, 1, 2);
         return 1;
     }
-    
+
     if ((iguales(param.nombre,"RAIZ"))||(iguales(param.nombre,"raiz"))||(iguales(param.nombre,"Raiz")))
     {
         errores_mensajes(MKDIR,1,3);
@@ -3061,7 +3190,7 @@ int cmd_pwd(Sistema *s, char parametros[])
         {
             nombre[i]='\0';
         }
-        
+
         pwd_recursivo((*s).actual,nombre);
         cout<<""<<endl;
     }
