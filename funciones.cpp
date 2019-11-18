@@ -1929,7 +1929,7 @@ int cmd_if(Sistema *s, char parametros[])
 }
 
 
-/*
+
 ///IC
 
 TipoRet ret_ic(Sistema *s, char parametros[])
@@ -1955,14 +1955,29 @@ int cmd_ic(Sistema *s, char parametros[])
     int i=0;
 
     bool encontre=false;
+    bool en_raiz=false;
+
+    Directorios padre;
+
+    Ubicacion ubc_ainsertar;
 
     Archivos aux;
     Archivos aux2;
-    aux=(*s).cabezal_archivos;
-    aux2=(*s).cabezal_archivos;
 
     Descom_param_if_ic param;
-    param=descompone_param_de_if_ic(parametros, IC);
+
+
+    if (parametros[0]!='\0')
+    {
+        param=param_de_if_ic(parametros, IF);
+    }
+
+    else
+    {
+        errores_mensajes(DIR,1,0);
+        return 1;
+    }
+
 
     Lineas nuevo_linea=new _nodo;
 
@@ -1970,6 +1985,54 @@ int cmd_ic(Sistema *s, char parametros[])
     {
         return 1;
     }
+
+    if(param.hay_ubc==true)
+    {
+        if(param.absoluta==true)
+        {
+            if(param.es_raiz==false)
+            {
+                ubc_ainsertar=mueve_nodo((*s).RAIZ, param.ubic);
+
+                if (ubc_ainsertar.no_se_encontro==false)
+                {
+                    padre=ubc_ainsertar.Padre;
+                }
+                else
+                {
+                    errores_mensajes(MKDIR,1,0);
+                    return 1;
+                }
+
+            }
+            else
+            {
+                en_raiz=true;
+                padre=(*s).RAIZ;
+            }
+        }
+        else
+        {
+            ubc_ainsertar=mueve_nodo((*s).actual, param.ubic);
+
+            if (ubc_ainsertar.no_se_encontro==false)
+            {
+                padre=ubc_ainsertar.Padre;
+            }
+            else
+            {
+                errores_mensajes(MKDIR,1,0);
+                return 1;
+            }
+        }
+    }
+    else
+    {
+        padre=(*s).actual;
+    }
+
+    aux=padre->cabezal_archivos;
+    aux2=padre->cabezal_archivos;
 
     for(i=0; i<TEXTO_MAX; i++)
     {
@@ -2026,7 +2089,7 @@ int cmd_ic(Sistema *s, char parametros[])
     }
 }
 
-/*
+
 
 ///TYPE
 
@@ -2050,22 +2113,77 @@ TipoRet ret_type(Sistema *s, char parametros[])
 
 int cmd_type(Sistema *s, char parametros[])
 {
+
+    ///____________________________VAR__________________________________
     int i;
     i=0;
-
+    Ubicacion ubc_ainsertar;
     bool var=false;
+    bool en_raiz=false;
     bool encontre=false;
-
+    Directorios padre;
     Lineas linea_aux;
-
+    Descom_param_name param;
     Archivos aux;
     Archivos aux2;
-
-    aux=(*s).cabezal_archivos;
-    aux2=(*s).cabezal_archivos;
-
-    Descom_param_name param;
+    ///_________________________________________________________________
     param=param_solo_name(parametros);
+
+    if(param.hay_ubc==true)
+    {
+        if(param.absoluta==true)
+        {
+            if(param.es_raiz==false)
+            {
+                ubc_ainsertar=mueve_nodo((*s).RAIZ, param.ubic);
+
+                if (ubc_ainsertar.no_se_encontro==false)
+                {
+                    padre=ubc_ainsertar.Padre;
+                }
+                else
+                {
+                    errores_mensajes(MKDIR,1,0);
+                    return 1;
+                }
+
+            }
+            else
+            {
+                en_raiz=true;
+                padre=(*s).RAIZ;
+            }
+        }
+        else
+        {
+            ubc_ainsertar=mueve_nodo((*s).actual, param.ubic);
+
+            if (ubc_ainsertar.no_se_encontro==false)
+            {
+                padre=ubc_ainsertar.Padre;
+            }
+            else
+            {
+                errores_mensajes(MKDIR,1,0);
+                return 1;
+            }
+        }
+    }
+    else
+    {
+        padre=(*s).actual;
+    }
+
+
+
+//    aux=(*s).actual->cabezal_archivos;
+//    aux2=(*s).actual->cabezal_archivos;
+    aux=padre->cabezal_archivos;
+    aux2=padre->cabezal_archivos;
+
+
+
+
 
     if (es_vacia((*s)))
     {
@@ -2117,7 +2235,7 @@ int cmd_type(Sistema *s, char parametros[])
 }
 
 
-
+/*
 ///DELETE
 
 TipoRet ret_delete(Sistema *s, char parametros[])

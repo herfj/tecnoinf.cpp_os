@@ -54,25 +54,25 @@ int main()
 //                retorna=ret_undelete(&s);
 //                cout<<""<<endl;
 //                break;
-//
-//            case IC:
-//                cout<<""<<endl;
-//                retorna=ret_ic(&s, ent.parametros);
-//                cout<<""<<endl;
-//                break;
-//
+
+            case IC:
+                cout<<""<<endl;
+                retorna=ret_ic(&s, ent.parametros);
+                cout<<""<<endl;
+                break;
+
             case IF:
                 cout<<""<<endl;
                 retorna=ret_if(&s, ent.parametros);
                 cout<<""<<endl;
                 break;
-//
-//            case TYPE:
-//                cout<<""<<endl;
-//                retorna=ret_type(&s, ent.parametros);
-//                cout<<""<<endl;
-//                break;
-//
+
+            case TYPE:
+                cout<<""<<endl;
+                retorna=ret_type(&s, ent.parametros);
+                cout<<""<<endl;
+                break;
+
 //            case BC:
 //                cout<<""<<endl;
 //                retorna=ret_bc(&s, ent.parametros);
