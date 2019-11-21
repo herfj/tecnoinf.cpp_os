@@ -1804,7 +1804,6 @@ int cmd_create(Sistema *s, char parametros[])
             if ((strcmp(param.nombre_ext, ult->nombre_ext))>0)
             {
                 nuevo_nodo->sig=NULL;
-                ult=padre->cabezal_archivos;
                 ult->sig=nuevo_nodo;
 
                 return 0;
