@@ -1587,72 +1587,73 @@ TipoRet ret_create(Sistema *s, char parametros[])
 
 }
 
-void insert_p_a(Directorios padre, char nombre_ext[], int cant_ayext)
+void create_pwd_recursivo(Directorios u,Archivos a,char ubic[])
 {
-    Archivos nuevo_nodo=new _nodo2;
-
     int i=0;
+    int c=0; //cantidad
+    int tdir=T_DIR;
+    tdir=tdir+1;
+    bool t=false;
+    char nubic[T_ENT];
 
-    for(i=0; i<T_ARC_Y_EXT; i++)
-    {
-        nuevo_nodo->nombre_ext[i]=00;
-    }
-    for(i=0; i<cant_ayext; i++)
-    {
-        nuevo_nodo->nombre_ext[i]=nombre_ext[i];
-    }
-    nuevo_nodo->cant=0;
-    nuevo_nodo->sig=padre->cabezal_archivos;
-    padre->cabezal_archivos=nuevo_nodo;
-}
+    nubic[c]='/';
+        c++;
 
-void insert_f_a(Directorios padre, char nombre_ext[], int cant_ayext)
-{
-    Archivos nuevo_nodo=new _nodo2;
-    nuevo_nodo->sig=NULL;
-    Archivos aux;
-
-    aux=padre->cabezal_archivos;
-    int i=0;
-
-    for(i=0; i<T_ARC_Y_EXT; i++)
+    if(es_raiz(u))
     {
-        nuevo_nodo->nombre_ext[i]=00;
-    }
-    for(i=0; i<cant_ayext; i++)
-    {
-        nuevo_nodo->nombre_ext[i]=nombre_ext[i];
-    }
+        for(i=0;i<T_ENT;i++)
+        {
+            if(ubic[i]!='\0')
+            {
+                a->ubic[i]=ubic[i];
+            }
+            else
+            {
+                if(t==false)
+                {
+                    a->ubic[i]='/';
+                    t=true;
+                }
+            }
 
-    while (aux->sig!=NULL)
-    {
-        aux=aux->sig;
+        }
     }
-    nuevo_nodo->cant=0;
-    aux->sig=nuevo_nodo;
+    else
+    {
+        for(i=0;i<tdir;i++)
+        {
+            if(u->nombre[i]=='\0')
+            {
+                t=true;
+            }
+            if(t==false)
+            {
+                nubic[c]=u->nombre[i];
+                c++;
+            }
+        }
+
+        for(i=0;i<T_ENT;i++)
+        {
+            nubic[c]=ubic[i];
+            c++;
+        }
+
+        create_pwd_recursivo(u->padre, a, nubic);
+    }
 }
 
 int cmd_create(Sistema *s, char parametros[])
 {
     int i=0;
-    int o=0;
 
     bool inserta=true;
+    bool primera=true;
     bool en_raiz=false;
-
-    char ubic_abs[T_ENT];
-    char ubic_abs_aux[T_ENT];
-
-    for(i=0;i<T_ENT;i++)
-    {
-        ubic_abs[i]='\0';
-        ubic_abs_aux[i]='\0';
-    }
 
     Archivos nuevo_nodo=new _nodo2;
 
     Directorios padre;
-    Directorios daux;
 
     Ubicacion ubc_ainsertar;
 
@@ -1730,26 +1731,33 @@ int cmd_create(Sistema *s, char parametros[])
     aux2=padre->cabezal_archivos;
     ult=padre->cabezal_archivos;
 
-    daux=padre;
-    while(es_raiz(daux))
+    if(es_raiz(padre))
     {
-        if(ubic_abs[0]='\0')
+        nuevo_nodo->raiz=true;
+    }
+    else
+    {
+        nuevo_nodo->raiz=false;
+
+        if(param.absoluta==true)
         {
-            for(i=0;i<T_DIR;i++)
+            for(i=0;i<T_ENT;i++)
             {
-                ubic_abs[o]=padre->nombre[o];
-                o++;
-            }
-            else
-            {
-                ubic_abs_aux
+                    nuevo_nodo->ubic[i]=param.ubic[i];
             }
         }
-    }
+        else
+        {
+            char nombre[T_ENT];
 
-    for(i=0;i<T_ENT;i++)
-    {
-            nuevo_nodo->ubic[i]=ubic_abs[i];
+            for (i=0;i<T_ENT;i++)
+            {
+                nombre[i]='\0';
+            }
+            create_pwd_recursivo(padre, nuevo_nodo, nombre);
+
+
+        }
     }
 
     while(aux2!=NULL)
@@ -1765,9 +1773,25 @@ int cmd_create(Sistema *s, char parametros[])
 
     if (inserta==true)
     {
+        for(i=0; i<T_ARC_Y_EXT; i++)
+        {
+            nuevo_nodo->nombre_ext[i]=00;
+        }
+
+        for(i=0; i<param.cant_ayext; i++)
+        {
+            nuevo_nodo->nombre_ext[i]=param.nombre_ext[i];
+        }
+        nuevo_nodo->cant_lineas=0;
+        nuevo_nodo->cant=0;
+        nuevo_nodo->cabezal_linea.pri=NULL;
+        nuevo_nodo->cabezal_linea.ult=NULL;
+
         if ((es_vaciaA(padre->cabezal_archivos))||((strcmp(param.nombre_ext,padre->cabezal_archivos->nombre_ext))<0))
         {
-            insert_p_a(padre, param.nombre_ext, param.cant_ayext);
+            nuevo_nodo->sig=padre->cabezal_archivos;
+            padre->cabezal_archivos=nuevo_nodo;
+
             return 0;
         }
         else
@@ -1779,7 +1803,10 @@ int cmd_create(Sistema *s, char parametros[])
 
             if ((strcmp(param.nombre_ext, ult->nombre_ext))>0)
             {
-                insert_f_a(padre, param.nombre_ext, param.cant_ayext);
+                nuevo_nodo->sig=NULL;
+                ult=padre->cabezal_archivos;
+                ult->sig=nuevo_nodo;
+
                 return 0;
             }
 
@@ -1796,7 +1823,7 @@ int cmd_create(Sistema *s, char parametros[])
                 {
                     nuevo_nodo->nombre_ext[i]=param.nombre_ext[i];
                 }
-                nuevo_nodo->cant=0;
+
                 return 0;
             }
         }
@@ -2433,8 +2460,10 @@ int cmd_delete(Sistema *s, char parametros[])
         {
             undelete->cant_lineas=aux2->cant_lineas;
             undelete->cant=aux2->cant;
+            undelete->raiz=aux2->raiz;
 
             linea_aux=aux2->cabezal_linea.pri;
+
             undelete->cabezal_linea.pri=NULL;
 
             for(i=0; i<aux2->cant_lineas; i++)
@@ -2470,6 +2499,7 @@ int cmd_delete(Sistema *s, char parametros[])
             {
                 undelete->ubic[i]=aux2->ubic[i];
             }
+
 
             if(padre->cabezal_archivos==aux2)
             {
@@ -2523,27 +2553,42 @@ int cmd_undelete(Sistema *s)
     Archivos aux;
     Archivos aux2;
 
+    Ubicacion ubc_ainsertar;
+
+    Directorios padre;
 
     Lineas linea_aux;
 
-    undelete= (*s).deleteado.archivo;
-    int i;
-    bool k=true;
+    undelete= (*s).deleteado;
+    int i=0;
+    int u=0;
     bool error1=false;
     int r;
 
-    char param[T_ARC_Y_EXT];
+    char param[T_ENT];
 
-    if((*s).deleteado.ubicacion==NULL)
+    if(iguales(undelete->ubic, "/"))
     {
-        errores_mensajes(UNDELETE, 1, 2);
-        return 1;
+        padre=(*s).RAIZ;
     }
     else
     {
-        ausiliar=(*s).deleteado.ubicacion->cabezal_archivos;
-        aux2=(*s).deleteado.ubicacion->cabezal_archivos;
+        ubc_ainsertar=mueve_nodo((*s).RAIZ, undelete->ubic);
+
+        if (ubc_ainsertar.no_se_encontro==false)
+        {
+            padre=ubc_ainsertar.Padre;
+        }
+        else
+        {
+            errores_mensajes(UNDELETE, 1, 2);
+            return 1;
+        }
     }
+
+    ausiliar=padre->cabezal_archivos;
+    aux2=padre->cabezal_archivos;
+
 
     if(undelete==NULL)
     {
@@ -2553,12 +2598,25 @@ int cmd_undelete(Sistema *s)
 
     for(i=0; i<T_ARC_Y_EXT;i++)
     {
-        param[i]=undelete->nombre_ext[i];
+        if(undelete->ubic[i]!='\0')
+        {
+            param[i]=undelete->ubic[i];
+            u++;
+        }
+    }
+
+    for(i=0; i<T_ARC_Y_EXT;i++)
+    {
+        if (u<T_ENT)
+        {
+            param[u]=undelete->nombre_ext[i];
+            u++;
+        }
     }
 
     while((aux2!=NULL)&&(error1==false))
     {
-        if(iguales(aux2->nombre_ext,param))
+        if(iguales(aux2->nombre_ext,undelete->nombre_ext))
         {
             error1=true;
         }
@@ -2574,17 +2632,18 @@ int cmd_undelete(Sistema *s)
 
     r=cmd_create(&*s, param);
 
+    dir_s(padre, 1);
 
-    while((ausiliar!=NULL)&&(k))
+    while(ausiliar!=NULL)
     {
-        if(iguales(ausiliar->nombre_ext,param))
+        if(iguales(ausiliar->nombre_ext,undelete->nombre_ext))
         {
-            k=false;
             aux=ausiliar;
         }
         ausiliar=ausiliar->sig;
     }
 
+    cout<<"hola"<<aux->nombre_ext<<endl;
     aux->cant=undelete->cant;
     aux->cant_lineas=undelete->cant_lineas;
 
@@ -2593,6 +2652,7 @@ int cmd_undelete(Sistema *s)
     int h;
 
     h=aux->cant_lineas;
+
 
     for(i=0; i<h; i++)
     {
@@ -3353,10 +3413,10 @@ int cmd_cd(Sistema *s, char parametros[])
 
 ///PWD
 
-TipoRet ret_pwd(Sistema *s, char parametros[])
+TipoRet ret_pwd(Sistema *s)
 {
     int r;
-    r=cmd_pwd(&*s, parametros);
+    r=cmd_pwd(&*s);
     switch(r)
     {
     case 0:
@@ -3412,7 +3472,7 @@ void pwd_recursivo(Directorios u,char ubic[])
 
 }
 
-int cmd_pwd(Sistema *s, char parametros[])
+int cmd_pwd(Sistema *s)
 {
     char nombre[T_ENT];
     int i;

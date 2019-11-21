@@ -130,6 +130,7 @@ struct _nodo2{
     char nombre_ext[T_ARC_Y_EXT];
     CabezalLineas cabezal_linea;
     char ubic[T_ENT];
+    bool raiz;
     int cant;
     int cant_lineas=0;
     _nodo2 *sig;
@@ -213,8 +214,6 @@ int cmd_dir(Sistema s, char parametros[]);
 ///CREATE
 
 TipoRet ret_create(Sistema *s, char parametros[T_ENT]);
-void insert_p_a(Directorios padre, char nombre_ext[], int cant_ayext);
-void insert_f_a(Directorios padre, char nombre_ext[], int cant_ayext);
 int cmd_create(Sistema *s, char parametros[]);
 
 ///IF
@@ -274,9 +273,9 @@ int cmd_cd(Sistema *s, char parametros[]);
 
 ///PWD
 
-TipoRet ret_pwd(Sistema *s, char parametros[]);
+TipoRet ret_pwd(Sistema *s);
 void pwd_recursivo(Directorios u,char ubic[]);
-int cmd_pwd(Sistema *s, char parametros[]);
+int cmd_pwd(Sistema *s);
 
 ///RMDIR
 

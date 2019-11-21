@@ -101,7 +101,7 @@ int main()
                 break;
             case PWD:
                 cout<<""<<endl;
-                retorna=ret_pwd(&s, ent.parametros);
+                retorna=ret_pwd(&s);
                 //cout<<""<<endl;
                 break;
             case RMDIR:
