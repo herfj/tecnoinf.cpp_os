@@ -16,9 +16,8 @@ int main()
     bool rep; rep=true;
 
     TipoRet retorna;
-    CMD_PARAM ent;
 
-    int i; i=0;
+    CMD_PARAM ent;
 
     Sistema s;
     s=crear();
@@ -43,17 +42,17 @@ int main()
                 cout<<""<<endl;
                 break;
 
-//            case DELETE:
-//                cout<<""<<endl;
-//                retorna=ret_delete(&s, ent.parametros);
-//                cout<<""<<endl;
-//                break;
-//
-//            case UNDELETE:
-//                cout<<""<<endl;
-//                retorna=ret_undelete(&s);
-//                cout<<""<<endl;
-//                break;
+            case DELETE:
+                cout<<""<<endl;
+                retorna=ret_delete(&s, ent.parametros);
+                cout<<""<<endl;
+                break;
+
+            case UNDELETE:
+                cout<<""<<endl;
+                retorna=ret_undelete(&s);
+                cout<<""<<endl;
+                break;
 
             case IC:
                 cout<<""<<endl;
@@ -103,7 +102,7 @@ int main()
             case PWD:
                 cout<<""<<endl;
                 retorna=ret_pwd(&s, ent.parametros);
-                cout<<""<<endl;
+                //cout<<""<<endl;
                 break;
             case RMDIR:
                 cout<<""<<endl;

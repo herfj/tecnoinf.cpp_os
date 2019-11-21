@@ -15,7 +15,7 @@ Sistema crear()
     aux.RAIZ->hermano=NULL;
     aux.RAIZ->padre=NULL;
     aux.RAIZ->cabezal_archivos=NULL;
-    aux.cabezal_arch_D=NULL;
+    aux.deleteado=NULL;
     aux.actual=aux.RAIZ;
     return aux;
 }
@@ -158,8 +158,9 @@ void errores_mensajes (Comandos cmd, int error, int cod)
             }
             break;
         case DELETE:
-            cout << "Error: NO existe un archivo con ese nombre en este directorio.  - E" << cmd << "x" << cod << cod << cod << endl;
+                cout << "Error: NO existe un archivo con ese nombre en este directorio.  - E" << cmd << "x" << cod << cod << cod << endl;
             break;
+
         case TYPE:
             cout << "Error: NO existe un archivo con ese nombre en este directorio.  - E" << cmd << "x" << cod << cod << cod << endl;
             break;
@@ -171,6 +172,10 @@ void errores_mensajes (Comandos cmd, int error, int cod)
             if(cod==1)
             {
                 cout << "Error: NO se puede restaurar dado que ya un archivo con el mismo nombre.  - E" << cmd << "x" << cod << cod << cod << endl;
+            }
+            if(cod==2)
+            {
+                cout << "Error: NO se puede restaurar dado que ya no existe el diractorio de este archivo.  - E" << cmd << "x" << cod << cod << cod << endl;
             }
             break;
         case CAT:
@@ -320,15 +325,7 @@ CMD_PARAM entrada(Directorios aux)
     }
     else
     {
-//        for (i=0;i<T_ENT;i++)
-//        {
-//            nombre[i]='\0';
-//        }
-//        for (i=0;i<T_ENT;i++)
-//        {
-//            nombre[i]='\0';
-//        }
-//        pwd_ent(aux, nombre);
+
     cout << "> ";
 
     }
@@ -1638,13 +1635,24 @@ void insert_f_a(Directorios padre, char nombre_ext[], int cant_ayext)
 int cmd_create(Sistema *s, char parametros[])
 {
     int i=0;
+    int o=0;
 
     bool inserta=true;
     bool en_raiz=false;
 
+    char ubic_abs[T_ENT];
+    char ubic_abs_aux[T_ENT];
+
+    for(i=0;i<T_ENT;i++)
+    {
+        ubic_abs[i]='\0';
+        ubic_abs_aux[i]='\0';
+    }
+
     Archivos nuevo_nodo=new _nodo2;
 
     Directorios padre;
+    Directorios daux;
 
     Ubicacion ubc_ainsertar;
 
@@ -1721,6 +1729,28 @@ int cmd_create(Sistema *s, char parametros[])
     aux=padre->cabezal_archivos;
     aux2=padre->cabezal_archivos;
     ult=padre->cabezal_archivos;
+
+    daux=padre;
+    while(es_raiz(daux))
+    {
+        if(ubic_abs[0]='\0')
+        {
+            for(i=0;i<T_DIR;i++)
+            {
+                ubic_abs[o]=padre->nombre[o];
+                o++;
+            }
+            else
+            {
+                ubic_abs_aux
+            }
+        }
+    }
+
+    for(i=0;i<T_ENT;i++)
+    {
+            nuevo_nodo->ubic[i]=ubic_abs[i];
+    }
 
     while(aux2!=NULL)
     {
@@ -1969,7 +1999,7 @@ int cmd_ic(Sistema *s, char parametros[])
 
     if (parametros[0]!='\0')
     {
-        param=param_de_if_ic(parametros, IF);
+        param=param_de_if_ic(parametros, IC);
     }
 
     else
@@ -2115,19 +2145,35 @@ int cmd_type(Sistema *s, char parametros[])
 {
 
     ///____________________________VAR__________________________________
-    int i;
-    i=0;
+    int i=0;
+
     Ubicacion ubc_ainsertar;
+
     bool var=false;
     bool en_raiz=false;
     bool encontre=false;
+
     Directorios padre;
+
     Lineas linea_aux;
+
     Descom_param_name param;
+
     Archivos aux;
     Archivos aux2;
     ///_________________________________________________________________
-    param=param_solo_name(parametros);
+
+
+    if (parametros[0]!='\0')
+    {
+        param=param_solo_name(parametros);
+    }
+
+    else
+    {
+        errores_mensajes(DIR,1,0);
+        return 1;
+    }
 
     if(param.hay_ubc==true)
     {
@@ -2175,14 +2221,8 @@ int cmd_type(Sistema *s, char parametros[])
     }
 
 
-
-//    aux=(*s).actual->cabezal_archivos;
-//    aux2=(*s).actual->cabezal_archivos;
     aux=padre->cabezal_archivos;
     aux2=padre->cabezal_archivos;
-
-
-
 
 
     if (es_vacia((*s)))
@@ -2235,7 +2275,7 @@ int cmd_type(Sistema *s, char parametros[])
 }
 
 
-/*
+
 ///DELETE
 
 TipoRet ret_delete(Sistema *s, char parametros[])
@@ -2256,21 +2296,21 @@ TipoRet ret_delete(Sistema *s, char parametros[])
     }
 }
 
-void eliminar_p_a(Sistema *s)
+void eliminar_p_a(Directorios u)
 {
     Archivos aux;
-    aux=(*s).cabezal_archivos;
+    aux=u->cabezal_archivos;
 
-    (*s).cabezal_archivos=aux->sig;
+    u->cabezal_archivos=aux->sig;
     delete aux;
 }
 
-void elimnar_f_a(Sistema *s)
+void elimnar_f_a(Directorios u)
 {
     Archivos aux;
     Archivos ant;
-    aux=(*s).cabezal_archivos;
-    ant=(*s).cabezal_archivos;
+    aux=u->cabezal_archivos;
+    ant=u->cabezal_archivos;
     while(aux->sig!=NULL)
     {
         ant=aux;
@@ -2285,7 +2325,16 @@ int cmd_delete(Sistema *s, char parametros[])
     int i;
     i=0;
 
+    bool var=false;
+    bool en_raiz=false;
     bool existe=false;
+
+    char nombre[T_ENT];
+    char *ubic[T_ENT];
+
+    Ubicacion ubc_ainsertar;
+
+    Directorios padre;
 
     Archivos aux;
     Archivos aux2;
@@ -2294,14 +2343,69 @@ int cmd_delete(Sistema *s, char parametros[])
 
     Lineas linea_aux;
 
-    aux = (*s).cabezal_archivos;
-    aux2 = (*s).cabezal_archivos;
-    ant = (*s).cabezal_archivos;
-
     undelete->sig=NULL;
 
     Descom_param_name param;
-    param=param_solo_name(parametros);
+
+    if (parametros[0]!='\0')
+    {
+        param=param_solo_name(parametros);
+    }
+
+    else
+    {
+        errores_mensajes(DIR,1,0);
+        return 1;
+    }
+
+    if(param.hay_ubc==true)
+    {
+        if(param.absoluta==true)
+        {
+            if(param.es_raiz==false)
+            {
+                ubc_ainsertar=mueve_nodo((*s).RAIZ, param.ubic);
+
+                if (ubc_ainsertar.no_se_encontro==false)
+                {
+                    padre=ubc_ainsertar.Padre;
+                }
+                else
+                {
+                    errores_mensajes(MKDIR,1,0);
+                    return 1;
+                }
+            }
+            else
+            {
+                en_raiz=true;
+                padre=(*s).RAIZ;
+            }
+        }
+        else
+        {
+            ubc_ainsertar=mueve_nodo((*s).actual, param.ubic);
+
+            if (ubc_ainsertar.no_se_encontro==false)
+            {
+                padre=ubc_ainsertar.Padre;
+            }
+            else
+            {
+                errores_mensajes(MKDIR,1,0);
+                return 1;
+            }
+        }
+    }
+    else
+    {
+        padre=(*s).actual;
+    }
+
+
+    ant=padre->cabezal_archivos;
+    aux=padre->cabezal_archivos;
+    aux2=padre->cabezal_archivos;
 
     if(aux==NULL)
     {
@@ -2362,16 +2466,20 @@ int cmd_delete(Sistema *s, char parametros[])
             {
                 undelete->nombre_ext[i]=aux2->nombre_ext[i];
             }
-
-            if((*s).cabezal_archivos==aux2)
+            for(i=0; i<T_ENT; i++)
             {
-                eliminar_p_a(&*s);
+                undelete->ubic[i]=aux2->ubic[i];
+            }
+
+            if(padre->cabezal_archivos==aux2)
+            {
+                eliminar_p_a(padre);
             }
             else
             {
                 if(aux2->sig==NULL)
                 {
-                    elimnar_f_a(&*s);
+                    elimnar_f_a(padre);
                 }
                 else
                 {
@@ -2381,7 +2489,8 @@ int cmd_delete(Sistema *s, char parametros[])
             }
         }
     }
-    (*s).cabezal_arch_D=undelete;
+
+    (*s).deleteado=undelete;
     return 0;
 }
 
@@ -2413,17 +2522,28 @@ int cmd_undelete(Sistema *s)
     Archivos ausiliar;
     Archivos aux;
     Archivos aux2;
-    aux2=(*s).cabezal_archivos;
+
 
     Lineas linea_aux;
 
-    undelete= (*s).cabezal_arch_D;
+    undelete= (*s).deleteado.archivo;
     int i;
     bool k=true;
     bool error1=false;
     int r;
 
     char param[T_ARC_Y_EXT];
+
+    if((*s).deleteado.ubicacion==NULL)
+    {
+        errores_mensajes(UNDELETE, 1, 2);
+        return 1;
+    }
+    else
+    {
+        ausiliar=(*s).deleteado.ubicacion->cabezal_archivos;
+        aux2=(*s).deleteado.ubicacion->cabezal_archivos;
+    }
 
     if(undelete==NULL)
     {
@@ -2453,7 +2573,7 @@ int cmd_undelete(Sistema *s)
     }
 
     r=cmd_create(&*s, param);
-    ausiliar=(*s).cabezal_archivos;
+
 
     while((ausiliar!=NULL)&&(k))
     {
@@ -2505,7 +2625,7 @@ int cmd_undelete(Sistema *s)
 }
 
 
-
+/*
 ///BF
 
 TipoRet ret_bf(Sistema *s, char parametros[])
@@ -3033,6 +3153,7 @@ int cmd_mkdir(Sistema *s, char parametros[])
         nuevo->hermano=NULL;
         padre->hijo=nuevo;
         nuevo->padre=padre;
+        nuevo->cabezal_archivos=NULL;
     }
     else
     {

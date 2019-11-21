@@ -10,7 +10,7 @@
 	"def.h"
 	"funciones.cpp"
 
-1573770699 .cpp"
+1574284474 .cpp"
 
 1568847368 /home/ceibal/Escritorio/CB_PP/lab_tbhf_1_EDA/def.h
 
@@ -105,15 +105,20 @@
 1573603842 /home/ceibal/Escritorio/CB_PP/EDA-2-LAB-master/funciones.cpp
 	"def.h"
 
-1573570495 source:/home/tecnologo/Escritorio/EDA-2-LAB-master/main.cpp
+1574077922 source:/home/tecnologo/Escritorio/EDA-2-LAB-master/main.cpp
+	<iostream>
+	<string.h>
+	"def.h"
+	"funciones.cpp"
 	<iostream>
 	<string.h>
 	"def.h"
 	"funciones.cpp"
 
-1573570363 /home/tecnologo/Escritorio/EDA-2-LAB-master/def.h
+1573823533 /home/tecnologo/Escritorio/EDA-2-LAB-master/def.h
 
-1573575095 /home/tecnologo/Escritorio/EDA-2-LAB-master/funciones.cpp
+1574077850 /home/tecnologo/Escritorio/EDA-2-LAB-master/funciones.cpp
+	"def.h"
 	"def.h"
 
 1573770699 source:c:\users\usuario\eda-2-lab\main.cpp
@@ -127,14 +132,25 @@
 1573771437 c:\users\usuario\eda-2-lab\funciones.cpp
 	"def.h"
 
-1574077922 source:/home/tecnologo/Escritorio/EDA-2-LAB-master/main.cpp
+1574284474 source:c:\users\usuario\onedrive\hernan\code\eda-2-lab\main.cpp
 	<iostream>
 	<string.h>
 	"def.h"
 	"funciones.cpp"
 
-1573823533 /home/tecnologo/Escritorio/EDA-2-LAB-master/def.h
+1574283651 c:\users\usuario\onedrive\hernan\code\eda-2-lab\def.h
 
-1574077850 /home/tecnologo/Escritorio/EDA-2-LAB-master/funciones.cpp
+1574284785 c:\users\usuario\onedrive\hernan\code\eda-2-lab\funciones.cpp
+	"def.h"
+
+1574342040 source:/home/tecnologo/Escritorio/OneDrive-2019-11-21/main.cpp
+	<iostream>
+	<string.h>
+	"def.h"
+	"funciones.cpp"
+
+1574341120 /home/tecnologo/Escritorio/OneDrive-2019-11-21/def.h
+
+1574342507 /home/tecnologo/Escritorio/OneDrive-2019-11-21/funciones.cpp
 	"def.h"
 

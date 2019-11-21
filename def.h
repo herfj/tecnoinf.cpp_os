@@ -129,6 +129,7 @@ typedef struct _cabezalineas CabezalLineas;
 struct _nodo2{
     char nombre_ext[T_ARC_Y_EXT];
     CabezalLineas cabezal_linea;
+    char ubic[T_ENT];
     int cant;
     int cant_lineas=0;
     _nodo2 *sig;
@@ -159,8 +160,8 @@ typedef struct
 typedef struct
 {
     Directorios RAIZ;
-    Archivos cabezal_arch_D;
     Directorios actual;
+    Archivos deleteado;
 }Sistema;
 
 
@@ -234,6 +235,8 @@ int cmd_type(Sistema *s, char parametros[]);
 ///DELETE
 
 TipoRet ret_delete(Sistema *s, char parametros[]);
+void elimnar_p_a(Directorios u);
+void elimnar_f_a(Directorios u);
 int cmd_delete(Sistema *s, char parametros[]);
 
 ///UNDELETE
@@ -280,7 +283,7 @@ int cmd_pwd(Sistema *s, char parametros[]);
 TipoRet ret_rmdir(Sistema *s, char parametros[]);
 int cmd_rmdir(Sistema *s, char parametros[]);
 
-//COPY
+///COPY
 
 TipoRet ret_copy(Sistema *s, char parametros[]);
 int cmd_copy(Sistema *s, char parametros[]);
