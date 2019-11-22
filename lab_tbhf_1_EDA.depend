@@ -165,3 +165,14 @@
 1574366887 /home/ceibal/Escritorio/CB_PP/EDA-2-LAB-master/funciones.cpp
 	"def.h"
 
+1574367285 source:/home/tecnologo/Escritorio/EDA-2-LAB-master/main.cpp
+	<iostream>
+	<string.h>
+	"def.h"
+	"funciones.cpp"
+
+1574367285 /home/tecnologo/Escritorio/EDA-2-LAB-master/def.h
+
+1574423843 /home/tecnologo/Escritorio/EDA-2-LAB-master/funciones.cpp
+	"def.h"
+

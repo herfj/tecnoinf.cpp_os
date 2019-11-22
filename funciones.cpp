@@ -767,6 +767,7 @@ Descom_param_if_ic param_de_if_ic(char parametros[], Comandos cmd)
     bool primeravez=true;
 
     Descom_param_if_ic param;
+    param.hay_ubc=false;
 
     for(j=0; j<60; j++)
     {
@@ -802,6 +803,7 @@ Descom_param_if_ic param_de_if_ic(char parametros[], Comandos cmd)
         {
             param.ubic[i]=parametros[i];
         }
+
         i=ubc+1;
     }
 
@@ -1940,6 +1942,10 @@ int cmd_if(Sistema *s, char parametros[])
         nuevo_linea->linea_texto[i]=param.linea[i];
     }
 
+    aux=padre->cabezal_archivos;
+    aux2=padre->cabezal_archivos;
+    cout<<param.nombre_ext<<endl;
+    cout<<param.ubic<<endl;
     while((aux!=NULL)&&(encontre==false))
     {
 
@@ -2633,8 +2639,12 @@ int cmd_undelete(Sistema *s)
 
     dir_s(padre, 1);
 
+    ausiliar=padre->cabezal_archivos;
+
+
     while(ausiliar!=NULL)
     {
+        cout<<ausiliar->nombre_ext<<endl;
         if(iguales(ausiliar->nombre_ext,undelete->nombre_ext))
         {
             aux=ausiliar;
@@ -2642,7 +2652,6 @@ int cmd_undelete(Sistema *s)
         ausiliar=ausiliar->sig;
     }
 
-    cout<<"hola"<<aux->nombre_ext<<endl;
     aux->cant=undelete->cant;
     aux->cant_lineas=undelete->cant_lineas;
 
