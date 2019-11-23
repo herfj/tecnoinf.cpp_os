@@ -106,7 +106,6 @@ int main()
             case RMDIR:
                 cout<<""<<endl;
                 retorna=ret_rmdir(&s, ent.parametros);
-                cout<<"No IMPLEMENTADO"<<endl;
                 cout<<""<<endl;
                 break;
             case COPY:

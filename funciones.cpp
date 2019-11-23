@@ -233,6 +233,16 @@ void errores_mensajes (Comandos cmd, int error, int cod)
         case DIR: //Se usa este para mencionar este error dado que no lanza error
                 cout << "Error: Faltan parametros en el comando ingresado. - E" << cmd << "x" << cod << cod << cod << endl;
             break;
+        case RMDIR:
+            if (cod==0)
+            {
+                cout << "Error: No puedes eliminar un directorio ancentro el al que estas posicionado o el directorio actual. - E" << cmd << "x" << cod << cod << cod << endl;
+            }
+            if (cod==1)
+            {
+                cout << "Error: No existe el directorio que desea eliminar. - E" << cmd << "x" << cod << cod << cod << endl;
+            }
+            break;
         default:
             cout << "Error Desconocido - E" << cod << "x" << cmd << cod << cod << endl;
         }
@@ -3256,8 +3266,6 @@ int cmd_cat(Sistema *s, char parametros[])
         aux1=aux1->sig;
     }
 
-//    aux1=da1->cabezal_archivos;
-
     //Busca a2
     while((aux2!=NULL)&&(encontro_a2==false))
     {
@@ -3763,9 +3771,279 @@ TipoRet ret_rmdir(Sistema *s, char parametros[])
     }
 }
 
+void delete_a(Archivos a)
+{
+    Lineas l;
+
+    if(a->sig!=NULL)
+    {
+        delete_a(a->sig);
+    }
+    
+    if (a->cabezal_linea.pri!=NULL)
+    {
+        l=a->cabezal_linea.pri;
+        if (l->sig!=NULL)
+        {
+            delete_l(l->sig);
+        }
+        delete l;
+        a->cabezal_linea.pri=NULL;
+        a->cabezal_linea.ult=NULL;
+    }
+    delete a;
+}
+
+void delete_l(Lineas l)
+{
+    if(l->sig!=NULL)
+    {
+        delete_l(l->sig);
+    }
+    delete l;
+}
+
+void rmdir_recursivo(Directorios d)
+{
+    Archivos a;
+    Lineas l;
+
+    a=d->cabezal_archivos;
+    if(a=NULL)
+    {
+        if(a->sig!=NULL)
+        {
+            delete_a(a->sig);
+        }
+        
+        if (a->cabezal_linea.pri!=NULL)
+        {
+            l=a->cabezal_linea.pri;
+            if (l->sig!=NULL)
+            {
+                delete_l(l->sig);
+            }
+            delete l;
+            a->cabezal_linea.pri=NULL;
+            a->cabezal_linea.ult=NULL;
+        }
+        delete a;
+        d->cabezal_archivos=NULL;
+    }
+    if(d->hijo!=NULL)
+    {
+        rmdir_recursivo(d->hijo);
+    }
+    if(d->hermano!=NULL)
+    {
+        rmdir_recursivo(d->hermano);
+    }
+    delete d;
+}
+
 int cmd_rmdir(Sistema *s, char parametros[])
 {
-    return 2;
+    Directorios padre;
+    Directorios eliminar;
+    Directorios aus;
+    Directorios aus1;
+    Directorios aus2;
+    Directorios ult;
+
+    Ubicacion ubc;
+
+    Archivos a;
+    Lineas l;
+
+    bool vacio=false;
+    bool termina=false;
+    bool en_raiz=false;
+    bool error1=false;
+
+    Descom_param_name_D param;
+    
+    if (parametros[0]!='\0')
+    {
+        param=param_solo_name_D(parametros);
+    }
+    else
+    {
+        errores_mensajes(DIR,1,0);
+        return 1;
+    }
+
+    int i;
+
+    if(param.error==true)
+    {
+        return 1;
+    }
+
+    if(param.hay_ubc==true)
+    {
+        if(param.absoluta==true)
+        {
+            if(param.es_raiz==false)
+            {
+                ubc=mueve_nodo((*s).RAIZ, param.ubic);
+                if (ubc.no_se_encontro==false)
+                {
+                    padre=ubc.Padre;
+                }
+                else
+                {
+                    errores_mensajes(CD,1,0);
+                    return 1;
+                }
+
+            }
+            else
+            {
+                en_raiz=true;
+                padre=(*s).RAIZ;
+            }
+        }
+        else
+        {
+            ubc=mueve_nodo((*s).actual, param.ubic);
+            if (ubc.no_se_encontro==false)
+            {
+                padre=ubc.Padre;
+            }
+            else
+            {
+                errores_mensajes(CD,1,0);
+                return 1;
+            }
+        }
+    }
+    else
+    {
+        padre=(*s).actual;
+    }
+
+    if(param.nombre[0]=='\0')
+    {
+        vacio=true;;
+    }
+
+    if (vacio==true)
+    {
+        errores_mensajes(RMDIR,1,0);
+        return 1;
+    }
+
+    if(es_vaciaD(padre->hijo))
+    {
+        errores_mensajes(RMDIR, 1, 1);
+        return 1;
+    }
+    else
+    {
+        aus=padre->hijo;
+
+        while ((aus!=NULL)&&(termina==false))
+        {
+            if (iguales(aus->nombre, param.nombre))
+            {
+                eliminar=aus;
+                termina=true;
+            }
+            else
+            {
+                aus=aus->hermano;
+            }
+        }
+    }
+
+    aus=eliminar;
+    aus1=(*s).actual;
+
+    while ((!(es_vaciaD(aus)))&&(error1==false))
+    {
+        if (aus==aus1)
+        {
+            error1=true;
+        }
+        else
+        {
+            aus=aus->padre;
+        }
+    }
+
+    if(error1==true)
+    {
+        errores_mensajes(RMDIR,1,0);
+        return 1;
+    }
+    else
+    {
+        aus=padre;
+        if(eliminar==aus->hijo)
+        {
+            if(eliminar->hermano!=NULL)
+            {
+                aus->hijo=eliminar->hermano;
+            }
+            else
+            {
+                aus->hijo=NULL;
+            }
+        }
+        else
+        {
+            ult=padre->hijo;
+            while(!es_vaciaD(ult->hermano))
+            {
+                aus1=ult;
+                ult=ult->hermano;
+            }
+            if(ult==eliminar)
+            {
+                aus1->hermano=NULL;
+            }
+            else
+            {
+                aus=padre->hijo;
+                while ((strcmp(aus->nombre, eliminar->nombre))>0)
+                {
+                    aus2=aus1;
+                    aus1=aus;
+                    aus=aus->hermano;
+                }
+                aus2->hermano=aus;
+            }
+        }
+        
+        a=eliminar->cabezal_archivos;
+        if(a=NULL)
+        {
+            if(a->sig!=NULL)
+            {
+                delete_a(a->sig);
+            }
+            
+            if (a->cabezal_linea.pri!=NULL)
+            {
+                l=a->cabezal_linea.pri;
+                if (l->sig!=NULL)
+                {
+                    delete_l(l->sig);
+                }
+                delete l;
+                a->cabezal_linea.pri=NULL;
+                a->cabezal_linea.ult=NULL;
+            }
+            delete a;
+            eliminar->cabezal_archivos=NULL;
+        }
+        if(eliminar->hijo!=NULL)
+        {
+            rmdir_recursivo(eliminar->hijo);
+        }
+    }
+    
+    return 0;
 }
 
 

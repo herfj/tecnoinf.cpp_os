@@ -280,6 +280,9 @@ int cmd_pwd(Sistema *s);
 ///RMDIR
 
 TipoRet ret_rmdir(Sistema *s, char parametros[]);
+void delete_a(Archivos a);
+void delete_l(Lineas l);
+void rmdir_recursivo(Directorios d);
 int cmd_rmdir(Sistema *s, char parametros[]);
 
 ///COPY
