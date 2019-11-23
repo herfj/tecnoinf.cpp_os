@@ -201,6 +201,10 @@ void errores_mensajes (Comandos cmd, int error, int cod)
             {
                 cout << "Error: NO existe un archivo con ese nombre en este directorio.  - E" << cmd << "x" << cod << cod << cod << endl;
             }
+            if(cod==2)
+            {
+                cout << "Error: NO existe un archivos en este directorio.  - E" << cmd << "x" << cod << cod << cod << endl;
+            }
             break;
         case MKDIR:
             if(cod==0)
@@ -982,6 +986,8 @@ Descom_param_name_k param_name_k(char parametros[], Comandos cmd)
     bool k=false;
 
     Descom_param_name_k param;
+
+    param.hay_ubc=false;
 
     for(j=0; j<T_ENT; j++)
     {
@@ -1874,7 +1880,6 @@ int cmd_if(Sistema *s, char parametros[])
     {
         param=param_de_if_ic(parametros, IF);
     }
-
     else
     {
         errores_mensajes(DIR,1,0);
@@ -1944,8 +1949,7 @@ int cmd_if(Sistema *s, char parametros[])
 
     aux=padre->cabezal_archivos;
     aux2=padre->cabezal_archivos;
-    cout<<param.nombre_ext<<endl;
-    cout<<param.ubic<<endl;
+
     while((aux!=NULL)&&(encontre==false))
     {
 
@@ -2033,7 +2037,6 @@ int cmd_ic(Sistema *s, char parametros[])
     {
         param=param_de_if_ic(parametros, IC);
     }
-
     else
     {
         errores_mensajes(DIR,1,0);
@@ -2178,6 +2181,7 @@ int cmd_type(Sistema *s, char parametros[])
 
     ///____________________________VAR__________________________________
     int i=0;
+    int contador=0;
 
     Ubicacion ubc_ainsertar;
 
@@ -2200,7 +2204,6 @@ int cmd_type(Sistema *s, char parametros[])
     {
         param=param_solo_name(parametros);
     }
-
     else
     {
         errores_mensajes(DIR,1,0);
@@ -2288,10 +2291,11 @@ int cmd_type(Sistema *s, char parametros[])
             {
                 if (var==true)
                 {
-                    while(linea_aux!=NULL)
+                    while((linea_aux!=NULL)&&(contador<aux2->cant_lineas))
                     {
                         cout<<linea_aux->linea_texto<<endl;
                         linea_aux=linea_aux->sig;
+                        contador++;
                     }
                 }
             }
@@ -2383,7 +2387,6 @@ int cmd_delete(Sistema *s, char parametros[])
     {
         param=param_solo_name(parametros);
     }
-
     else
     {
         errores_mensajes(DIR,1,0);
@@ -2637,14 +2640,11 @@ int cmd_undelete(Sistema *s)
 
     r=cmd_create(&*s, param);
 
-    dir_s(padre, 1);
-
     ausiliar=padre->cabezal_archivos;
 
 
     while(ausiliar!=NULL)
     {
-        cout<<ausiliar->nombre_ext<<endl;
         if(iguales(ausiliar->nombre_ext,undelete->nombre_ext))
         {
             aux=ausiliar;
@@ -2655,12 +2655,11 @@ int cmd_undelete(Sistema *s)
     aux->cant=undelete->cant;
     aux->cant_lineas=undelete->cant_lineas;
 
-    linea_aux=undelete->cabezal_linea.pri;
-
     int h;
 
     h=aux->cant_lineas;
 
+    linea_aux=undelete->cabezal_linea.pri;
 
     for(i=0; i<h; i++)
     {
@@ -2693,7 +2692,7 @@ int cmd_undelete(Sistema *s)
 }
 
 
-/*
+
 ///BF
 
 TipoRet ret_bf(Sistema *s, char parametros[])
@@ -2718,7 +2717,10 @@ void borrar_linea(Lineas borrar, int i, int m)
 {
     if (i<m)
     {
-        borrar_linea(borrar->sig, i+1, m);
+        if(borrar->sig!=NULL)
+        {
+            borrar_linea(borrar->sig, i+1, m);
+        }
         delete borrar;
     }
 }
@@ -2731,6 +2733,10 @@ int cmd_bf(Sistema *s, char parametros[])
     cant_c=0;
 
     bool existe=false;
+    bool borrartodo=false;
+
+    Directorios padre;
+    Ubicacion ubc_ainsertar;
 
     Archivos aux;
     Archivos aux2;
@@ -2739,24 +2745,78 @@ int cmd_bf(Sistema *s, char parametros[])
 
     Lineas linea_ant;
 
-    aux = (*s).cabezal_archivos;
-    aux2 = (*s).cabezal_archivos;
-
     Descom_param_name_k param;
-    param=param_name_k(parametros, BF);
+
+
+    if (parametros[0]!='\0')
+    {
+        param=param_name_k(parametros, BF);
+    }
+    else
+    {
+        errores_mensajes(DIR,1,0);
+        return 1;
+    }
 
     if(param.error==true)
     {
         return 1;
     }
 
+    if(param.hay_ubc==true)
+    {
+        if(param.absoluta==true)
+        {
+            if(param.es_raiz==false)
+            {
+                ubc_ainsertar=mueve_nodo((*s).RAIZ, param.ubic);
+
+                if (ubc_ainsertar.no_se_encontro==false)
+                {
+                    padre=ubc_ainsertar.Padre;
+                }
+                else
+                {
+                    errores_mensajes(MKDIR,1,0);
+                    return 1;
+                }
+            }
+            else
+            {
+                padre=(*s).RAIZ;
+            }
+        }
+        else
+        {
+            ubc_ainsertar=mueve_nodo((*s).actual, param.ubic);
+
+            if (ubc_ainsertar.no_se_encontro==false)
+            {
+                padre=ubc_ainsertar.Padre;
+            }
+            else
+            {
+                errores_mensajes(MKDIR,1,0);
+                return 1;
+            }
+        }
+    }
+    else
+    {
+        padre=(*s).actual;
+    }
+
+    aux = padre->cabezal_archivos;
+
+
     if(aux==NULL)
     {
-        errores_mensajes(DIR,0,0);
+        errores_mensajes(BF,0,2);
         return 0;
     }
     else
     {
+        aux2 = padre->cabezal_archivos;
         while ((aux!=NULL)&&(existe==false))
         {
             if(iguales(aux->nombre_ext,param.nombre_ext))
@@ -2783,46 +2843,54 @@ int cmd_bf(Sistema *s, char parametros[])
             {
                 if (aux2->cant_lineas<param.k)
                 {
-
-                        aux2->cabezal_linea.pri=NULL;
-                        aux2->cabezal_linea.ult=NULL;
-                        aux2->cant_lineas=0;
-                        aux2->cant=0;
-                        return 0;
+                    param.k=aux2->cant_lineas;
+                    borrartodo=true;
                 }
                 else
                 {
                     if(aux2->cant_lineas==param.k)
                     {
-                        aux2->cabezal_linea.pri=NULL;
-                        aux2->cabezal_linea.ult=NULL;
-                        aux2->cant_lineas=0;
-                        aux2->cant=0;
-                        return 0;
+                        borrartodo=true;
                     }
-                    else
+                }
+
+                linea_aux=aux2->cabezal_linea.ult;
+                linea_ant=aux2->cabezal_linea.ult;
+
+                for(i=0; i<param.k; i++)
+                {
+                    cant_c=cant_c+linea_aux->c;
+                    if (linea_aux->ant!=NULL)
                     {
-                        linea_aux=aux2->cabezal_linea.ult;
-                        linea_ant=aux2->cabezal_linea.ult;
-
-                        for(i=0; i<param.k; i++)
-                        {
-                            cant_c=cant_c+linea_aux->c;
-                            linea_aux=linea_aux->ant;
-                        }
-
-                        borrar_linea(linea_aux->sig,0, param.k);
-                        linea_aux->sig=NULL;
-
-                        aux2->cabezal_linea.ult=linea_aux;
-                        aux2->cant_lineas=aux2->cant_lineas-param.k;
-                        aux2->cant=aux2->cant-cant_c;
+                        linea_aux=linea_aux->ant;
                     }
+                }
+
+                if (linea_aux->sig!=NULL)
+                {
+                    borrar_linea(linea_aux->sig,0, param.k);
+                }
+
+                linea_aux->sig=NULL;
+
+                if(borrartodo==true)
+                {
+                    delete linea_aux;
+                    aux2->cabezal_linea.ult=NULL;
+                    aux2->cabezal_linea.pri=NULL;
+                    aux2->cant_lineas=0;
+                    aux2->cant=0;
+                }
+                else
+                {
+                    aux2->cabezal_linea.ult=linea_aux;
+                    aux2->cant_lineas=aux2->cant_lineas-param.k;
+                    aux2->cant=aux2->cant-cant_c;
+                    delete linea_aux;
                 }
             }
         }
     }
-    delete linea_aux;
     return 0;
 }
 
@@ -2852,7 +2920,10 @@ void borrar_linea2(Lineas borrar, int i, int m)
 {
     if (i<m)
     {
-        borrar_linea(borrar->ant, i+1, m);
+        if(borrar->ant!=NULL)
+        {
+            borrar_linea2(borrar->ant, i+1, m);
+        }
         delete borrar;
     }
 }
@@ -2865,6 +2936,10 @@ int cmd_bc(Sistema *s, char parametros[])
     cant_c=0;
 
     bool existe=false;
+    bool borrartodo=false;
+
+    Directorios padre;
+    Ubicacion ubc_ainsertar;
 
     Archivos aux;
     Archivos aux2;
@@ -2873,16 +2948,67 @@ int cmd_bc(Sistema *s, char parametros[])
 
     Lineas linea_ant;
 
-    aux = (*s).cabezal_archivos;
-    aux2 = (*s).cabezal_archivos;
-
     Descom_param_name_k param;
-    param=param_name_k(parametros, BF);
+
+    if (parametros[0]!='\0')
+    {
+        param=param_name_k(parametros, BC);
+    }
+    else
+    {
+        errores_mensajes(DIR,1,0);
+        return 1;
+    }
 
     if(param.error==true)
     {
         return 1;
     }
+    if(param.hay_ubc==true)
+    {
+        if(param.absoluta==true)
+        {
+            if(param.es_raiz==false)
+            {
+                ubc_ainsertar=mueve_nodo((*s).RAIZ, param.ubic);
+
+                if (ubc_ainsertar.no_se_encontro==false)
+                {
+                    padre=ubc_ainsertar.Padre;
+                }
+                else
+                {
+                    errores_mensajes(MKDIR,1,0);
+                    return 1;
+                }
+            }
+            else
+            {
+                padre=(*s).RAIZ;
+            }
+        }
+        else
+        {
+            ubc_ainsertar=mueve_nodo((*s).actual, param.ubic);
+
+            if (ubc_ainsertar.no_se_encontro==false)
+            {
+                padre=ubc_ainsertar.Padre;
+            }
+            else
+            {
+                errores_mensajes(MKDIR,1,0);
+                return 1;
+            }
+        }
+    }
+    else
+    {
+        padre=(*s).actual;
+    }
+
+    aux = padre->cabezal_archivos;
+
 
     if(aux==NULL)
     {
@@ -2891,6 +3017,7 @@ int cmd_bc(Sistema *s, char parametros[])
     }
     else
     {
+        aux2 = padre->cabezal_archivos;
         while ((aux!=NULL)&&(existe==false))
         {
             if(iguales(aux->nombre_ext,param.nombre_ext))
@@ -2917,47 +3044,54 @@ int cmd_bc(Sistema *s, char parametros[])
             {
                 if (aux2->cant_lineas<param.k)
                 {
-
-                        aux2->cabezal_linea.ult=NULL;
-                        aux2->cabezal_linea.pri=NULL;
-                        aux2->cant_lineas=0;
-                        aux2->cant=0;
-                        return 0;
+                    param.k=aux2->cant_lineas;
+                    borrartodo=true;
                 }
                 else
                 {
                     if(aux2->cant_lineas==param.k)
                     {
-                        aux2->cabezal_linea.ult=NULL;
-                        aux2->cabezal_linea.pri=NULL;
-                        aux2->cant_lineas=0;
-                        aux2->cant=0;
-                        return 0;
+                        borrartodo=true;
                     }
-                    else
+                }
+
+                linea_aux=aux2->cabezal_linea.pri;
+                linea_ant=aux2->cabezal_linea.pri;
+
+                for(i=0; i<param.k; i++)
+                {
+                    cant_c=cant_c+linea_aux->c;
+                    if (linea_aux->sig!=NULL)
                     {
-
-                        linea_aux=aux2->cabezal_linea.pri;
-                        linea_ant=aux2->cabezal_linea.pri;
-
-                        for(i=0; i<param.k; i++)
-                        {
-                            cant_c=cant_c+linea_aux->c;
-                            linea_aux=linea_aux->sig;
-                        }
-
-                        borrar_linea2(linea_aux->ant,0, param.k);
-                        linea_aux->ant=NULL;
-
-                        aux2->cabezal_linea.pri=linea_aux;
-                        aux2->cant_lineas=aux2->cant_lineas-param.k;
-                        aux2->cant=aux2->cant-cant_c;
+                        linea_aux=linea_aux->sig;
                     }
+                }
+            
+                if (linea_aux->ant!=NULL)
+                {
+                    borrar_linea2(linea_aux->ant,0, param.k);
+                }
+
+                linea_aux->ant=NULL;
+
+                if(borrartodo==true)
+                {
+                    delete linea_aux;
+                    aux2->cabezal_linea.ult=NULL;
+                    aux2->cabezal_linea.pri=NULL;
+                    aux2->cant_lineas=0;
+                    aux2->cant=0;
+                }
+                else
+                {
+                    aux2->cabezal_linea.pri=linea_aux;
+                    aux2->cant_lineas=aux2->cant_lineas-param.k;
+                    aux2->cant=aux2->cant-cant_c;
+                    delete linea_aux;
                 }
             }
         }
     }
-    delete linea_aux;
     return 0;
 }
 
@@ -2986,45 +3120,153 @@ TipoRet ret_cat(Sistema *s, char parametros[])
 int cmd_cat(Sistema *s, char parametros[])
 {
     Descom_param_2name param;
-    param=param_2_name(parametros);
+    
+    Ubicacion ubc_ainsertar;
 
-    Archivos aux; //auxiliar de busqueda
+    Directorios da1; //ubicacion archivo 1
+    Directorios da2; //ubicacion archivo 2
+
+    Archivos aux1; //auxiliar de busqueda 1
+    Archivos aux2; //auxiliar de busqueda 2
     Archivos a1; //si se encuentra el archivo 1 se almacena en esta variable auxiliar
     Archivos a2; //si se encuentra el archivo 2 se almacena en esta variable auxiliar
 
     Lineas l_a1;
     Lineas l_a2;
 
-    aux=(*s).cabezal_archivos;
-    a1=(*s).cabezal_archivos;
-    a2=(*s).cabezal_archivos;
+    if (parametros[0]!='\0')
+    {
+        param=param_2_name(parametros);
+    }
+    else
+    {
+        errores_mensajes(DIR,1,0);
+        return 1;
+    }
+
+
+    //Busqueda de ubicacion archivo 1
+    if(param.a1.hay_ubc==true)
+    {
+        if(param.a1.absoluta==true)
+        {
+            if(param.a1.es_raiz==false)
+            {
+                ubc_ainsertar=mueve_nodo((*s).RAIZ, param.a1.ubic);
+
+                if (ubc_ainsertar.no_se_encontro==false)
+                {
+                    da1=ubc_ainsertar.Padre;
+                }
+                else
+                {
+                    errores_mensajes(MKDIR,1,0);
+                    return 1;
+                }
+            }
+            else
+            {
+                da1=(*s).RAIZ;
+            }
+        }
+        else
+        {
+            ubc_ainsertar=mueve_nodo((*s).actual, param.a1.ubic);
+
+            if (ubc_ainsertar.no_se_encontro==false)
+            {
+                da1=ubc_ainsertar.Padre;
+            }
+            else
+            {
+                errores_mensajes(MKDIR,1,0);
+                return 1;
+            }
+        }
+    }
+    else
+    {
+        da1=(*s).actual;
+    }
+
+    aux1=da1->cabezal_archivos;
+    
+    a1=da1->cabezal_archivos;
+
+    //Busqueda de ubicacion archivo 2
+    if(param.a2.hay_ubc==true)
+    {
+        if(param.a2.absoluta==true)
+        {
+            if(param.a2.es_raiz==false)
+            {
+                ubc_ainsertar=mueve_nodo((*s).RAIZ, param.a2.ubic);
+
+                if (ubc_ainsertar.no_se_encontro==false)
+                {
+                    da2=ubc_ainsertar.Padre;
+                }
+                else
+                {
+                    errores_mensajes(MKDIR,1,0);
+                    return 1;
+                }
+            }
+            else
+            {
+                da2=(*s).RAIZ;
+            }
+        }
+        else
+        {
+            ubc_ainsertar=mueve_nodo((*s).actual, param.a2.ubic);
+
+            if (ubc_ainsertar.no_se_encontro==false)
+            {
+                da2=ubc_ainsertar.Padre;
+            }
+            else
+            {
+                errores_mensajes(MKDIR,1,0);
+                return 1;
+            }
+        }
+    }
+    else
+    {
+        da2=(*s).actual;
+    }
+
+    aux2=da2->cabezal_archivos;
+    
+    a2=da2->cabezal_archivos;
 
     bool encontro_a1=false; //Sirve para sabersi lo encontro
     bool encontro_a2=false; //Sirve para sabersi lo encontro
 
     //Busca a1
-    while((aux!=NULL)&&(encontro_a1==false))
+    while((aux1!=NULL)&&(encontro_a1==false))
     {
 
-        if(iguales(aux->nombre_ext,param.a1.nombre_ext))
+        if(iguales(aux1->nombre_ext,param.a1.nombre_ext))
         {
             encontro_a1=true;
-            a1=aux;
+            a1=aux1;
         }
-        aux=aux->sig;
+        aux1=aux1->sig;
     }
 
-    aux=(*s).cabezal_archivos;
+//    aux1=da1->cabezal_archivos;
 
     //Busca a2
-    while((aux!=NULL)&&(encontro_a2==false))
+    while((aux2!=NULL)&&(encontro_a2==false))
     {
-        if(iguales(aux->nombre_ext,param.a2.nombre_ext))
+        if(iguales(aux2->nombre_ext,param.a2.nombre_ext))
         {
             encontro_a2=true;
-            a2=aux;
+            a2=aux2;
         }
-        aux=aux->sig;
+        aux2=aux2->sig;
     }
 
     if((encontro_a1==false)||(encontro_a2==false))
@@ -3064,7 +3306,6 @@ int cmd_cat(Sistema *s, char parametros[])
             a1->cant=a1->cant+a2->cant;
             for(i=0; i<h; i++)
             {
-                cout<<"hola---"<<endl;
                 Lineas nuevo_linea=new _nodo;
 
                 for(int s=0; s<TEXTO_MAX; s++)
@@ -3072,7 +3313,6 @@ int cmd_cat(Sistema *s, char parametros[])
                     nuevo_linea->linea_texto[s]=l_a2->linea_texto[s];
                 }
 
-                cout<<"hola---qh"<<endl;
                 nuevo_linea->c=l_a2->c;
 
                 nuevo_linea->sig=NULL;
@@ -3093,11 +3333,8 @@ int cmd_cat(Sistema *s, char parametros[])
             }
         }
     }
-
-    return 2;
+    return 0;
 }
-
-*/
 
 
 

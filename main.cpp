@@ -72,23 +72,23 @@ int main()
                 cout<<""<<endl;
                 break;
 
-//            case BC:
-//                cout<<""<<endl;
-//                retorna=ret_bc(&s, ent.parametros);
-//                cout<<""<<endl;
-//                break;
-//
-//            case BF:
-//                cout<<""<<endl;
-//                retorna=ret_bf(&s, ent.parametros);
-//                cout<<""<<endl;
-//                break;
-//
-//            case CAT:
-//                cout<<""<<endl;
-//                retorna=ret_cat(&s, ent.parametros);
-//                cout<<""<<endl;
-//                break;
+            case BC:
+                cout<<""<<endl;
+                retorna=ret_bc(&s, ent.parametros);
+                cout<<""<<endl;
+                break;
+
+            case BF:
+                cout<<""<<endl;
+                retorna=ret_bf(&s, ent.parametros);
+                cout<<""<<endl;
+                break;
+
+            case CAT:
+                cout<<""<<endl;
+                retorna=ret_cat(&s, ent.parametros);
+                cout<<""<<endl;
+                break;
             case MKDIR:
                 cout<<""<<endl;
                 retorna=ret_mkdir(&s, ent.parametros);
@@ -102,7 +102,6 @@ int main()
             case PWD:
                 cout<<""<<endl;
                 retorna=ret_pwd(&s);
-                //cout<<""<<endl;
                 break;
             case RMDIR:
                 cout<<""<<endl;
