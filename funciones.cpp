@@ -3076,7 +3076,7 @@ int cmd_bc(Sistema *s, char parametros[])
                         linea_aux=linea_aux->sig;
                     }
                 }
-            
+
                 if (linea_aux->ant!=NULL)
                 {
                     borrar_linea2(linea_aux->ant,0, param.k);
@@ -3130,7 +3130,7 @@ TipoRet ret_cat(Sistema *s, char parametros[])
 int cmd_cat(Sistema *s, char parametros[])
 {
     Descom_param_2name param;
-    
+
     Ubicacion ubc_ainsertar;
 
     Directorios da1; //ubicacion archivo 1
@@ -3200,7 +3200,7 @@ int cmd_cat(Sistema *s, char parametros[])
     }
 
     aux1=da1->cabezal_archivos;
-    
+
     a1=da1->cabezal_archivos;
 
     //Busqueda de ubicacion archivo 2
@@ -3248,7 +3248,7 @@ int cmd_cat(Sistema *s, char parametros[])
     }
 
     aux2=da2->cabezal_archivos;
-    
+
     a2=da2->cabezal_archivos;
 
     bool encontro_a1=false; //Sirve para sabersi lo encontro
@@ -3779,7 +3779,7 @@ void delete_a(Archivos a)
     {
         delete_a(a->sig);
     }
-    
+
     if (a->cabezal_linea.pri!=NULL)
     {
         l=a->cabezal_linea.pri;
@@ -3788,6 +3788,7 @@ void delete_a(Archivos a)
             delete_l(l->sig);
         }
         delete l;
+
         a->cabezal_linea.pri=NULL;
         a->cabezal_linea.ult=NULL;
     }
@@ -3815,7 +3816,7 @@ void rmdir_recursivo(Directorios d)
         {
             delete_a(a->sig);
         }
-        
+
         if (a->cabezal_linea.pri!=NULL)
         {
             l=a->cabezal_linea.pri;
@@ -3861,7 +3862,7 @@ int cmd_rmdir(Sistema *s, char parametros[])
     bool error1=false;
 
     Descom_param_name_D param;
-    
+
     if (parametros[0]!='\0')
     {
         param=param_solo_name_D(parametros);
@@ -3956,8 +3957,8 @@ int cmd_rmdir(Sistema *s, char parametros[])
         }
     }
 
-    aus=eliminar;
-    aus1=(*s).actual;
+    aus1=eliminar;
+    aus=(*s).actual;
 
     while ((!(es_vaciaD(aus)))&&(error1==false))
     {
@@ -4005,16 +4006,17 @@ int cmd_rmdir(Sistema *s, char parametros[])
             else
             {
                 aus=padre->hijo;
-                while ((strcmp(aus->nombre, eliminar->nombre))>0)
+                aus1=padre->hijo;
+                aus2=padre->hijo;
+                while ((strcmp(aus->nombre, eliminar->nombre))<0)
                 {
-                    aus2=aus1;
                     aus1=aus;
                     aus=aus->hermano;
                 }
-                aus2->hermano=aus;
+                aus1->hermano=aus->hermano;
             }
         }
-        
+
         a=eliminar->cabezal_archivos;
         if(a=NULL)
         {
@@ -4022,7 +4024,7 @@ int cmd_rmdir(Sistema *s, char parametros[])
             {
                 delete_a(a->sig);
             }
-            
+
             if (a->cabezal_linea.pri!=NULL)
             {
                 l=a->cabezal_linea.pri;
@@ -4041,8 +4043,8 @@ int cmd_rmdir(Sistema *s, char parametros[])
         {
             rmdir_recursivo(eliminar->hijo);
         }
+        delete eliminar;
     }
-    
     return 0;
 }
 
