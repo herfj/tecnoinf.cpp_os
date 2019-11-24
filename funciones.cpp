@@ -119,6 +119,10 @@ void errores_mensajes (Comandos cmd, int error, int cod)
             {
                 cout << "Error: No ingreso una extension. - E" << cmd << "x" << cod << cod << cod << endl;
             }
+            if (cod==4)
+            {
+                cout << "Error: No solo ingreso la extension. - E" << cmd << "x" << cod << cod << cod << endl;
+            }
 
             break;
         case IF:
@@ -222,6 +226,10 @@ void errores_mensajes (Comandos cmd, int error, int cod)
             if(cod==3)
             {
                 cout << "Error: EL nombre no puede se RAIZ. - E" << cmd << "x" << cod << cod << cod << endl;
+            }
+            if(cod==4)
+            {
+                cout << "Error: EL nombre no puede tener '.'. - E" << cmd << "x" << cod << cod << cod << endl;
             }
             break;
         case CD:
@@ -1295,6 +1303,12 @@ Descom_param_name_D param_solo_name_D(char parametros[])
     for(u=0; u<cant; u++)
     {
         param.nombre[u]=nombre[u];
+        if(param.nombre[u]=='.')
+        {
+            errores_mensajes(MKDIR, 1,4);
+            param.error=true;
+            return param;
+        }
     }
 
     if(iguales(param.ubic, "/"))
@@ -1742,6 +1756,12 @@ int cmd_create(Sistema *s, char parametros[])
     else
     {
         padre=(*s).actual;
+    }
+
+    if(param.nombre_ext[0]=='.')
+    {
+        errores_mensajes(CREATE, 1, 4);
+        return 1;
     }
 
     ant=padre->cabezal_archivos;
