@@ -1,45 +1,25 @@
 #ifndef DEF_H_INCLUDED
 #define DEF_H_INCLUDED
 
-
-
-///Definiciones
-
-//Constantes Globales
-#define T_ENT 100
-#define T_CORT 20
-
-//Constantes de Archivos
-#define T_ARC 15
-#define T_EXT 3
-#define T_ARC_Y_EXT 19
-
-//Constantes de Lineas
-#define TEXTO_MAX 50
-#define LARGO_MAX 9
-
-//Constantes de Directorios
-#define T_DIR 15
-
 using namespace std;
 
-///Comandos (Enum)
-typedef enum _Comandos{
+///Commands (Enum)
+typedef enum _Commands{
     DIR, CREATE, DELETE, UNDELETE, IC, TYPE, IF, BC, BF, CAT, MKDIR, CD, PWD, RMDIR, COPY
-}Comandos;
+} Commands;
 
 ///TypeRET (Enum)
-typedef enum _TipoRet{
-    OK,ERROR,NO_IMPLEMENTADO
-}TipoRet;
+typedef enum _Response{
+    OK,ERROR,NOT_IMPLEMENTED
+} Response;
 
 //CMD y PARAM
 typedef struct
 {
-    Comandos cmd;
-    char parametros[T_ENT];
-    bool cmd_correcto;
-}CMD_PARAM;
+    Commands cmd;
+    char parms[T_ENT];
+    bool isValid;
+} CMD_PARAM;
 
 
 ///Descomposicion partes (ARCHIVOS)
@@ -56,7 +36,7 @@ typedef struct
     bool error=false;
 }Descom_param_name;
 
-//Descomposicion de Archivo para los Comandos IF & IC (Struct)
+//Descomposicion de Archivo para los Commands IF & IC (Struct)
 typedef struct
 {
     int cant_ayext=0;
@@ -70,7 +50,7 @@ typedef struct
     bool error=false;
 }Descom_param_if_ic;
 
-//Descomposicion de Archivo para los Comandos BC & BF (Struct)
+//Descomposicion de Archivo para los Commands BC & BF (Struct)
 typedef struct
 {
     int cant_ayext=0;
@@ -180,9 +160,9 @@ bool iguales (char char1[], char char2[]);
 
 //Funciones Muestro Errores & Mensajes
 
-void errores_mensajes (Comandos cmd, int error, int cod);
+void errores_mensajes (Commands cmd, int error, int cod);
 
-//Separa el comando de los parametros
+//Separa el comando de los parms
 
 void pwd_ent(Directorios u,char ubic[]);
 CMD_PARAM entrada(Directorios aux);
@@ -191,103 +171,103 @@ CMD_PARAM entrada(Directorios aux);
 
 Ubicacion mueve_nodo(Directorios dir,char ubic[]);
 
-///Descompocion de parametros PARA ARCHIVOS (otorgando los datos para cada funcion)
+///Descompocion de parms PARA ARCHIVOS (otorgando los datos para cada funcion)
 
-Descom_param_name param_solo_name(char parametros[]);
-Descom_param_if_ic param_de_if_ic(char parametros[], Comandos cmd);
-Descom_param_name_k param_name_k(char parametros[], Comandos cmd);
-Descom_param_2name param_2_name(char parametros[]);
+Descom_param_name param_solo_name(char parms[]);
+Descom_param_if_ic param_de_if_ic(char parms[], Commands cmd);
+Descom_param_name_k param_name_k(char parms[], Commands cmd);
+Descom_param_2name param_2_name(char parms[]);
 
-///Descompocion de parametros PARA DIRECTORIOS (otorgando los datos para cada funcion)
+///Descompocion de parms PARA DIRECTORIOS (otorgando los datos para cada funcion)
 
-Descom_param_name_D param_solo_name_D(char parametros[]);
+Descom_param_name_D param_solo_name_D(char parms[]);
 
 ///DIR
 
-TipoRet ret_dir(Sistema s,char parametros[]);
+Response ret_dir(Sistema s,char parms[]);
 void mostrar_archivo(Archivos a, int c, bool s);
 void pwd_dir(Directorios u,char ubic[]);
 void dir_s(Directorios d, int c);
-bool param_s(char parametros[]);
-int cmd_dir(Sistema s, char parametros[]);
+bool param_s(char parms[]);
+int cmd_dir(Sistema s, char parms[]);
 
 ///CREATE
 
-TipoRet ret_create(Sistema *s, char parametros[T_ENT]);
-int cmd_create(Sistema *s, char parametros[]);
+Response ret_create(Sistema *s, char parms[T_ENT]);
+int cmd_create(Sistema *s, char parms[]);
 
 ///IF
 
-TipoRet ret_if(Sistema *s, char parametros[T_ENT]);
-int cmd_if(Sistema *s, char parametros[]);
+Response ret_if(Sistema *s, char parms[T_ENT]);
+int cmd_if(Sistema *s, char parms[]);
 
 ///IC
 
-TipoRet ret_ic(Sistema *s, char parametros[T_ENT]);
-int cmd_ic(Sistema *s, char parametros[]);
+Response ret_ic(Sistema *s, char parms[T_ENT]);
+int cmd_ic(Sistema *s, char parms[]);
 
 ///TYPE
 
-TipoRet ret_type(Sistema *s, char parametros[]);
-int cmd_type(Sistema *s, char parametros[]);
+Response ret_type(Sistema *s, char parms[]);
+int cmd_type(Sistema *s, char parms[]);
 
 ///DELETE
 
-TipoRet ret_delete(Sistema *s, char parametros[]);
+Response ret_delete(Sistema *s, char parms[]);
 void elimnar_p_a(Directorios u);
 void elimnar_f_a(Directorios u);
-int cmd_delete(Sistema *s, char parametros[]);
+int cmd_delete(Sistema *s, char parms[]);
 
 ///UNDELETE
 
-TipoRet ret_undelete(Sistema *s);
+Response ret_undelete(Sistema *s);
 int cmd_undelete(Sistema *s);
 
 ///BF
 
-TipoRet ret_bf(Sistema *s, char parametros[]);
+Response ret_bf(Sistema *s, char parms[]);
 void borrar_linea(Lineas borrar, int i, int m);
-int cmd_bf(Sistema *s, char parametros[]);
+int cmd_bf(Sistema *s, char parms[]);
 
 ///BC
 
-TipoRet ret_bc(Sistema *s, char parametros[]);
+Response ret_bc(Sistema *s, char parms[]);
 void borrar_linea2(Lineas borrar, int i, int m);
-int cmd_bc(Sistema *s, char parametros[]);
+int cmd_bc(Sistema *s, char parms[]);
 
 ///CAT
 
-TipoRet ret_cat(Sistema *s, char parametros[]);
-int cmd_cat(Sistema *s, char parametros[]);
+Response ret_cat(Sistema *s, char parms[]);
+int cmd_cat(Sistema *s, char parms[]);
 
 ///MKDIR
 
-TipoRet ret_mkdir(Sistema *s, char parametros[]);
+Response ret_mkdir(Sistema *s, char parms[]);
 
-int cmd_mkdir(Sistema *s, char parametros[]);
+int cmd_mkdir(Sistema *s, char parms[]);
 
 ///CD
 
-TipoRet ret_cd(Sistema *s, char parametros[]);
-int cmd_cd(Sistema *s, char parametros[]);
+Response ret_cd(Sistema *s, char parms[]);
+int cmd_cd(Sistema *s, char parms[]);
 
 ///PWD
 
-TipoRet ret_pwd(Sistema *s);
+Response ret_pwd(Sistema *s);
 void pwd_recursivo(Directorios u,char ubic[]);
 int cmd_pwd(Sistema *s);
 
 ///RMDIR
 
-TipoRet ret_rmdir(Sistema *s, char parametros[]);
+Response ret_rmdir(Sistema *s, char parms[]);
 void delete_a(Archivos a);
 void delete_l(Lineas l);
 void rmdir_recursivo(Directorios d);
-int cmd_rmdir(Sistema *s, char parametros[]);
+int cmd_rmdir(Sistema *s, char parms[]);
 
 ///COPY
 
-TipoRet ret_copy(Sistema *s, char parametros[]);
-int cmd_copy(Sistema *s, char parametros[]);
+Response ret_copy(Sistema *s, char parms[]);
+int cmd_copy(Sistema *s, char parms[]);
 
 #endif // DEF_H_INCLUDED

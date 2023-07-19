@@ -6,6 +6,7 @@
 
 using namespace std;
 
+#include "constants.h"
 #include "def.h"
 #include "funciones.cpp"
 
@@ -13,104 +14,104 @@ using namespace std;
 
 int main()
 {
-    bool rep; rep=true;
+    bool repeat; repeat=true;
 
-    TipoRet retorna;
+    Response response;
 
-    CMD_PARAM ent;
+    CMD_PARAM input;
 
     Sistema s;
     s=crear();
 
-    while (rep)
+    while (repeat)
     {
-        ent=entrada(s.actual);
+        input=entrada(s.actual);
 
-        if(ent.cmd_correcto==true)
+        if(input.isValid==true)
         {
-            switch(ent.cmd)
+            switch(input.cmd)
             {
             case DIR:
                 cout<<""<<endl;
-                retorna=ret_dir(s, ent.parametros);
+                response=ret_dir(s, input.parms);
                 cout<<""<<endl;
                 break;
 
             case CREATE:
                 cout<<""<<endl;
-                retorna=ret_create(&s, ent.parametros);
+                response=ret_create(&s, input.parms);
                 cout<<""<<endl;
                 break;
 
             case DELETE:
                 cout<<""<<endl;
-                retorna=ret_delete(&s, ent.parametros);
+                response=ret_delete(&s, input.parms);
                 cout<<""<<endl;
                 break;
 
             case UNDELETE:
                 cout<<""<<endl;
-                retorna=ret_undelete(&s);
+                response=ret_undelete(&s);
                 cout<<""<<endl;
                 break;
 
             case IC:
                 cout<<""<<endl;
-                retorna=ret_ic(&s, ent.parametros);
+                response=ret_ic(&s, input.parms);
                 cout<<""<<endl;
                 break;
 
             case IF:
                 cout<<""<<endl;
-                retorna=ret_if(&s, ent.parametros);
+                response=ret_if(&s, input.parms);
                 cout<<""<<endl;
                 break;
 
             case TYPE:
                 cout<<""<<endl;
-                retorna=ret_type(&s, ent.parametros);
+                response=ret_type(&s, input.parms);
                 cout<<""<<endl;
                 break;
 
             case BC:
                 cout<<""<<endl;
-                retorna=ret_bc(&s, ent.parametros);
+                response=ret_bc(&s, input.parms);
                 cout<<""<<endl;
                 break;
 
             case BF:
                 cout<<""<<endl;
-                retorna=ret_bf(&s, ent.parametros);
+                response=ret_bf(&s, input.parms);
                 cout<<""<<endl;
                 break;
 
             case CAT:
                 cout<<""<<endl;
-                retorna=ret_cat(&s, ent.parametros);
+                response=ret_cat(&s, input.parms);
                 cout<<""<<endl;
                 break;
             case MKDIR:
                 cout<<""<<endl;
-                retorna=ret_mkdir(&s, ent.parametros);
+                response=ret_mkdir(&s, input.parms);
                 cout<<""<<endl;
                 break;
             case CD:
                 cout<<""<<endl;
-                retorna=ret_cd(&s, ent.parametros);
+                response=ret_cd(&s, input.parms);
                 cout<<""<<endl;
                 break;
             case PWD:
                 cout<<""<<endl;
-                retorna=ret_pwd(&s);
+                response=ret_pwd(&s);
                 break;
             case RMDIR:
                 cout<<""<<endl;
-                retorna=ret_rmdir(&s, ent.parametros);
+                response=ret_rmdir(&s, input.parms);
                 cout<<""<<endl;
                 break;
             case COPY:
                 cout<<""<<endl;
-                retorna=ret_copy(&s, ent.parametros);
+                response=ret_copy(&s, input.parms);
                 cout<<"No IMPLEMENTADO"<<endl;
                 cout<<""<<endl;
                 break;

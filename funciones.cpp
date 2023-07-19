@@ -95,7 +95,7 @@ bool iguales (char char1[], char char2[])
 
 //Funciones Muestro Errores & Mensajes
 
-void errores_mensajes (Comandos cmd, int error, int cod)
+void errores_mensajes (Commands cmd, int error, int cod)
 {
     if (error==1) //Significa que es un error
     {
@@ -239,7 +239,7 @@ void errores_mensajes (Comandos cmd, int error, int cod)
             }
             break;
         case DIR: //Se usa este para mencionar este error dado que no lanza error
-                cout << "Error: Faltan parametros en el comando ingresado. - E" << cmd << "x" << cod << cod << cod << endl;
+                cout << "Error: Faltan parms en el comando ingresado. - E" << cmd << "x" << cod << cod << cod << endl;
             break;
         case RMDIR:
             if (cod==0)
@@ -275,7 +275,7 @@ void errores_mensajes (Comandos cmd, int error, int cod)
 }
 
 
-//Separa el comando de los parametros
+//Separa el comando de los parms
 void pwd_ent(Directorios u,char ubic[])
 {
     int i=0;
@@ -333,7 +333,7 @@ CMD_PARAM entrada(Directorios aux)
     cont=1;
     int ubc=0; //Guarda la ultima ubicacion de: /
 
-    ent.cmd_correcto=false;
+    ent.isValid=false;
     for(j=0; j<T_ENT; j++)
     {
         txt_bruto[i]=0; //inicializa txt_bruto
@@ -368,7 +368,7 @@ CMD_PARAM entrada(Directorios aux)
     //while ((txt_bruto[i]!='\n')&&(var)&&(i<T_ENT)) //lee la linea hasta que presiona enter o se supera el tamaño estipulado
     while ((txt_bruto[i]!='\n')&&(i<T_ENT)) //lee la linea hasta que presiona enter o se supera el tamaño estipulado
     {
-        ent.parametros[u]=txt_bruto[i]; //guarda todos los caracteres que ingreso el usuario
+        ent.parms[u]=txt_bruto[i]; //guarda todos los caracteres que ingreso el usuario
         u++;
         i++;
     }
@@ -377,84 +377,84 @@ CMD_PARAM entrada(Directorios aux)
     if ((strcmp(cmd, "DIR"))==0)
     {
         ent.cmd=DIR;
-        ent.cmd_correcto=true;
+        ent.isValid=true;
     }
     if ((strcmp(cmd, "CREATE"))==0)
     {
         ent.cmd=CREATE;
-        ent.cmd_correcto=true;
+        ent.isValid=true;
     }
     if ((strcmp(cmd, "DELETE"))==0)
     {
         ent.cmd=DELETE;
-        ent.cmd_correcto=true;
+        ent.isValid=true;
     }
     if ((strcmp(cmd, "UNDELETE"))==0)
     {
         ent.cmd=UNDELETE;
-        ent.cmd_correcto=true;
+        ent.isValid=true;
     }
     if ((strcmp(cmd, "IC"))==0)
     {
         ent.cmd=IC;
-        ent.cmd_correcto=true;
+        ent.isValid=true;
     }
     if ((strcmp(cmd, "IC"))==0)
     {
         ent.cmd=IC;
-        ent.cmd_correcto=true;
+        ent.isValid=true;
     }
     if ((strcmp(cmd, "TYPE"))==0)
     {
         ent.cmd=TYPE;
-        ent.cmd_correcto=true;
+        ent.isValid=true;
     }
     if ((strcmp(cmd, "IF"))==0)
     {
         ent.cmd=IF;
-        ent.cmd_correcto=true;
+        ent.isValid=true;
     }
     if ((strcmp(cmd, "BC"))==0)
     {
         ent.cmd=BC;
-        ent.cmd_correcto=true;
+        ent.isValid=true;
     }
     if ((strcmp(cmd, "BF"))==0)
     {
         ent.cmd=BF;
-        ent.cmd_correcto=true;
+        ent.isValid=true;
     }
     if ((strcmp(cmd, "CAT"))==0)
     {
         ent.cmd=CAT;
-        ent.cmd_correcto=true;
+        ent.isValid=true;
     }
     if ((strcmp(cmd, "MKDIR"))==0)
     {
         ent.cmd=MKDIR;
-        ent.cmd_correcto=true;
+        ent.isValid=true;
     }
     if ((strcmp(cmd, "CD"))==0)
     {
         ent.cmd=CD;
-        ent.cmd_correcto=true;
+        ent.isValid=true;
     }
     if ((strcmp(cmd, "PWD"))==0)
     {
         ent.cmd=PWD;
-        ent.cmd_correcto=true;
+        ent.isValid=true;
     }
     if ((strcmp(cmd, "RMDIR"))==0)
     {
         ent.cmd=RMDIR;
-        ent.cmd_correcto=true;
+        ent.isValid=true;
     }
     if ((strcmp(cmd, "COPY"))==0)
     {
         ent.cmd=COPY;
-        ent.cmd_correcto=true;
+        ent.isValid=true;
     }
-    if(ent.cmd_correcto==false) //si lo ingresado no corresponde a ningun comando se muestra un error
+    if(ent.isValid==false) //si lo ingresado no corresponde a ningun comando se muestra un error
     {
         cout<<""<<endl;
         cout<<"Error: Comando Incorrecto."<<endl;
@@ -564,9 +564,9 @@ Ubicacion mueve_nodo(Directorios dir,char ubic[])
 }
 
 
-///Descompocion de parametros PARA ARCHIVOS (otorgando los datos para cada funcion)
+///Descompocion de parms PARA ARCHIVOS (otorgando los datos para cada funcion)
 
-Descom_param_name param_solo_name(char parametros[])
+Descom_param_name param_solo_name(char parms[])
 {
     int ubc=0;
     int i=0;
@@ -594,7 +594,7 @@ Descom_param_name param_solo_name(char parametros[])
 
     for(j=0; j<T_ENT; j++)
     {
-        if (parametros[j]=='/')
+        if (parms[j]=='/')
         {
             param.hay_ubc=true;
         }
@@ -602,25 +602,25 @@ Descom_param_name param_solo_name(char parametros[])
 
     if(param.hay_ubc==true)
     {
-        if(parametros[0]=='/')
+        if(parms[0]=='/')
         {
             param.absoluta=true;
         }
 
         for(i=0; i<T_ENT; i++)
         {
-            if(parametros[i]=='"')
+            if(parms[i]=='"')
             {
                 var=false;
             }
-            if ((parametros[i]=='/')&&(var==true))
+            if ((parms[i]=='/')&&(var==true))
             {
                 ubc=i;
             }
         }
         for(i=0; i<=ubc; i++)
         {
-            param.ubic[i]=parametros[i];
+            param.ubic[i]=parms[i];
         }
         i=ubc+1;
     }
@@ -644,7 +644,7 @@ Descom_param_name param_solo_name(char parametros[])
 
     for (j=0; j<T_ENT && salir; j++)
     {
-        if(((parametros[i]==' ')||(parametros[i]==0)||(parametros[i]=='.'))&&(var2==true))
+        if(((parms[i]==' ')||(parms[i]==0)||(parms[i]=='.'))&&(var2==true))
         {
             var2=false;
         }
@@ -653,7 +653,7 @@ Descom_param_name param_solo_name(char parametros[])
 
             if(cant_a<T_ARC)
             {
-                nombre[u]=parametros[i];
+                nombre[u]=parms[i];
                 i++;
                 u++;
                 cant_a++;
@@ -687,7 +687,7 @@ Descom_param_name param_solo_name(char parametros[])
     u=0;
     var=true;
 
-    if (((parametros[i]==' ')||(parametros[i]==0)||(parametros[i]=='\0'))&&((i<T_ENT)&&(var==true)))
+    if (((parms[i]==' ')||(parms[i]==0)||(parms[i]=='\0'))&&((i<T_ENT)&&(var==true)))
     {
         param.nombre_ext[0]='\0';
         nombre[0]='\0';
@@ -700,7 +700,7 @@ Descom_param_name param_solo_name(char parametros[])
 
     for(j=0; j<T_ENT; j++)
     {
-        if (((parametros[i]==' ')||(parametros[i]==0)||(parametros[i]=='\0'))&&((i<T_ENT)&&(var==true)))
+        if (((parms[i]==' ')||(parms[i]==0)||(parms[i]=='\0'))&&((i<T_ENT)&&(var==true)))
         {
             var=false;
         }
@@ -708,7 +708,7 @@ Descom_param_name param_solo_name(char parametros[])
         {
             if(cant_ext<T_EXT)
             {
-                ext[r]=parametros[i];
+                ext[r]=parms[i];
                 r++;
                 i++;
                 cant_ext++;
@@ -768,7 +768,7 @@ Descom_param_name param_solo_name(char parametros[])
     return param;
 }
 
-Descom_param_if_ic param_de_if_ic(char parametros[], Comandos cmd)
+Descom_param_if_ic param_de_if_ic(char parms[], Commands cmd)
 {
     int ubc=0;
     int i=0;
@@ -797,7 +797,7 @@ Descom_param_if_ic param_de_if_ic(char parametros[], Comandos cmd)
     }
     for(j=0; j<T_ENT; j++)
     {
-        if (parametros[j]=='/')
+        if (parms[j]=='/')
         {
             param.hay_ubc=true;
         }
@@ -805,25 +805,25 @@ Descom_param_if_ic param_de_if_ic(char parametros[], Comandos cmd)
 
     if(param.hay_ubc==true)
     {
-        if(parametros[0]=='/')
+        if(parms[0]=='/')
         {
             param.absoluta=true;
         }
 
         for(i=0; i<T_ENT; i++)
         {
-            if(parametros[i]=='"')
+            if(parms[i]=='"')
             {
                 var=false;
             }
-            if ((parametros[i]=='/')&&(var==true))
+            if ((parms[i]=='/')&&(var==true))
             {
                 ubc=i;
             }
         }
         for(i=0; i<=ubc; i++)
         {
-            param.ubic[i]=parametros[i];
+            param.ubic[i]=parms[i];
         }
 
         i=ubc+1;
@@ -851,13 +851,13 @@ Descom_param_if_ic param_de_if_ic(char parametros[], Comandos cmd)
 
     for (j=0; j<T_ENT; j++)
     {
-        if((parametros[i]=='.')&&(var2==true))
+        if((parms[i]=='.')&&(var2==true))
         {
             var2=false;
         }
         if(var2==true)
         {
-            nombre[u]=parametros[i];
+            nombre[u]=parms[i];
             i++;
             u++;
             cant_a++;
@@ -870,13 +870,13 @@ Descom_param_if_ic param_de_if_ic(char parametros[], Comandos cmd)
 
     for(j=0; j<T_EXT; j++)
     {
-        if (((parametros[i]==' ')||(parametros[i]=='\n'))&&(i<T_ENT))
+        if (((parms[i]==' ')||(parms[i]=='\n'))&&(i<T_ENT))
         {
             var=false;
         }
         if(var==true)
         {
-            ext[j]=parametros[i];
+            ext[j]=parms[i];
             i++;
             cant_ext++;
         }
@@ -903,13 +903,13 @@ Descom_param_if_ic param_de_if_ic(char parametros[], Comandos cmd)
 
     for(int f=0; f<T_ENT; f++)
     {
-        if ((parametros[f]=='"')&&(no_comillas==true))
+        if ((parms[f]=='"')&&(no_comillas==true))
         {
             no_comillas=false;
         }
         else
         {
-            if ((parametros[f]=='"')&&(no_comillas2==true))
+            if ((parms[f]=='"')&&(no_comillas2==true))
             {
                 no_comillas2=false;
             }
@@ -920,7 +920,7 @@ Descom_param_if_ic param_de_if_ic(char parametros[], Comandos cmd)
     {
         for(int w=i; w<T_ENT; w++)
         {
-            if((parametros[w]=='"')&&(var3==false))
+            if((parms[w]=='"')&&(var3==false))
             {
                 var3=true;
 
@@ -930,7 +930,7 @@ Descom_param_if_ic param_de_if_ic(char parametros[], Comandos cmd)
 
                     for(y=y;y<T_ENT;y++)
                     {
-                        if ((parametros[y]!='"')&&((primeravez==true)))
+                        if ((parms[y]!='"')&&((primeravez==true)))
                         {
                             cant_texto++;
                             param.cant_letras=cant_texto;
@@ -950,15 +950,15 @@ Descom_param_if_ic param_de_if_ic(char parametros[], Comandos cmd)
             }
             else
             {
-                if ((parametros[w]!='"')&&(var3=true)&&(j<TEXTO_MAX))
+                if ((parms[w]!='"')&&(var3=true)&&(j<TEXTO_MAX))
                 {
-                    param.linea[j]=parametros[w];
+                    param.linea[j]=parms[w];
                     j++;
 
                 }
                 else
                 {
-                    if((parametros[w]=='"')&&(var3==true))
+                    if((parms[w]=='"')&&(var3==true))
                     {
                         var3=false ;
                     }
@@ -984,7 +984,7 @@ Descom_param_if_ic param_de_if_ic(char parametros[], Comandos cmd)
     return param;
 }
 
-Descom_param_name_k param_name_k(char parametros[], Comandos cmd)
+Descom_param_name_k param_name_k(char parms[], Commands cmd)
 {
     int ubc=0;
     int i=0;
@@ -1009,7 +1009,7 @@ Descom_param_name_k param_name_k(char parametros[], Comandos cmd)
 
     for(j=0; j<T_ENT; j++)
     {
-        if (parametros[j]=='/')
+        if (parms[j]=='/')
         {
             param.hay_ubc=true;
         }
@@ -1017,25 +1017,25 @@ Descom_param_name_k param_name_k(char parametros[], Comandos cmd)
 
     if(param.hay_ubc==true)
     {
-        if(parametros[0]=='/')
+        if(parms[0]=='/')
         {
             param.absoluta=true;
         }
 
         for(i=0; i<T_ENT; i++)
         {
-            if(parametros[i]=='"')
+            if(parms[i]=='"')
             {
                 var=false;
             }
-            if ((parametros[i]=='/')&&(var==true))
+            if ((parms[i]=='/')&&(var==true))
             {
                 ubc=i;
             }
         }
         for(i=0; i<=ubc; i++)
         {
-            param.ubic[i]=parametros[i];
+            param.ubic[i]=parms[i];
         }
         i=ubc+1;
     }
@@ -1058,13 +1058,13 @@ Descom_param_name_k param_name_k(char parametros[], Comandos cmd)
 
     for (j=0; j<T_ENT; j++)
     {
-        if((parametros[i]=='.')&&(var2==true))
+        if((parms[i]=='.')&&(var2==true))
         {
             var2=false;
         }
         if(var2==true)
         {
-            nombre[u]=parametros[i];
+            nombre[u]=parms[i];
             i++;
             u++;
             cant_a++;
@@ -1077,13 +1077,13 @@ Descom_param_name_k param_name_k(char parametros[], Comandos cmd)
 
     for(j=0; j<T_EXT; j++)
     {
-        if (((parametros[i]==' ')||(parametros[i]=='\n'))&&(i<T_ENT))
+        if (((parms[i]==' ')||(parms[i]=='\n'))&&(i<T_ENT))
         {
             var=false;
         }
         if(var==true)
         {
-            ext[j]=parametros[i];
+            ext[j]=parms[i];
             i++;
             cant_ext++;
         }
@@ -1091,17 +1091,17 @@ Descom_param_name_k param_name_k(char parametros[], Comandos cmd)
 
     for(int df=i;df<T_ENT;df++)
     {
-        if(parametros[df]==' ')
+        if(parms[df]==' ')
         {
 
         }
         else
         {
-            if((parametros[df]=='0')||(parametros[df]=='1')||(parametros[df]=='2')||(parametros[df]=='3')||(parametros[df]=='4')||(parametros[df]=='5')||(parametros[df]=='6')||(parametros[df]=='7')||(parametros[df]=='8')||(parametros[df]=='9'))
+            if((parms[df]=='0')||(parms[df]=='1')||(parms[df]=='2')||(parms[df]=='3')||(parms[df]=='4')||(parms[df]=='5')||(parms[df]=='6')||(parms[df]=='7')||(parms[df]=='8')||(parms[df]=='9'))
             {
                 if(k==false)
                 {
-                    unidad=((int)parametros[df])-48;
+                    unidad=((int)parms[df])-48;
                     k=true;
                     param.k=unidad;
                 }
@@ -1143,7 +1143,7 @@ Descom_param_name_k param_name_k(char parametros[], Comandos cmd)
     return param;
 }
 
-Descom_param_2name param_2_name(char parametros[])
+Descom_param_2name param_2_name(char parms[])
 {
     int ubc=0;
     int i=0;
@@ -1172,20 +1172,20 @@ Descom_param_2name param_2_name(char parametros[])
 
     for(i=0;i<T_ENT;i++)
     {
-        if ((parametros[i]!=' ')&&(var==true))
+        if ((parms[i]!=' ')&&(var==true))
         {
-            n1[j]=parametros[i];
+            n1[j]=parms[i];
             j++;
         }
         else
         {
             var=false;
         }
-        if (((parametros[i]!=' ')||(parametros[i]!=0))&&(var==false))
+        if (((parms[i]!=' ')||(parms[i]!=0))&&(var==false))
         {
-            if(parametros[i]!=' ')
+            if(parms[i]!=' ')
             {
-                n2[u]=parametros[i];
+                n2[u]=parms[i];
                 u++;
             }
         }
@@ -1195,9 +1195,9 @@ Descom_param_2name param_2_name(char parametros[])
     return param;
 }
 
-///Descompocion de parametros PARA DIRECTORIOS (otorgando los datos para cada funcion)
+///Descompocion de parms PARA DIRECTORIOS (otorgando los datos para cada funcion)
 
-Descom_param_name_D param_solo_name_D(char parametros[])
+Descom_param_name_D param_solo_name_D(char parms[])
 {
     int ubc=0;
     int i=0;
@@ -1224,7 +1224,7 @@ Descom_param_name_D param_solo_name_D(char parametros[])
 
     for(j=0; j<T_ENT; j++)
     {
-        if (parametros[j]=='/')
+        if (parms[j]=='/')
         {
             param.hay_ubc=true;
         }
@@ -1232,25 +1232,25 @@ Descom_param_name_D param_solo_name_D(char parametros[])
 
     if(param.hay_ubc==true)
     {
-        if(parametros[0]=='/')
+        if(parms[0]=='/')
         {
             param.absoluta=true;
         }
 
         for(i=0; i<T_ENT; i++)
         {
-            if(parametros[i]=='"')
+            if(parms[i]=='"')
             {
                 var=false;
             }
-            if ((parametros[i]=='/')&&(var==true))
+            if ((parms[i]=='/')&&(var==true))
             {
                 ubc=i;
             }
         }
         for(i=0; i<=ubc; i++)
         {
-            param.ubic[i]=parametros[i];
+            param.ubic[i]=parms[i];
         }
         i=ubc+1;
     }
@@ -1264,7 +1264,7 @@ Descom_param_name_D param_solo_name_D(char parametros[])
 
     for (j=0; j<T_ENT; j++)
     {
-        if(((parametros[i]==' ')||(parametros[i]==0))&&(var2==true))
+        if(((parms[i]==' ')||(parms[i]==0))&&(var2==true))
         {
             var2=false;
         }
@@ -1272,7 +1272,7 @@ Descom_param_name_D param_solo_name_D(char parametros[])
         {
             if(cant<T_DIR)
             {
-                nombre[u]=parametros[i];
+                nombre[u]=parms[i];
                 i++;
                 u++;
                 cant++;
@@ -1326,10 +1326,10 @@ Descom_param_name_D param_solo_name_D(char parametros[])
 
 ///DIR
 
-TipoRet ret_dir(Sistema s, char parametros[])
+Response ret_dir(Sistema s, char parms[])
 {
     int r;
-    r=cmd_dir(s, parametros);
+    r=cmd_dir(s, parms);
     switch(r)
     {
     case 0:
@@ -1339,7 +1339,7 @@ TipoRet ret_dir(Sistema s, char parametros[])
         return ERROR;
         break;
     case 2:
-        return NO_IMPLEMENTADO;
+        return NOT_IMPLEMENTED;
         break;
     }
 }
@@ -1480,12 +1480,12 @@ void dir_s(Directorios d, int c)
     }
 }
 
-bool param_s(char parametros[])
+bool param_s(char parms[])
 {
     int i;
-    if((parametros[0]=='s')||(parametros[0]=='S'))
+    if((parms[0]=='s')||(parms[0]=='S'))
     {
-        if(parametros[1]==0)
+        if(parms[1]==0)
         {
             return true;
         }
@@ -1500,7 +1500,7 @@ bool param_s(char parametros[])
     }
 }
 
-int cmd_dir(Sistema s, char parametros[])
+int cmd_dir(Sistema s, char parms[])
 {
     Directorios aux;
     aux=s.actual;
@@ -1512,11 +1512,11 @@ int cmd_dir(Sistema s, char parametros[])
 
     Descom_param_name_D param;
 
-    if (parametros[0]!='\0')
+    if (parms[0]!='\0')
     {
-        param=param_solo_name_D(parametros);
+        param=param_solo_name_D(parms);
 
-        if(param_s(parametros))
+        if(param_s(parms))
         {
             tiene_s=true;
         }
@@ -1600,10 +1600,10 @@ int cmd_dir(Sistema s, char parametros[])
 
 ///CREATE, Funciones insercion entre otras
 
-TipoRet ret_create(Sistema *s, char parametros[])
+Response ret_create(Sistema *s, char parms[])
 {
     int r;
-    r=cmd_create(&*s, parametros);
+    r=cmd_create(&*s, parms);
     switch(r)
     {
     case 0:
@@ -1613,7 +1613,7 @@ TipoRet ret_create(Sistema *s, char parametros[])
         return ERROR;
         break;
     case 2:
-        return NO_IMPLEMENTADO;
+        return NOT_IMPLEMENTED;
         break;
     }
 
@@ -1675,7 +1675,7 @@ void create_pwd_recursivo(Directorios u,Archivos a,char ubic[])
     }
 }
 
-int cmd_create(Sistema *s, char parametros[])
+int cmd_create(Sistema *s, char parms[])
 {
     int i=0;
 
@@ -1697,9 +1697,9 @@ int cmd_create(Sistema *s, char parametros[])
 
     Descom_param_name param;
 
-    if (parametros[0]!='\0')
+    if (parms[0]!='\0')
     {
-        param=param_solo_name(parametros);
+        param=param_solo_name(parms);
     }
     else
     {
@@ -1871,10 +1871,10 @@ int cmd_create(Sistema *s, char parametros[])
 
 ///IF
 
-TipoRet ret_if(Sistema *s, char parametros[])
+Response ret_if(Sistema *s, char parms[])
 {
     int r;
-    r=cmd_if(&*s, parametros);
+    r=cmd_if(&*s, parms);
     switch(r)
     {
     case 0:
@@ -1884,12 +1884,12 @@ TipoRet ret_if(Sistema *s, char parametros[])
         return ERROR;
         break;
     case 2:
-        return NO_IMPLEMENTADO;
+        return NOT_IMPLEMENTED;
         break;
     }
 }
 
-int cmd_if(Sistema *s, char parametros[])
+int cmd_if(Sistema *s, char parms[])
 {
     int i=0;
 
@@ -1906,9 +1906,9 @@ int cmd_if(Sistema *s, char parametros[])
     Descom_param_if_ic param;
 
 
-    if (parametros[0]!='\0')
+    if (parms[0]!='\0')
     {
-        param=param_de_if_ic(parametros, IF);
+        param=param_de_if_ic(parms, IF);
     }
     else
     {
@@ -2028,10 +2028,10 @@ int cmd_if(Sistema *s, char parametros[])
 
 ///IC
 
-TipoRet ret_ic(Sistema *s, char parametros[])
+Response ret_ic(Sistema *s, char parms[])
 {
     int r;
-    r=cmd_ic(&*s, parametros);
+    r=cmd_ic(&*s, parms);
     switch(r)
     {
     case 0:
@@ -2041,12 +2041,12 @@ TipoRet ret_ic(Sistema *s, char parametros[])
         return ERROR;
         break;
     case 2:
-        return NO_IMPLEMENTADO;
+        return NOT_IMPLEMENTED;
         break;
     }
 }
 
-int cmd_ic(Sistema *s, char parametros[])
+int cmd_ic(Sistema *s, char parms[])
 {
     int i=0;
 
@@ -2063,9 +2063,9 @@ int cmd_ic(Sistema *s, char parametros[])
     Descom_param_if_ic param;
 
 
-    if (parametros[0]!='\0')
+    if (parms[0]!='\0')
     {
-        param=param_de_if_ic(parametros, IC);
+        param=param_de_if_ic(parms, IC);
     }
     else
     {
@@ -2188,10 +2188,10 @@ int cmd_ic(Sistema *s, char parametros[])
 
 ///TYPE
 
-TipoRet ret_type(Sistema *s, char parametros[])
+Response ret_type(Sistema *s, char parms[])
 {
     int r;
-    r=cmd_type(&*s, parametros);
+    r=cmd_type(&*s, parms);
     switch(r)
     {
     case 0:
@@ -2201,12 +2201,12 @@ TipoRet ret_type(Sistema *s, char parametros[])
         return ERROR;
         break;
     case 2:
-        return NO_IMPLEMENTADO;
+        return NOT_IMPLEMENTED;
         break;
     }
 }
 
-int cmd_type(Sistema *s, char parametros[])
+int cmd_type(Sistema *s, char parms[])
 {
 
     ///____________________________VAR__________________________________
@@ -2230,9 +2230,9 @@ int cmd_type(Sistema *s, char parametros[])
     ///_________________________________________________________________
 
 
-    if (parametros[0]!='\0')
+    if (parms[0]!='\0')
     {
-        param=param_solo_name(parametros);
+        param=param_solo_name(parms);
     }
     else
     {
@@ -2344,10 +2344,10 @@ int cmd_type(Sistema *s, char parametros[])
 
 ///DELETE
 
-TipoRet ret_delete(Sistema *s, char parametros[])
+Response ret_delete(Sistema *s, char parms[])
 {
     int r;
-    r=cmd_delete(&*s, parametros);
+    r=cmd_delete(&*s, parms);
     switch(r)
     {
     case 0:
@@ -2357,7 +2357,7 @@ TipoRet ret_delete(Sistema *s, char parametros[])
         return ERROR;
         break;
     case 2:
-        return NO_IMPLEMENTADO;
+        return NOT_IMPLEMENTED;
         break;
     }
 }
@@ -2386,7 +2386,7 @@ void elimnar_f_a(Directorios u)
     delete aux;
 }
 
-int cmd_delete(Sistema *s, char parametros[])
+int cmd_delete(Sistema *s, char parms[])
 {
     int i;
     i=0;
@@ -2413,9 +2413,9 @@ int cmd_delete(Sistema *s, char parametros[])
 
     Descom_param_name param;
 
-    if (parametros[0]!='\0')
+    if (parms[0]!='\0')
     {
-        param=param_solo_name(parametros);
+        param=param_solo_name(parms);
     }
     else
     {
@@ -2566,7 +2566,7 @@ int cmd_delete(Sistema *s, char parametros[])
 
 ///UNDELETE
 
-TipoRet ret_undelete(Sistema *s)
+Response ret_undelete(Sistema *s)
 {
     int r;
     r=cmd_undelete(&*s);
@@ -2579,7 +2579,7 @@ TipoRet ret_undelete(Sistema *s)
         return ERROR;
         break;
     case 2:
-        return NO_IMPLEMENTADO;
+        return NOT_IMPLEMENTED;
         break;
     }
 }
@@ -2725,10 +2725,10 @@ int cmd_undelete(Sistema *s)
 
 ///BF
 
-TipoRet ret_bf(Sistema *s, char parametros[])
+Response ret_bf(Sistema *s, char parms[])
 {
     int r;
-    r=cmd_bf(&*s, parametros);
+    r=cmd_bf(&*s, parms);
     switch(r)
     {
     case 0:
@@ -2738,7 +2738,7 @@ TipoRet ret_bf(Sistema *s, char parametros[])
         return ERROR;
         break;
     case 2:
-        return NO_IMPLEMENTADO;
+        return NOT_IMPLEMENTED;
         break;
     }
 }
@@ -2755,7 +2755,7 @@ void borrar_linea(Lineas borrar, int i, int m)
     }
 }
 
-int cmd_bf(Sistema *s, char parametros[])
+int cmd_bf(Sistema *s, char parms[])
 {
     int i;
     i=0;
@@ -2778,9 +2778,9 @@ int cmd_bf(Sistema *s, char parametros[])
     Descom_param_name_k param;
 
 
-    if (parametros[0]!='\0')
+    if (parms[0]!='\0')
     {
-        param=param_name_k(parametros, BF);
+        param=param_name_k(parms, BF);
     }
     else
     {
@@ -2928,10 +2928,10 @@ int cmd_bf(Sistema *s, char parametros[])
 
 ///BC
 
-TipoRet ret_bc(Sistema *s, char parametros[])
+Response ret_bc(Sistema *s, char parms[])
 {
     int r;
-    r=cmd_bc(&*s, parametros);
+    r=cmd_bc(&*s, parms);
     switch(r)
     {
     case 0:
@@ -2941,7 +2941,7 @@ TipoRet ret_bc(Sistema *s, char parametros[])
         return ERROR;
         break;
     case 2:
-        return NO_IMPLEMENTADO;
+        return NOT_IMPLEMENTED;
         break;
     }
 }
@@ -2958,7 +2958,7 @@ void borrar_linea2(Lineas borrar, int i, int m)
     }
 }
 
-int cmd_bc(Sistema *s, char parametros[])
+int cmd_bc(Sistema *s, char parms[])
 {
     int i;
     i=0;
@@ -2980,9 +2980,9 @@ int cmd_bc(Sistema *s, char parametros[])
 
     Descom_param_name_k param;
 
-    if (parametros[0]!='\0')
+    if (parms[0]!='\0')
     {
-        param=param_name_k(parametros, BC);
+        param=param_name_k(parms, BC);
     }
     else
     {
@@ -3129,10 +3129,10 @@ int cmd_bc(Sistema *s, char parametros[])
 
 ///CAT
 
-TipoRet ret_cat(Sistema *s, char parametros[])
+Response ret_cat(Sistema *s, char parms[])
 {
     int r;
-    r=cmd_cat(&*s, parametros);
+    r=cmd_cat(&*s, parms);
     switch(r)
     {
     case 0:
@@ -3142,12 +3142,12 @@ TipoRet ret_cat(Sistema *s, char parametros[])
         return ERROR;
         break;
     case 2:
-        return NO_IMPLEMENTADO;
+        return NOT_IMPLEMENTED;
         break;
     }
 }
 
-int cmd_cat(Sistema *s, char parametros[])
+int cmd_cat(Sistema *s, char parms[])
 {
     Descom_param_2name param;
 
@@ -3164,9 +3164,9 @@ int cmd_cat(Sistema *s, char parametros[])
     Lineas l_a1;
     Lineas l_a2;
 
-    if (parametros[0]!='\0')
+    if (parms[0]!='\0')
     {
-        param=param_2_name(parametros);
+        param=param_2_name(parms);
     }
     else
     {
@@ -3368,10 +3368,10 @@ int cmd_cat(Sistema *s, char parametros[])
 
 ///MKDIR
 
-TipoRet ret_mkdir(Sistema *s, char parametros[])
+Response ret_mkdir(Sistema *s, char parms[])
 {
     int r;
-    r=cmd_mkdir(&*s, parametros);
+    r=cmd_mkdir(&*s, parms);
     switch(r)
     {
     case 0:
@@ -3381,12 +3381,12 @@ TipoRet ret_mkdir(Sistema *s, char parametros[])
         return ERROR;
         break;
     case 2:
-        return NO_IMPLEMENTADO;
+        return NOT_IMPLEMENTED;
         break;
     }
 }
 
-int cmd_mkdir(Sistema *s, char parametros[])
+int cmd_mkdir(Sistema *s, char parms[])
 {
     bool en_raiz=false;
     bool inserta=true;
@@ -3399,9 +3399,9 @@ int cmd_mkdir(Sistema *s, char parametros[])
     Ubicacion ubc_ainsertar;
 
     Descom_param_name_D param;
-    if (parametros[0]!='\0')
+    if (parms[0]!='\0')
     {
-        param=param_solo_name_D(parametros);
+        param=param_solo_name_D(parms);
     }
     else
     {
@@ -3529,10 +3529,10 @@ int cmd_mkdir(Sistema *s, char parametros[])
 
 ///CD
 
-TipoRet ret_cd(Sistema *s, char parametros[])
+Response ret_cd(Sistema *s, char parms[])
 {
     int r;
-    r=cmd_cd(&*s, parametros);
+    r=cmd_cd(&*s, parms);
     switch(r)
     {
     case 0:
@@ -3542,12 +3542,12 @@ TipoRet ret_cd(Sistema *s, char parametros[])
         return ERROR;
         break;
     case 2:
-        return NO_IMPLEMENTADO;
+        return NOT_IMPLEMENTED;
         break;
     }
 }
 
-int cmd_cd(Sistema *s, char parametros[])
+int cmd_cd(Sistema *s, char parms[])
 {
     Directorios padre;
     Directorios aus;
@@ -3560,9 +3560,9 @@ int cmd_cd(Sistema *s, char parametros[])
     bool en_raiz=false;
 
     Descom_param_name_D param;
-    if (parametros[0]!='\0')
+    if (parms[0]!='\0')
     {
-        param=param_solo_name_D(parametros);
+        param=param_solo_name_D(parms);
     }
     else
     {
@@ -3686,7 +3686,7 @@ int cmd_cd(Sistema *s, char parametros[])
 
 ///PWD
 
-TipoRet ret_pwd(Sistema *s)
+Response ret_pwd(Sistema *s)
 {
     int r;
     r=cmd_pwd(&*s);
@@ -3699,7 +3699,7 @@ TipoRet ret_pwd(Sistema *s)
         return ERROR;
         break;
     case 2:
-        return NO_IMPLEMENTADO;
+        return NOT_IMPLEMENTED;
         break;
     }
 }
@@ -3773,10 +3773,10 @@ int cmd_pwd(Sistema *s)
 
 ///RMDIR
 
-TipoRet ret_rmdir(Sistema *s, char parametros[])
+Response ret_rmdir(Sistema *s, char parms[])
 {
     int r;
-    r=cmd_rmdir(&*s, parametros);
+    r=cmd_rmdir(&*s, parms);
     switch(r)
     {
     case 0:
@@ -3786,7 +3786,7 @@ TipoRet ret_rmdir(Sistema *s, char parametros[])
         return ERROR;
         break;
     case 2:
-        return NO_IMPLEMENTADO;
+        return NOT_IMPLEMENTED;
         break;
     }
 }
@@ -3862,7 +3862,7 @@ void rmdir_recursivo(Directorios d)
     delete d;
 }
 
-int cmd_rmdir(Sistema *s, char parametros[])
+int cmd_rmdir(Sistema *s, char parms[])
 {
     Directorios padre;
     Directorios eliminar;
@@ -3883,9 +3883,9 @@ int cmd_rmdir(Sistema *s, char parametros[])
 
     Descom_param_name_D param;
 
-    if (parametros[0]!='\0')
+    if (parms[0]!='\0')
     {
-        param=param_solo_name_D(parametros);
+        param=param_solo_name_D(parms);
     }
     else
     {
@@ -4072,10 +4072,10 @@ int cmd_rmdir(Sistema *s, char parametros[])
 
 ///COPY
 
-TipoRet ret_copy(Sistema *s, char parametros[])
+Response ret_copy(Sistema *s, char parms[])
 {
     int r;
-    r=cmd_copy(&*s, parametros);
+    r=cmd_copy(&*s, parms);
     switch(r)
     {
     case 0:
@@ -4085,12 +4085,12 @@ TipoRet ret_copy(Sistema *s, char parametros[])
         return ERROR;
         break;
     case 2:
-        return NO_IMPLEMENTADO;
+        return NOT_IMPLEMENTED;
         break;
     }
 }
 
-int cmd_copy(Sistema *s, char parametros[])
+int cmd_copy(Sistema *s, char parms[])
 {
     return 2;
 }
