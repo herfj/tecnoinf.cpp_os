@@ -1,4 +1,5 @@
-// Defs
+#ifndef CONSTANTS_H_INCLUDED
+#define CONSTANTS_H_INCLUDED
 
 // Globals
 #define T_ENT 100
@@ -16,3 +17,4 @@
 // Directories
 #define T_DIR 15
 
+#endif // CONSTANTS_H_INCLUDED

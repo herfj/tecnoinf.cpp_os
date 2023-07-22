@@ -1,14 +1,14 @@
 #ifndef DEF_H_INCLUDED
 #define DEF_H_INCLUDED
 
-using namespace std;
+#include "constants.h" // Include the constants header
 
-///Commands (Enum)
+// Commands (Enum)
 typedef enum _Commands{
     DIR, CREATE, DELETE, UNDELETE, IC, TYPE, IF, BC, BF, CAT, MKDIR, CD, PWD, RMDIR, COPY
 } Commands;
 
-///TypeRET (Enum)
+// TypeRET (Enum)
 typedef enum _Response{
     OK,ERROR,NOT_IMPLEMENTED
 } Response;
@@ -17,12 +17,12 @@ typedef enum _Response{
 typedef struct
 {
     Commands cmd;
-    char parms[T_ENT];
+    char params[T_ENT];
     bool isValid;
 } CMD_PARAM;
 
 
-///Descomposicion partes (ARCHIVOS)
+// Descomposicion partes (ARCHIVOS)
 
 //Descomposicion de Archivo solo nombre y ext (Struct)
 typedef struct
@@ -71,7 +71,7 @@ typedef struct
 }Descom_param_2name;
 
 
-///Descomposicion partes (DIRECTORIOS)
+// Descomposicion partes (DIRECTORIOS)
 
 //Descomposicion de Directorio solo nombre (Struct)
 typedef struct
@@ -86,7 +86,7 @@ typedef struct
 }Descom_param_name_D;
 
 
-///NODOS LINEAS, ARCHIVOS, DIRECTORIOS
+// NODOS LINEAS, ARCHIVOS, DIRECTORIOS
 
 //Nodo LINEAS
 struct _nodo{
@@ -135,21 +135,21 @@ typedef struct
 {
     Directorios Padre;
     bool no_se_encontro;
-}Ubicacion;
+} Ubicacion;
 
-///Sistema
+// Sistema
 typedef struct
 {
     Directorios RAIZ;
     Directorios actual;
     Archivos deleteado;
-}Sistema;
+} Sistema;
 
 
 //Creacion (Inizializacion del Sistema)
 Sistema crear();
 
-///Funciones de Consulta (tipo Bool)
+// Funciones de Consulta (tipo Bool)
 
 bool es_raiz(Directorios s);
 bool es_vacia(Sistema s);
@@ -162,7 +162,7 @@ bool iguales (char char1[], char char2[]);
 
 void errores_mensajes (Commands cmd, int error, int cod);
 
-//Separa el comando de los parms
+//Separa el comando de los params
 
 void pwd_ent(Directorios u,char ubic[]);
 CMD_PARAM entrada(Directorios aux);
@@ -171,103 +171,103 @@ CMD_PARAM entrada(Directorios aux);
 
 Ubicacion mueve_nodo(Directorios dir,char ubic[]);
 
-///Descompocion de parms PARA ARCHIVOS (otorgando los datos para cada funcion)
+// Descompocion de params PARA ARCHIVOS (otorgando los datos para cada funcion)
 
-Descom_param_name param_solo_name(char parms[]);
-Descom_param_if_ic param_de_if_ic(char parms[], Commands cmd);
-Descom_param_name_k param_name_k(char parms[], Commands cmd);
-Descom_param_2name param_2_name(char parms[]);
+Descom_param_name param_solo_name(char params[]);
+Descom_param_if_ic param_de_if_ic(char params[], Commands cmd);
+Descom_param_name_k param_name_k(char params[], Commands cmd);
+Descom_param_2name param_2_name(char params[]);
 
-///Descompocion de parms PARA DIRECTORIOS (otorgando los datos para cada funcion)
+// Descompocion de params PARA DIRECTORIOS (otorgando los datos para cada funcion)
 
-Descom_param_name_D param_solo_name_D(char parms[]);
+Descom_param_name_D param_solo_name_D(char params[]);
 
-///DIR
+// DIR
 
-Response ret_dir(Sistema s,char parms[]);
+Response ret_dir(Sistema s,char params[]);
 void mostrar_archivo(Archivos a, int c, bool s);
 void pwd_dir(Directorios u,char ubic[]);
 void dir_s(Directorios d, int c);
-bool param_s(char parms[]);
-int cmd_dir(Sistema s, char parms[]);
+bool param_s(char params[]);
+int cmd_dir(Sistema s, char params[]);
 
-///CREATE
+// CREATE
 
-Response ret_create(Sistema *s, char parms[T_ENT]);
-int cmd_create(Sistema *s, char parms[]);
+Response ret_create(Sistema *s, char params[T_ENT]);
+int cmd_create(Sistema *s, char params[]);
 
-///IF
+// IF
 
-Response ret_if(Sistema *s, char parms[T_ENT]);
-int cmd_if(Sistema *s, char parms[]);
+Response ret_if(Sistema *s, char params[T_ENT]);
+int cmd_if(Sistema *s, char params[]);
 
-///IC
+// IC
 
-Response ret_ic(Sistema *s, char parms[T_ENT]);
-int cmd_ic(Sistema *s, char parms[]);
+Response ret_ic(Sistema *s, char params[T_ENT]);
+int cmd_ic(Sistema *s, char params[]);
 
-///TYPE
+// TYPE
 
-Response ret_type(Sistema *s, char parms[]);
-int cmd_type(Sistema *s, char parms[]);
+Response ret_type(Sistema *s, char params[]);
+int cmd_type(Sistema *s, char params[]);
 
-///DELETE
+// DELETE
 
-Response ret_delete(Sistema *s, char parms[]);
+Response ret_delete(Sistema *s, char params[]);
 void elimnar_p_a(Directorios u);
 void elimnar_f_a(Directorios u);
-int cmd_delete(Sistema *s, char parms[]);
+int cmd_delete(Sistema *s, char params[]);
 
-///UNDELETE
+// UNDELETE
 
 Response ret_undelete(Sistema *s);
 int cmd_undelete(Sistema *s);
 
-///BF
+// BF
 
-Response ret_bf(Sistema *s, char parms[]);
+Response ret_bf(Sistema *s, char params[]);
 void borrar_linea(Lineas borrar, int i, int m);
-int cmd_bf(Sistema *s, char parms[]);
+int cmd_bf(Sistema *s, char params[]);
 
-///BC
+// BC
 
-Response ret_bc(Sistema *s, char parms[]);
+Response ret_bc(Sistema *s, char params[]);
 void borrar_linea2(Lineas borrar, int i, int m);
-int cmd_bc(Sistema *s, char parms[]);
+int cmd_bc(Sistema *s, char params[]);
 
-///CAT
+// CAT
 
-Response ret_cat(Sistema *s, char parms[]);
-int cmd_cat(Sistema *s, char parms[]);
+Response ret_cat(Sistema *s, char params[]);
+int cmd_cat(Sistema *s, char params[]);
 
-///MKDIR
+// MKDIR
 
-Response ret_mkdir(Sistema *s, char parms[]);
+Response ret_mkdir(Sistema *s, char params[]);
 
-int cmd_mkdir(Sistema *s, char parms[]);
+int cmd_mkdir(Sistema *s, char params[]);
 
-///CD
+// CD
 
-Response ret_cd(Sistema *s, char parms[]);
-int cmd_cd(Sistema *s, char parms[]);
+Response ret_cd(Sistema *s, char params[]);
+int cmd_cd(Sistema *s, char params[]);
 
-///PWD
+// PWD
 
 Response ret_pwd(Sistema *s);
 void pwd_recursivo(Directorios u,char ubic[]);
 int cmd_pwd(Sistema *s);
 
-///RMDIR
+// RMDIR
 
-Response ret_rmdir(Sistema *s, char parms[]);
+Response ret_rmdir(Sistema *s, char params[]);
 void delete_a(Archivos a);
 void delete_l(Lineas l);
 void rmdir_recursivo(Directorios d);
-int cmd_rmdir(Sistema *s, char parms[]);
+int cmd_rmdir(Sistema *s, char params[]);
 
-///COPY
+// COPY
 
-Response ret_copy(Sistema *s, char parms[]);
-int cmd_copy(Sistema *s, char parms[]);
+Response ret_copy(Sistema *s, char params[]);
+int cmd_copy(Sistema *s, char params[]);
 
 #endif // DEF_H_INCLUDED

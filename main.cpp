@@ -1,4 +1,4 @@
-///Hernán Fbrica & Tomas Baute
+// Hernán Fbrica & Tomas Baute
 
 #include <iostream>
 #include <string.h>
@@ -6,7 +6,6 @@
 
 using namespace std;
 
-#include "constants.h"
 #include "def.h"
 #include "funciones.cpp"
 
@@ -33,19 +32,19 @@ int main()
             {
             case DIR:
                 cout<<""<<endl;
-                response=ret_dir(s, input.parms);
+                response=ret_dir(s, input.params);
                 cout<<""<<endl;
                 break;
 
             case CREATE:
                 cout<<""<<endl;
-                response=ret_create(&s, input.parms);
+                response=ret_create(&s, input.params);
                 cout<<""<<endl;
                 break;
 
             case DELETE:
                 cout<<""<<endl;
-                response=ret_delete(&s, input.parms);
+                response=ret_delete(&s, input.params);
                 cout<<""<<endl;
                 break;
 
@@ -57,47 +56,47 @@ int main()
 
             case IC:
                 cout<<""<<endl;
-                response=ret_ic(&s, input.parms);
+                response=ret_ic(&s, input.params);
                 cout<<""<<endl;
                 break;
 
             case IF:
                 cout<<""<<endl;
-                response=ret_if(&s, input.parms);
+                response=ret_if(&s, input.params);
                 cout<<""<<endl;
                 break;
 
             case TYPE:
                 cout<<""<<endl;
-                response=ret_type(&s, input.parms);
+                response=ret_type(&s, input.params);
                 cout<<""<<endl;
                 break;
 
             case BC:
                 cout<<""<<endl;
-                response=ret_bc(&s, input.parms);
+                response=ret_bc(&s, input.params);
                 cout<<""<<endl;
                 break;
 
             case BF:
                 cout<<""<<endl;
-                response=ret_bf(&s, input.parms);
+                response=ret_bf(&s, input.params);
                 cout<<""<<endl;
                 break;
 
             case CAT:
                 cout<<""<<endl;
-                response=ret_cat(&s, input.parms);
+                response=ret_cat(&s, input.params);
                 cout<<""<<endl;
                 break;
             case MKDIR:
                 cout<<""<<endl;
-                response=ret_mkdir(&s, input.parms);
+                response=ret_mkdir(&s, input.params);
                 cout<<""<<endl;
                 break;
             case CD:
                 cout<<""<<endl;
-                response=ret_cd(&s, input.parms);
+                response=ret_cd(&s, input.params);
                 cout<<""<<endl;
                 break;
             case PWD:
@@ -106,12 +105,12 @@ int main()
                 break;
             case RMDIR:
                 cout<<""<<endl;
-                response=ret_rmdir(&s, input.parms);
+                response=ret_rmdir(&s, input.params);
                 cout<<""<<endl;
                 break;
             case COPY:
                 cout<<""<<endl;
-                response=ret_copy(&s, input.parms);
+                response=ret_copy(&s, input.params);
                 cout<<"No IMPLEMENTADO"<<endl;
                 cout<<""<<endl;
                 break;

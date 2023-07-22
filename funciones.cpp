@@ -1,11 +1,9 @@
-///Hernán Fbrica & Tomas Baute
+// Hernán Fbrica & Tomas Baute
 
 #include "def.h"
 
-using namespace std;
 
-
-///Funciones Elementales
+// Funciones Elementales
 
 //Creacion (Inizializacion del Sistema)
 Sistema crear()
@@ -20,7 +18,7 @@ Sistema crear()
     return aux;
 }
 
-///Funciones de Consulta (tipo Bool)
+// Funciones de Consulta (tipo Bool)
 
 bool es_raiz(Directorios s)
 {
@@ -239,7 +237,7 @@ void errores_mensajes (Commands cmd, int error, int cod)
             }
             break;
         case DIR: //Se usa este para mencionar este error dado que no lanza error
-                cout << "Error: Faltan parms en el comando ingresado. - E" << cmd << "x" << cod << cod << cod << endl;
+                cout << "Error: Faltan params en el comando ingresado. - E" << cmd << "x" << cod << cod << cod << endl;
             break;
         case RMDIR:
             if (cod==0)
@@ -275,7 +273,7 @@ void errores_mensajes (Commands cmd, int error, int cod)
 }
 
 
-//Separa el comando de los parms
+//Separa el comando de los params
 void pwd_ent(Directorios u,char ubic[])
 {
     int i=0;
@@ -368,11 +366,11 @@ CMD_PARAM entrada(Directorios aux)
     //while ((txt_bruto[i]!='\n')&&(var)&&(i<T_ENT)) //lee la linea hasta que presiona enter o se supera el tamaño estipulado
     while ((txt_bruto[i]!='\n')&&(i<T_ENT)) //lee la linea hasta que presiona enter o se supera el tamaño estipulado
     {
-        ent.parms[u]=txt_bruto[i]; //guarda todos los caracteres que ingreso el usuario
+        ent.params[u]=txt_bruto[i]; //guarda todos los caracteres que ingreso el usuario
         u++;
         i++;
     }
- ///a continuacion compara y determina que comando ingreso el usuario
+ // a continuacion compara y determina que comando ingreso el usuario
 
     if ((strcmp(cmd, "DIR"))==0)
     {
@@ -564,9 +562,9 @@ Ubicacion mueve_nodo(Directorios dir,char ubic[])
 }
 
 
-///Descompocion de parms PARA ARCHIVOS (otorgando los datos para cada funcion)
+// Descompocion de params PARA ARCHIVOS (otorgando los datos para cada funcion)
 
-Descom_param_name param_solo_name(char parms[])
+Descom_param_name param_solo_name(char params[])
 {
     int ubc=0;
     int i=0;
@@ -594,7 +592,7 @@ Descom_param_name param_solo_name(char parms[])
 
     for(j=0; j<T_ENT; j++)
     {
-        if (parms[j]=='/')
+        if (params[j]=='/')
         {
             param.hay_ubc=true;
         }
@@ -602,25 +600,25 @@ Descom_param_name param_solo_name(char parms[])
 
     if(param.hay_ubc==true)
     {
-        if(parms[0]=='/')
+        if(params[0]=='/')
         {
             param.absoluta=true;
         }
 
         for(i=0; i<T_ENT; i++)
         {
-            if(parms[i]=='"')
+            if(params[i]=='"')
             {
                 var=false;
             }
-            if ((parms[i]=='/')&&(var==true))
+            if ((params[i]=='/')&&(var==true))
             {
                 ubc=i;
             }
         }
         for(i=0; i<=ubc; i++)
         {
-            param.ubic[i]=parms[i];
+            param.ubic[i]=params[i];
         }
         i=ubc+1;
     }
@@ -644,7 +642,7 @@ Descom_param_name param_solo_name(char parms[])
 
     for (j=0; j<T_ENT && salir; j++)
     {
-        if(((parms[i]==' ')||(parms[i]==0)||(parms[i]=='.'))&&(var2==true))
+        if(((params[i]==' ')||(params[i]==0)||(params[i]=='.'))&&(var2==true))
         {
             var2=false;
         }
@@ -653,7 +651,7 @@ Descom_param_name param_solo_name(char parms[])
 
             if(cant_a<T_ARC)
             {
-                nombre[u]=parms[i];
+                nombre[u]=params[i];
                 i++;
                 u++;
                 cant_a++;
@@ -687,7 +685,7 @@ Descom_param_name param_solo_name(char parms[])
     u=0;
     var=true;
 
-    if (((parms[i]==' ')||(parms[i]==0)||(parms[i]=='\0'))&&((i<T_ENT)&&(var==true)))
+    if (((params[i]==' ')||(params[i]==0)||(params[i]=='\0'))&&((i<T_ENT)&&(var==true)))
     {
         param.nombre_ext[0]='\0';
         nombre[0]='\0';
@@ -700,7 +698,7 @@ Descom_param_name param_solo_name(char parms[])
 
     for(j=0; j<T_ENT; j++)
     {
-        if (((parms[i]==' ')||(parms[i]==0)||(parms[i]=='\0'))&&((i<T_ENT)&&(var==true)))
+        if (((params[i]==' ')||(params[i]==0)||(params[i]=='\0'))&&((i<T_ENT)&&(var==true)))
         {
             var=false;
         }
@@ -708,7 +706,7 @@ Descom_param_name param_solo_name(char parms[])
         {
             if(cant_ext<T_EXT)
             {
-                ext[r]=parms[i];
+                ext[r]=params[i];
                 r++;
                 i++;
                 cant_ext++;
@@ -768,7 +766,7 @@ Descom_param_name param_solo_name(char parms[])
     return param;
 }
 
-Descom_param_if_ic param_de_if_ic(char parms[], Commands cmd)
+Descom_param_if_ic param_de_if_ic(char params[], Commands cmd)
 {
     int ubc=0;
     int i=0;
@@ -797,7 +795,7 @@ Descom_param_if_ic param_de_if_ic(char parms[], Commands cmd)
     }
     for(j=0; j<T_ENT; j++)
     {
-        if (parms[j]=='/')
+        if (params[j]=='/')
         {
             param.hay_ubc=true;
         }
@@ -805,25 +803,25 @@ Descom_param_if_ic param_de_if_ic(char parms[], Commands cmd)
 
     if(param.hay_ubc==true)
     {
-        if(parms[0]=='/')
+        if(params[0]=='/')
         {
             param.absoluta=true;
         }
 
         for(i=0; i<T_ENT; i++)
         {
-            if(parms[i]=='"')
+            if(params[i]=='"')
             {
                 var=false;
             }
-            if ((parms[i]=='/')&&(var==true))
+            if ((params[i]=='/')&&(var==true))
             {
                 ubc=i;
             }
         }
         for(i=0; i<=ubc; i++)
         {
-            param.ubic[i]=parms[i];
+            param.ubic[i]=params[i];
         }
 
         i=ubc+1;
@@ -851,13 +849,13 @@ Descom_param_if_ic param_de_if_ic(char parms[], Commands cmd)
 
     for (j=0; j<T_ENT; j++)
     {
-        if((parms[i]=='.')&&(var2==true))
+        if((params[i]=='.')&&(var2==true))
         {
             var2=false;
         }
         if(var2==true)
         {
-            nombre[u]=parms[i];
+            nombre[u]=params[i];
             i++;
             u++;
             cant_a++;
@@ -870,13 +868,13 @@ Descom_param_if_ic param_de_if_ic(char parms[], Commands cmd)
 
     for(j=0; j<T_EXT; j++)
     {
-        if (((parms[i]==' ')||(parms[i]=='\n'))&&(i<T_ENT))
+        if (((params[i]==' ')||(params[i]=='\n'))&&(i<T_ENT))
         {
             var=false;
         }
         if(var==true)
         {
-            ext[j]=parms[i];
+            ext[j]=params[i];
             i++;
             cant_ext++;
         }
@@ -903,13 +901,13 @@ Descom_param_if_ic param_de_if_ic(char parms[], Commands cmd)
 
     for(int f=0; f<T_ENT; f++)
     {
-        if ((parms[f]=='"')&&(no_comillas==true))
+        if ((params[f]=='"')&&(no_comillas==true))
         {
             no_comillas=false;
         }
         else
         {
-            if ((parms[f]=='"')&&(no_comillas2==true))
+            if ((params[f]=='"')&&(no_comillas2==true))
             {
                 no_comillas2=false;
             }
@@ -920,7 +918,7 @@ Descom_param_if_ic param_de_if_ic(char parms[], Commands cmd)
     {
         for(int w=i; w<T_ENT; w++)
         {
-            if((parms[w]=='"')&&(var3==false))
+            if((params[w]=='"')&&(var3==false))
             {
                 var3=true;
 
@@ -930,7 +928,7 @@ Descom_param_if_ic param_de_if_ic(char parms[], Commands cmd)
 
                     for(y=y;y<T_ENT;y++)
                     {
-                        if ((parms[y]!='"')&&((primeravez==true)))
+                        if ((params[y]!='"')&&((primeravez==true)))
                         {
                             cant_texto++;
                             param.cant_letras=cant_texto;
@@ -950,15 +948,15 @@ Descom_param_if_ic param_de_if_ic(char parms[], Commands cmd)
             }
             else
             {
-                if ((parms[w]!='"')&&(var3=true)&&(j<TEXTO_MAX))
+                if ((params[w]!='"')&&(var3=true)&&(j<TEXTO_MAX))
                 {
-                    param.linea[j]=parms[w];
+                    param.linea[j]=params[w];
                     j++;
 
                 }
                 else
                 {
-                    if((parms[w]=='"')&&(var3==true))
+                    if((params[w]=='"')&&(var3==true))
                     {
                         var3=false ;
                     }
@@ -984,7 +982,7 @@ Descom_param_if_ic param_de_if_ic(char parms[], Commands cmd)
     return param;
 }
 
-Descom_param_name_k param_name_k(char parms[], Commands cmd)
+Descom_param_name_k param_name_k(char params[], Commands cmd)
 {
     int ubc=0;
     int i=0;
@@ -1009,7 +1007,7 @@ Descom_param_name_k param_name_k(char parms[], Commands cmd)
 
     for(j=0; j<T_ENT; j++)
     {
-        if (parms[j]=='/')
+        if (params[j]=='/')
         {
             param.hay_ubc=true;
         }
@@ -1017,25 +1015,25 @@ Descom_param_name_k param_name_k(char parms[], Commands cmd)
 
     if(param.hay_ubc==true)
     {
-        if(parms[0]=='/')
+        if(params[0]=='/')
         {
             param.absoluta=true;
         }
 
         for(i=0; i<T_ENT; i++)
         {
-            if(parms[i]=='"')
+            if(params[i]=='"')
             {
                 var=false;
             }
-            if ((parms[i]=='/')&&(var==true))
+            if ((params[i]=='/')&&(var==true))
             {
                 ubc=i;
             }
         }
         for(i=0; i<=ubc; i++)
         {
-            param.ubic[i]=parms[i];
+            param.ubic[i]=params[i];
         }
         i=ubc+1;
     }
@@ -1058,13 +1056,13 @@ Descom_param_name_k param_name_k(char parms[], Commands cmd)
 
     for (j=0; j<T_ENT; j++)
     {
-        if((parms[i]=='.')&&(var2==true))
+        if((params[i]=='.')&&(var2==true))
         {
             var2=false;
         }
         if(var2==true)
         {
-            nombre[u]=parms[i];
+            nombre[u]=params[i];
             i++;
             u++;
             cant_a++;
@@ -1077,13 +1075,13 @@ Descom_param_name_k param_name_k(char parms[], Commands cmd)
 
     for(j=0; j<T_EXT; j++)
     {
-        if (((parms[i]==' ')||(parms[i]=='\n'))&&(i<T_ENT))
+        if (((params[i]==' ')||(params[i]=='\n'))&&(i<T_ENT))
         {
             var=false;
         }
         if(var==true)
         {
-            ext[j]=parms[i];
+            ext[j]=params[i];
             i++;
             cant_ext++;
         }
@@ -1091,17 +1089,17 @@ Descom_param_name_k param_name_k(char parms[], Commands cmd)
 
     for(int df=i;df<T_ENT;df++)
     {
-        if(parms[df]==' ')
+        if(params[df]==' ')
         {
 
         }
         else
         {
-            if((parms[df]=='0')||(parms[df]=='1')||(parms[df]=='2')||(parms[df]=='3')||(parms[df]=='4')||(parms[df]=='5')||(parms[df]=='6')||(parms[df]=='7')||(parms[df]=='8')||(parms[df]=='9'))
+            if((params[df]=='0')||(params[df]=='1')||(params[df]=='2')||(params[df]=='3')||(params[df]=='4')||(params[df]=='5')||(params[df]=='6')||(params[df]=='7')||(params[df]=='8')||(params[df]=='9'))
             {
                 if(k==false)
                 {
-                    unidad=((int)parms[df])-48;
+                    unidad=((int)params[df])-48;
                     k=true;
                     param.k=unidad;
                 }
@@ -1143,7 +1141,7 @@ Descom_param_name_k param_name_k(char parms[], Commands cmd)
     return param;
 }
 
-Descom_param_2name param_2_name(char parms[])
+Descom_param_2name param_2_name(char params[])
 {
     int ubc=0;
     int i=0;
@@ -1172,20 +1170,20 @@ Descom_param_2name param_2_name(char parms[])
 
     for(i=0;i<T_ENT;i++)
     {
-        if ((parms[i]!=' ')&&(var==true))
+        if ((params[i]!=' ')&&(var==true))
         {
-            n1[j]=parms[i];
+            n1[j]=params[i];
             j++;
         }
         else
         {
             var=false;
         }
-        if (((parms[i]!=' ')||(parms[i]!=0))&&(var==false))
+        if (((params[i]!=' ')||(params[i]!=0))&&(var==false))
         {
-            if(parms[i]!=' ')
+            if(params[i]!=' ')
             {
-                n2[u]=parms[i];
+                n2[u]=params[i];
                 u++;
             }
         }
@@ -1195,9 +1193,9 @@ Descom_param_2name param_2_name(char parms[])
     return param;
 }
 
-///Descompocion de parms PARA DIRECTORIOS (otorgando los datos para cada funcion)
+// Descompocion de params PARA DIRECTORIOS (otorgando los datos para cada funcion)
 
-Descom_param_name_D param_solo_name_D(char parms[])
+Descom_param_name_D param_solo_name_D(char params[])
 {
     int ubc=0;
     int i=0;
@@ -1224,7 +1222,7 @@ Descom_param_name_D param_solo_name_D(char parms[])
 
     for(j=0; j<T_ENT; j++)
     {
-        if (parms[j]=='/')
+        if (params[j]=='/')
         {
             param.hay_ubc=true;
         }
@@ -1232,25 +1230,25 @@ Descom_param_name_D param_solo_name_D(char parms[])
 
     if(param.hay_ubc==true)
     {
-        if(parms[0]=='/')
+        if(params[0]=='/')
         {
             param.absoluta=true;
         }
 
         for(i=0; i<T_ENT; i++)
         {
-            if(parms[i]=='"')
+            if(params[i]=='"')
             {
                 var=false;
             }
-            if ((parms[i]=='/')&&(var==true))
+            if ((params[i]=='/')&&(var==true))
             {
                 ubc=i;
             }
         }
         for(i=0; i<=ubc; i++)
         {
-            param.ubic[i]=parms[i];
+            param.ubic[i]=params[i];
         }
         i=ubc+1;
     }
@@ -1264,7 +1262,7 @@ Descom_param_name_D param_solo_name_D(char parms[])
 
     for (j=0; j<T_ENT; j++)
     {
-        if(((parms[i]==' ')||(parms[i]==0))&&(var2==true))
+        if(((params[i]==' ')||(params[i]==0))&&(var2==true))
         {
             var2=false;
         }
@@ -1272,7 +1270,7 @@ Descom_param_name_D param_solo_name_D(char parms[])
         {
             if(cant<T_DIR)
             {
-                nombre[u]=parms[i];
+                nombre[u]=params[i];
                 i++;
                 u++;
                 cant++;
@@ -1324,12 +1322,12 @@ Descom_param_name_D param_solo_name_D(char parms[])
 
 
 
-///DIR
+// DIR
 
-Response ret_dir(Sistema s, char parms[])
+Response ret_dir(Sistema s, char params[])
 {
     int r;
-    r=cmd_dir(s, parms);
+    r=cmd_dir(s, params);
     switch(r)
     {
     case 0:
@@ -1480,12 +1478,12 @@ void dir_s(Directorios d, int c)
     }
 }
 
-bool param_s(char parms[])
+bool param_s(char params[])
 {
     int i;
-    if((parms[0]=='s')||(parms[0]=='S'))
+    if((params[0]=='s')||(params[0]=='S'))
     {
-        if(parms[1]==0)
+        if(params[1]==0)
         {
             return true;
         }
@@ -1500,7 +1498,7 @@ bool param_s(char parms[])
     }
 }
 
-int cmd_dir(Sistema s, char parms[])
+int cmd_dir(Sistema s, char params[])
 {
     Directorios aux;
     aux=s.actual;
@@ -1512,11 +1510,11 @@ int cmd_dir(Sistema s, char parms[])
 
     Descom_param_name_D param;
 
-    if (parms[0]!='\0')
+    if (params[0]!='\0')
     {
-        param=param_solo_name_D(parms);
+        param=param_solo_name_D(params);
 
-        if(param_s(parms))
+        if(param_s(params))
         {
             tiene_s=true;
         }
@@ -1598,12 +1596,12 @@ int cmd_dir(Sistema s, char parms[])
 
 
 
-///CREATE, Funciones insercion entre otras
+// CREATE, Funciones insercion entre otras
 
-Response ret_create(Sistema *s, char parms[])
+Response ret_create(Sistema *s, char params[])
 {
     int r;
-    r=cmd_create(&*s, parms);
+    r=cmd_create(&*s, params);
     switch(r)
     {
     case 0:
@@ -1675,7 +1673,7 @@ void create_pwd_recursivo(Directorios u,Archivos a,char ubic[])
     }
 }
 
-int cmd_create(Sistema *s, char parms[])
+int cmd_create(Sistema *s, char params[])
 {
     int i=0;
 
@@ -1697,9 +1695,9 @@ int cmd_create(Sistema *s, char parms[])
 
     Descom_param_name param;
 
-    if (parms[0]!='\0')
+    if (params[0]!='\0')
     {
-        param=param_solo_name(parms);
+        param=param_solo_name(params);
     }
     else
     {
@@ -1869,12 +1867,12 @@ int cmd_create(Sistema *s, char parms[])
 
 
 
-///IF
+// IF
 
-Response ret_if(Sistema *s, char parms[])
+Response ret_if(Sistema *s, char params[])
 {
     int r;
-    r=cmd_if(&*s, parms);
+    r=cmd_if(&*s, params);
     switch(r)
     {
     case 0:
@@ -1889,7 +1887,7 @@ Response ret_if(Sistema *s, char parms[])
     }
 }
 
-int cmd_if(Sistema *s, char parms[])
+int cmd_if(Sistema *s, char params[])
 {
     int i=0;
 
@@ -1906,9 +1904,9 @@ int cmd_if(Sistema *s, char parms[])
     Descom_param_if_ic param;
 
 
-    if (parms[0]!='\0')
+    if (params[0]!='\0')
     {
-        param=param_de_if_ic(parms, IF);
+        param=param_de_if_ic(params, IF);
     }
     else
     {
@@ -2026,12 +2024,12 @@ int cmd_if(Sistema *s, char parms[])
 
 
 
-///IC
+// IC
 
-Response ret_ic(Sistema *s, char parms[])
+Response ret_ic(Sistema *s, char params[])
 {
     int r;
-    r=cmd_ic(&*s, parms);
+    r=cmd_ic(&*s, params);
     switch(r)
     {
     case 0:
@@ -2046,7 +2044,7 @@ Response ret_ic(Sistema *s, char parms[])
     }
 }
 
-int cmd_ic(Sistema *s, char parms[])
+int cmd_ic(Sistema *s, char params[])
 {
     int i=0;
 
@@ -2063,9 +2061,9 @@ int cmd_ic(Sistema *s, char parms[])
     Descom_param_if_ic param;
 
 
-    if (parms[0]!='\0')
+    if (params[0]!='\0')
     {
-        param=param_de_if_ic(parms, IC);
+        param=param_de_if_ic(params, IC);
     }
     else
     {
@@ -2186,12 +2184,12 @@ int cmd_ic(Sistema *s, char parms[])
 
 
 
-///TYPE
+// TYPE
 
-Response ret_type(Sistema *s, char parms[])
+Response ret_type(Sistema *s, char params[])
 {
     int r;
-    r=cmd_type(&*s, parms);
+    r=cmd_type(&*s, params);
     switch(r)
     {
     case 0:
@@ -2206,10 +2204,10 @@ Response ret_type(Sistema *s, char parms[])
     }
 }
 
-int cmd_type(Sistema *s, char parms[])
+int cmd_type(Sistema *s, char params[])
 {
 
-    ///____________________________VAR__________________________________
+    // ____________________________VAR__________________________________
     int i=0;
     int contador=0;
 
@@ -2227,12 +2225,12 @@ int cmd_type(Sistema *s, char parms[])
 
     Archivos aux;
     Archivos aux2;
-    ///_________________________________________________________________
+    // _________________________________________________________________
 
 
-    if (parms[0]!='\0')
+    if (params[0]!='\0')
     {
-        param=param_solo_name(parms);
+        param=param_solo_name(params);
     }
     else
     {
@@ -2342,12 +2340,12 @@ int cmd_type(Sistema *s, char parms[])
 
 
 
-///DELETE
+// DELETE
 
-Response ret_delete(Sistema *s, char parms[])
+Response ret_delete(Sistema *s, char params[])
 {
     int r;
-    r=cmd_delete(&*s, parms);
+    r=cmd_delete(&*s, params);
     switch(r)
     {
     case 0:
@@ -2386,7 +2384,7 @@ void elimnar_f_a(Directorios u)
     delete aux;
 }
 
-int cmd_delete(Sistema *s, char parms[])
+int cmd_delete(Sistema *s, char params[])
 {
     int i;
     i=0;
@@ -2413,9 +2411,9 @@ int cmd_delete(Sistema *s, char parms[])
 
     Descom_param_name param;
 
-    if (parms[0]!='\0')
+    if (params[0]!='\0')
     {
-        param=param_solo_name(parms);
+        param=param_solo_name(params);
     }
     else
     {
@@ -2564,7 +2562,7 @@ int cmd_delete(Sistema *s, char parms[])
 
 
 
-///UNDELETE
+// UNDELETE
 
 Response ret_undelete(Sistema *s)
 {
@@ -2723,12 +2721,12 @@ int cmd_undelete(Sistema *s)
 
 
 
-///BF
+// BF
 
-Response ret_bf(Sistema *s, char parms[])
+Response ret_bf(Sistema *s, char params[])
 {
     int r;
-    r=cmd_bf(&*s, parms);
+    r=cmd_bf(&*s, params);
     switch(r)
     {
     case 0:
@@ -2755,7 +2753,7 @@ void borrar_linea(Lineas borrar, int i, int m)
     }
 }
 
-int cmd_bf(Sistema *s, char parms[])
+int cmd_bf(Sistema *s, char params[])
 {
     int i;
     i=0;
@@ -2778,9 +2776,9 @@ int cmd_bf(Sistema *s, char parms[])
     Descom_param_name_k param;
 
 
-    if (parms[0]!='\0')
+    if (params[0]!='\0')
     {
-        param=param_name_k(parms, BF);
+        param=param_name_k(params, BF);
     }
     else
     {
@@ -2926,12 +2924,12 @@ int cmd_bf(Sistema *s, char parms[])
 
 
 
-///BC
+// BC
 
-Response ret_bc(Sistema *s, char parms[])
+Response ret_bc(Sistema *s, char params[])
 {
     int r;
-    r=cmd_bc(&*s, parms);
+    r=cmd_bc(&*s, params);
     switch(r)
     {
     case 0:
@@ -2958,7 +2956,7 @@ void borrar_linea2(Lineas borrar, int i, int m)
     }
 }
 
-int cmd_bc(Sistema *s, char parms[])
+int cmd_bc(Sistema *s, char params[])
 {
     int i;
     i=0;
@@ -2980,9 +2978,9 @@ int cmd_bc(Sistema *s, char parms[])
 
     Descom_param_name_k param;
 
-    if (parms[0]!='\0')
+    if (params[0]!='\0')
     {
-        param=param_name_k(parms, BC);
+        param=param_name_k(params, BC);
     }
     else
     {
@@ -3127,12 +3125,12 @@ int cmd_bc(Sistema *s, char parms[])
 
 
 
-///CAT
+// CAT
 
-Response ret_cat(Sistema *s, char parms[])
+Response ret_cat(Sistema *s, char params[])
 {
     int r;
-    r=cmd_cat(&*s, parms);
+    r=cmd_cat(&*s, params);
     switch(r)
     {
     case 0:
@@ -3147,7 +3145,7 @@ Response ret_cat(Sistema *s, char parms[])
     }
 }
 
-int cmd_cat(Sistema *s, char parms[])
+int cmd_cat(Sistema *s, char params[])
 {
     Descom_param_2name param;
 
@@ -3164,9 +3162,9 @@ int cmd_cat(Sistema *s, char parms[])
     Lineas l_a1;
     Lineas l_a2;
 
-    if (parms[0]!='\0')
+    if (params[0]!='\0')
     {
-        param=param_2_name(parms);
+        param=param_2_name(params);
     }
     else
     {
@@ -3366,12 +3364,12 @@ int cmd_cat(Sistema *s, char parms[])
 
 
 
-///MKDIR
+// MKDIR
 
-Response ret_mkdir(Sistema *s, char parms[])
+Response ret_mkdir(Sistema *s, char params[])
 {
     int r;
-    r=cmd_mkdir(&*s, parms);
+    r=cmd_mkdir(&*s, params);
     switch(r)
     {
     case 0:
@@ -3386,7 +3384,7 @@ Response ret_mkdir(Sistema *s, char parms[])
     }
 }
 
-int cmd_mkdir(Sistema *s, char parms[])
+int cmd_mkdir(Sistema *s, char params[])
 {
     bool en_raiz=false;
     bool inserta=true;
@@ -3399,9 +3397,9 @@ int cmd_mkdir(Sistema *s, char parms[])
     Ubicacion ubc_ainsertar;
 
     Descom_param_name_D param;
-    if (parms[0]!='\0')
+    if (params[0]!='\0')
     {
-        param=param_solo_name_D(parms);
+        param=param_solo_name_D(params);
     }
     else
     {
@@ -3527,12 +3525,12 @@ int cmd_mkdir(Sistema *s, char parms[])
 
 
 
-///CD
+// CD
 
-Response ret_cd(Sistema *s, char parms[])
+Response ret_cd(Sistema *s, char params[])
 {
     int r;
-    r=cmd_cd(&*s, parms);
+    r=cmd_cd(&*s, params);
     switch(r)
     {
     case 0:
@@ -3547,7 +3545,7 @@ Response ret_cd(Sistema *s, char parms[])
     }
 }
 
-int cmd_cd(Sistema *s, char parms[])
+int cmd_cd(Sistema *s, char params[])
 {
     Directorios padre;
     Directorios aus;
@@ -3560,9 +3558,9 @@ int cmd_cd(Sistema *s, char parms[])
     bool en_raiz=false;
 
     Descom_param_name_D param;
-    if (parms[0]!='\0')
+    if (params[0]!='\0')
     {
-        param=param_solo_name_D(parms);
+        param=param_solo_name_D(params);
     }
     else
     {
@@ -3684,7 +3682,7 @@ int cmd_cd(Sistema *s, char parms[])
 
 
 
-///PWD
+// PWD
 
 Response ret_pwd(Sistema *s)
 {
@@ -3771,12 +3769,12 @@ int cmd_pwd(Sistema *s)
 
 
 
-///RMDIR
+// RMDIR
 
-Response ret_rmdir(Sistema *s, char parms[])
+Response ret_rmdir(Sistema *s, char params[])
 {
     int r;
-    r=cmd_rmdir(&*s, parms);
+    r=cmd_rmdir(&*s, params);
     switch(r)
     {
     case 0:
@@ -3862,7 +3860,7 @@ void rmdir_recursivo(Directorios d)
     delete d;
 }
 
-int cmd_rmdir(Sistema *s, char parms[])
+int cmd_rmdir(Sistema *s, char params[])
 {
     Directorios padre;
     Directorios eliminar;
@@ -3883,9 +3881,9 @@ int cmd_rmdir(Sistema *s, char parms[])
 
     Descom_param_name_D param;
 
-    if (parms[0]!='\0')
+    if (params[0]!='\0')
     {
-        param=param_solo_name_D(parms);
+        param=param_solo_name_D(params);
     }
     else
     {
@@ -4070,12 +4068,12 @@ int cmd_rmdir(Sistema *s, char parms[])
 
 
 
-///COPY
+// COPY
 
-Response ret_copy(Sistema *s, char parms[])
+Response ret_copy(Sistema *s, char params[])
 {
     int r;
-    r=cmd_copy(&*s, parms);
+    r=cmd_copy(&*s, params);
     switch(r)
     {
     case 0:
@@ -4090,7 +4088,7 @@ Response ret_copy(Sistema *s, char parms[])
     }
 }
 
-int cmd_copy(Sistema *s, char parms[])
+int cmd_copy(Sistema *s, char params[])
 {
     return 2;
 }
